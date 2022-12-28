@@ -1,3 +1,0 @@
-[submodule "vendor/iworks/options"]
-	path = vendor/iworks/options
-	url = git@github.com:iworks/wordpress-options-class.git

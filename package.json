@@ -1,9 +1,9 @@
 {
     "name": "omnibus",
-    "title": "omnibus",
+    "title": "Omnibus",
     "homepage": "http://iworks.pl/",
     "version": "0.0.1",
-    "description": "",
+    "description": "Plugin adds two additional fields in the product edit view – for the lowest price and the effective date to compatibility with EU Omnibus Directive.",
     "repository": {
         "type": "git",
         "url": "git@github.com:iworks/omnibus.git"
