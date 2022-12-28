@@ -12,17 +12,22 @@ PLUGIN_TAGLINE
 
 == Description ==
 
-This plugin allows your WooCommerce shop to be compliant with European Commission Directive 98/6/EC Article 6a which specifies a price reduction announcement policy.
+This plugin allows your WooCommerce shop to be compliant with the Directive of the European Parliament and of the Council (EU) 2019/2161 of November 27, 2019, known as the "Omnibus Directive".
 
-This plugin adds two additional fields in the product edit view – for the lowest price and the effective date. This information is displayed on the product page.
+This plugin saves the current price and stores it at least for 30 days.
 
+This plugin adds two additional fields in the product edit view – for the lowest price and the effective date.
+
+This information is displayed on the product page.
+
+Read more about [Directive 2019/2161](https://eur-lex.europa.eu/eli/dir/2019/2161/oj).
 
 == Installation ==
 
 There are 3 ways to install this plugin:
 
-= 1. The super easy way =
-1. In your Admin, go to menu Plugins > Add
+= 1. The super-easy way =
+1. In your Admin, go to the menu Plugins > Add
 1. Search for `PLUGIN_TITLE`
 1. Click to install
 1. Activate the plugin
@@ -30,14 +35,14 @@ There are 3 ways to install this plugin:
 
 = 2. The easy way =
 1. Download the plugin (.zip file) on the right column of this page
-1. In your Admin, go to menu Plugins > Add
-1. Select button `Upload Plugin`
+1. In your Admin, go to the menu Plugins > Add
+1. Select the button `Upload Plugin`
 1. Upload the .zip file you just downloaded
 1. Activate the plugin
 1. A new menu `PLUGIN_TITLE` will appear in your Admin
 
 = 3. The old and reliable way (FTP) =
-1. Upload `wordpress-plugin-stub` folder to the `/wp-content/plugins/` directory
+1. Upload the `omnibus` folder to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. A new menu `PLUGIN_TITLE` will appear in your Admin
 
