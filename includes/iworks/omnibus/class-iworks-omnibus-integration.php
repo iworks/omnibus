@@ -1,0 +1,171 @@
+<?php
+/*
+
+Copyright 2022-PLUGIN_TILL_YEAR Marcin Pietrzak (marcin@iworks.pl)
+
+this program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License, version 2, as
+published by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+ */
+defined( 'ABSPATH' ) || exit;
+
+if ( class_exists( 'iworks_omnibus_integration' ) ) {
+	return;
+}
+
+abstract class iworks_omnibus_integration {
+
+	/**
+	 * Add price log
+	 *
+	 * @since 1.0.0
+	 */
+	private function add_price_log( $post_id, $price ) {
+		$data = array(
+			'price'     => $price,
+			'timestamp' => time(),
+		);
+		add_post_meta( $post_id, $this->meta_name, $data );
+	}
+
+	/**
+	 * meta field name
+	 *
+	 * @since 1.0.0
+	 */
+	protected $meta_name = '_iwo_price_lowest';
+
+	/**
+	 * Save price history
+	 *
+	 * @since 1.0.0
+	 */
+	protected function save_price_history( $post_id, $price ) {
+		$price_last = $this->get_last_price( $post_id );
+		if ( 'unknown' === $price_last ) {
+			$this->add_price_log( $post_id, $price );
+		}
+		if (
+			is_array( $price_last )
+			&& $price !== $price_last['price']
+		) {
+			$this->add_price_log( $post_id, $price );
+		}
+	}
+
+	/**
+	 * get last recorded price
+	 *
+	 * @since 1.0.0
+	 */
+	private function get_last_price( $post_id ) {
+		$meta = get_post_meta( $post_id, $this->meta_name );
+		if ( empty( $meta ) ) {
+			return 'unknown';
+		}
+		$old       = strtotime( '-30 days' );
+		$timestamp = 0;
+		$last      = array();
+		foreach ( $meta as $data ) {
+			if ( $old > $data['timestamp'] ) {
+				// delete_post_meta( $post_id, $this->meta_name, $data );
+				continue;
+			}
+			if ( $timestamp < $data['timestamp'] ) {
+				$timestamp = $data['timestamp'];
+				$last      = $data;
+			}
+		}
+		return $last;
+	}
+
+	/**
+	 * LearnPress: get lowest price in 30 days
+	 *
+	 * @since 1.0.1
+	 */
+	protected function learnpress_get_lowest_price_in_30_days( $post_id ) {
+		if ( ! function_exists( 'learn_press_get_course' ) ) {
+			return;
+		}
+		$course = learn_press_get_course( $post_id );
+		if ( ! is_a( $course, 'LP_Course' ) ) {
+			return array();
+		}
+		return $this->_get_lowest_price_in_30_days( $course->get_price(), $post_id );
+	}
+
+	/**
+	 * Get lowest price in 30 days
+	 *
+	 * @since 1.0.0
+	 */
+	protected function _get_lowest_price_in_30_days( $lowest, $post_id ) {
+		$meta         = get_post_meta( $post_id, $this->meta_name );
+		$price_lowest = array();
+		if ( empty( $meta ) ) {
+			return $price_lowest;
+		}
+		$price = array();
+		$old   = strtotime( '-30 days' );
+		foreach ( $meta as $data ) {
+			if ( $old > $data['timestamp'] ) {
+				// delete_post_meta( $post_id, $this->meta_name, $data );
+				continue;
+			}
+			if ( $data['price'] <= $lowest ) {
+				$price  = $data;
+				$lowest = $data['price'];
+			}
+		}
+		return $price;
+	}
+
+	/**
+	 * Add Omnibus message to price.
+	 *
+	 * @since 1.0.0
+	 */
+	protected function add_message( $price, $price_lowest, $format_price_callback = null ) {
+		if (
+			is_array( $price_lowest )
+			&& isset( $price_lowest['price'] )
+		) {
+			if ( is_callable( $format_price_callback ) ) {
+				$price_lowest['price'] = $format_price_callback( $price_lowest['price'] );
+			}
+			$price .= sprintf(
+				'<p class="iworks-omnibus">%s</p>',
+				sprintf(
+					__( 'The lowest price in 30 days: %s', 'omnibus' ),
+					$price_lowest['price']
+				)
+			);
+		}
+		return $price;
+	}
+
+	protected function get_name( $name = '' ) {
+		if ( empty( $name ) ) {
+			return $this->meta_name;
+		}
+		return sanitize_title(
+			sprintf(
+				'%s_%s',
+				$this->meta_name,
+				$name
+			)
+		);
+	}
+}
+

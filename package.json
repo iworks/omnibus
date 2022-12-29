@@ -1,7 +1,7 @@
 {
     "name": "omnibus",
     "title": "Omnibus",
-    "tagline": "Plugin added compatibility with EU Omnibus Directive.",
+    "tagline": "The plugin adds compatibility with EU Omnibus Directive.",
     "description": "Plugin adds two additional fields in the product edit view – for the lowest price and the effective date to compatibility with EU Omnibus Directive.",
     "version": "1.0.1",
     "homepage": "http://iworks.pl/",
