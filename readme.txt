@@ -54,6 +54,15 @@ There are 3 ways to install this plugin:
 
 == Screenshots ==
 
+1. WooCommerce simple product on front-end.
+1. WooCommerce simple product on admin.
+1. WooCommerce variable product on front-end.
+1. WooCommerce variable product on front-end.
+1. WooCommerce variable product on admin.
+1. Tutor LMS course on front-end.
+1. LearnPress course on front-end.
+1. YITH WooCommerce Product Bundle on front-end.
+
 == Changelog ==
 
 * Added support for plugin "YITH WooCommerce Product Bundles".
