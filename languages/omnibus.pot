@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Omnibus PLUGIN_VERSION\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/omnibus\n"
-"POT-Creation-Date: 2022-12-29 09:05:34+00:00\n"
+"POT-Creation-Date: 2022-12-29 10:19:34+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,44 +24,44 @@ msgstr ""
 "X-Textdomain-Support: yes\n"
 "X-Generator: grunt-wp-i18n 1.0.3\n"
 
-#: includes/iworks/class-iworks-omnibus.php:85
-#: includes/iworks/class-iworks-omnibus.php:160
-#: includes/iworks/class-iworks-omnibus.php:193
+#: includes/iworks/class-iworks-omnibus.php:98
+#: includes/iworks/class-iworks-omnibus.php:170
+#: includes/iworks/class-iworks-omnibus.php:203
 msgid "Omnibus Price"
 msgstr ""
 
-#: includes/iworks/class-iworks-omnibus.php:86
-#: includes/iworks/class-iworks-omnibus.php:168
-#: includes/iworks/class-iworks-omnibus.php:201
+#: includes/iworks/class-iworks-omnibus.php:99
+#: includes/iworks/class-iworks-omnibus.php:178
+#: includes/iworks/class-iworks-omnibus.php:211
 msgid "The lowest price in 30 days"
 msgstr ""
 
-#: includes/iworks/class-iworks-omnibus.php:87
-#: includes/iworks/class-iworks-omnibus.php:98
+#: includes/iworks/class-iworks-omnibus.php:100
+#: includes/iworks/class-iworks-omnibus.php:111
 msgid "no data available"
 msgstr ""
 
-#: includes/iworks/class-iworks-omnibus.php:96
+#: includes/iworks/class-iworks-omnibus.php:109
 msgid "Omnibus Date"
 msgstr ""
 
-#: includes/iworks/class-iworks-omnibus.php:97
-#: includes/iworks/class-iworks-omnibus.php:178
-#: includes/iworks/class-iworks-omnibus.php:212
+#: includes/iworks/class-iworks-omnibus.php:110
+#: includes/iworks/class-iworks-omnibus.php:188
+#: includes/iworks/class-iworks-omnibus.php:222
 msgid "The date when lowest price in 30 days occurred."
 msgstr ""
 
-#: includes/iworks/class-iworks-omnibus.php:166
-#: includes/iworks/class-iworks-omnibus.php:199
+#: includes/iworks/class-iworks-omnibus.php:176
+#: includes/iworks/class-iworks-omnibus.php:209
 msgid "Price"
 msgstr ""
 
-#: includes/iworks/class-iworks-omnibus.php:176
-#: includes/iworks/class-iworks-omnibus.php:210
+#: includes/iworks/class-iworks-omnibus.php:186
+#: includes/iworks/class-iworks-omnibus.php:220
 msgid "Date"
 msgstr ""
 
-#: includes/iworks/class-iworks-omnibus.php:272
+#: includes/iworks/class-iworks-omnibus.php:282
 msgid "The lowest price in 30 days: %s"
 msgstr ""
 

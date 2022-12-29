@@ -25,7 +25,7 @@ Omnibus plugin support plugins:
 * [WooCommerce](https://wordpress.org/plugins/woocommerce/)
 * [Tutor LMS](https://wordpress.org/plugins/tutor/) with WooCommerce
 * [LearnPress](https://wordpress.org/plugins/learnpress/)
-
+* [YITH WooCommerce Product Bundles](https://wordpress.org/plugins/yith-woocommerce-product-bundles/)
 
 Read more about [Directive 2019/2161](https://eur-lex.europa.eu/eli/dir/2019/2161/oj).
 
@@ -56,12 +56,15 @@ There are 3 ways to install this plugin:
 
 == Changelog ==
 
+* Added support for plugin "YITH WooCommerce Product Bundles".
+
 = 1.0.1 (2022-12-29) =
-* Added support for Tutor LMS.
-* Added support for LearnPress.
+* Added support for plugin "Tutor LMS".
+* Added support for plugin "LearnPress".
 
 = 1.0.0 (2022-12-29) =
-Init.
+* Added support for plugin "WooCommerce".
+* Init.
 
 == Upgrade Notice ==
 

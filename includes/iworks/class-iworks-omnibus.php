@@ -30,6 +30,8 @@ class iworks_omnibus {
 	public function __construct() {
 		/**
 		 * WooCommerce
+		 *
+		 * @since 1.0.0
 		 */
 		add_action( 'woocommerce_product_options_pricing', array( $this, 'action_woocommerce_product_options_pricing' ) );
 		add_action( 'woocommerce_variation_options_pricing', array( $this, 'action_woocommerce_variation_options_pricing' ), 10, 3 );
@@ -37,14 +39,25 @@ class iworks_omnibus {
 		add_filter( 'woocommerce_get_price_html', array( $this, 'filter_woocommerce_get_price_html' ), 10, 2 );
 		/**
 		 * Tutor LMS
+		 *
+		 * @since 1.0.1
 		 */
 		add_filter( 'tutor_course_details_wc_add_to_cart_price', array( $this, 'filter_tutor_course_details_wc_add_to_cart_price' ), 10, 2 );
 		/**
 		 * LearnPress
+		 *
+		 * @since 1.0.1
 		 */
 		add_action( 'save_post_lp_course', array( $this, 'action_learnpress_save_post_lp_course' ), 10, 2 );
 		add_filter( 'lp/course/meta-box/fields/price', array( $this, 'filter_learnpress_admin_show_omnibus' ) );
 		add_filter( 'learn_press_course_price_html', array( $this, 'filter_learn_press_course_price_html' ), 10, 3 );
+		/**
+		 * YITH WooCommerce Product Bundles
+		 *
+		 * @since 1.0.2
+		 */
+		// add_action( 'yith_wcpb_after_product_bundle_options_tab', array( $this, 'action_yith_wcpb_after_product_bundle_options_tab' ) );
+		add_action( 'yith_wcpb_after_product_bundle_options_tab', array( $this, 'action_woocommerce_product_options_pricing' ) );
 	}
 
 	/**
@@ -141,8 +154,8 @@ class iworks_omnibus {
 		if ( empty( $price ) ) {
 			return;
 		}
-		$product_id = $product->get_id();
-		$this->save_price_history( $product_id, $price );
+		$post_id = $product->get_id();
+		$this->save_price_history( $post_id, $price );
 	}
 
 	/**
@@ -151,8 +164,8 @@ class iworks_omnibus {
 	 * @since 1.0.0
 	 */
 	public function action_woocommerce_product_options_pricing() {
-		$product_id   = intval( $_GET['post'] );
-		$price_lowest = $this->woocommerce_get_lowest_price_in_30_days( $product_id );
+		global $post_id;
+		$price_lowest = $this->woocommerce_get_lowest_price_in_30_days( $post_id );
 		echo '<hr />';
 		printf( '<p class="description">%s</p>', esc_html__( 'Omnibus Price', 'omnibus' ) );
 		woocommerce_wp_text_input(
@@ -183,8 +196,8 @@ class iworks_omnibus {
 	 * @since 1.0.0
 	 */
 	public function action_woocommerce_variation_options_pricing( $loop, $variation_data, $variation ) {
-		$product_id   = $variation->ID;
-		$price_lowest = $this->woocommerce_get_lowest_price_in_30_days( $product_id );
+		$post_id      = $variation->ID;
+		$price_lowest = $this->woocommerce_get_lowest_price_in_30_days( $post_id );
 		echo '</div>';
 		echo '<div>';
 		printf( '<p class="form-row form-row-full">%s</p>', esc_html__( 'Omnibus Price', 'omnibus' ) );
@@ -217,16 +230,16 @@ class iworks_omnibus {
 	 *
 	 * @since 1.0.0
 	 */
-	private function save_price_history( $product_id, $price ) {
-		$price_last = $this->get_last_price( $product_id );
+	private function save_price_history( $post_id, $price ) {
+		$price_last = $this->get_last_price( $post_id );
 		if ( 'unknown' === $price_last ) {
-			$this->add_price_log( $product_id, $price );
+			$this->add_price_log( $post_id, $price );
 		}
 		if (
 			is_array( $price_last )
 			&& $price !== $price_last['price']
 		) {
-			$this->add_price_log( $product_id, $price );
+			$this->add_price_log( $post_id, $price );
 		}
 	}
 
@@ -279,8 +292,8 @@ class iworks_omnibus {
 	 *
 	 * @since 1.0.0
 	 */
-	private function get_last_price( $product_id ) {
-		$meta = get_post_meta( $product_id, $this->meta_name );
+	private function get_last_price( $post_id ) {
+		$meta = get_post_meta( $post_id, $this->meta_name );
 		if ( empty( $meta ) ) {
 			return 'unknown';
 		}
@@ -289,7 +302,7 @@ class iworks_omnibus {
 		$last      = array();
 		foreach ( $meta as $data ) {
 			if ( $old > $data['timestamp'] ) {
-				// delete_post_meta( $product_id, $this->meta_name, $data );
+				// delete_post_meta( $post_id, $this->meta_name, $data );
 				continue;
 			}
 			if ( $timestamp < $data['timestamp'] ) {
@@ -345,8 +358,8 @@ class iworks_omnibus {
 	 *
 	 * @since 1.0.0
 	 */
-	private function _get_lowest_price_in_30_days( $lowest, $product_id ) {
-		$meta         = get_post_meta( $product_id, $this->meta_name );
+	private function _get_lowest_price_in_30_days( $lowest, $post_id ) {
+		$meta         = get_post_meta( $post_id, $this->meta_name );
 		$price_lowest = array();
 		if ( empty( $meta ) ) {
 			return $price_lowest;
@@ -355,7 +368,7 @@ class iworks_omnibus {
 		$old   = strtotime( '-30 days' );
 		foreach ( $meta as $data ) {
 			if ( $old > $data['timestamp'] ) {
-				// delete_post_meta( $product_id, $this->meta_name, $data );
+				// delete_post_meta( $post_id, $this->meta_name, $data );
 				continue;
 			}
 			if ( $data['price'] <= $lowest ) {
