@@ -52,5 +52,8 @@ There are 3 ways to install this plugin:
 
 == Changelog ==
 
+= 1.0.0 (2022-12-29) =
+Init.
+
 == Upgrade Notice ==
 

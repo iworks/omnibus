@@ -3,7 +3,7 @@
     "title": "Omnibus",
     "tagline": "Plugin adds two additional fields in the product edit view – for the lowest price and the effective date to compatibility with EU Omnibus Directive.",
     "description": "Plugin adds two additional fields in the product edit view – for the lowest price and the effective date to compatibility with EU Omnibus Directive.",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "homepage": "http://iworks.pl/",
     "author": [
         {
