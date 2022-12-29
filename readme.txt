@@ -1,7 +1,7 @@
 === PLUGIN_TITLE ===
 Contributors: iworks
 Donate link: https://ko-fi.com/iworks?utm_source=og&utm_medium=readme-donate
-Tags: woocommerce, omnibus, price
+Tags: woocommerce, omnibus, price, lms
 Requires at least: PLUGIN_REQUIRES_WORDPRESS
 Tested up to: 6.1
 Stable tag: PLUGIN_VERSION
@@ -12,13 +12,20 @@ PLUGIN_TAGLINE
 
 == Description ==
 
-This plugin allows your WooCommerce shop to be compliant with the Directive of the European Parliament and of the Council (EU) 2019/2161 of November 27, 2019, known as the "Omnibus Directive".
+This plugin allows your to be compliant with the Directive of the European Parliament and of the Council (EU) 2019/2161 of November 27, 2019, known as the "Omnibus Directive".
 
 This plugin saves the current price and stores it at least for 30 days.
 
-This plugin adds two additional fields in the product edit view – for the lowest price and the effective date.
+This plugin adds two additional fields in the product or course  edit view – for the lowest price and the effective date.
 
 This information is displayed on the product page.
+
+Omnibus plugin support plugins:
+
+* [WooCommerce](https://wordpress.org/plugins/woocommerce/)
+* [Tutor LMS](https://wordpress.org/plugins/tutor/) with WooCommerce
+* [LearnPress](https://wordpress.org/plugins/learnpress/)
+
 
 Read more about [Directive 2019/2161](https://eur-lex.europa.eu/eli/dir/2019/2161/oj).
 
@@ -31,7 +38,6 @@ There are 3 ways to install this plugin:
 1. Search for `PLUGIN_TITLE`
 1. Click to install
 1. Activate the plugin
-1. A new menu `PLUGIN_TITLE` will appear in your Admin
 
 = 2. The easy way =
 1. Download the plugin (.zip file) on the right column of this page
@@ -39,18 +45,20 @@ There are 3 ways to install this plugin:
 1. Select the button `Upload Plugin`
 1. Upload the .zip file you just downloaded
 1. Activate the plugin
-1. A new menu `PLUGIN_TITLE` will appear in your Admin
 
 = 3. The old and reliable way (FTP) =
 1. Upload the `omnibus` folder to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
-1. A new menu `PLUGIN_TITLE` will appear in your Admin
 
 == Frequently Asked Questions ==
 
 == Screenshots ==
 
 == Changelog ==
+
+= 1.0.1 (2022-12-29) =
+* Added support for Tutor LMS.
+* Added support for LearnPress.
 
 = 1.0.0 (2022-12-29) =
 Init.
