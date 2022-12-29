@@ -10,20 +10,18 @@
  *   $ grunt hello
  */
 
-module.exports = function( grunt ) {
+module.exports = function(grunt) {
 
     // Load all grunt tasks.
-    require( 'load-grunt-tasks' )(grunt);
+    require('load-grunt-tasks')(grunt);
 
     var buildtime = new Date().toISOString();
     var buildyear = 1900 + new Date().getYear();
 
     var conf = {
-        js_files_concat: {
-        },
+        js_files_concat: {},
 
-        css_files_compile: {
-        },
+        css_files_compile: {},
 
         plugin_dir: '',
         plugin_file: 'omnibus.php',
@@ -33,10 +31,10 @@ module.exports = function( grunt ) {
             ignore_files: [
                 '.git*',
                 'node_modules/.*',
-                '(^.php)',		 // Ignore non-php files.
-                'release/.*',	  // Temp release files.
+                '(^.php)', // Ignore non-php files.
+                'release/.*', // Temp release files.
                 '.sass-cache/.*',
-                'tests/.*',		// Unit testing.
+                'tests/.*', // Unit testing.
             ],
             pot_dir: 'languages/', // With trailing slash.
             textdomain: 'omnibus',
@@ -45,17 +43,17 @@ module.exports = function( grunt ) {
 
 
     // Project configuration
-    grunt.initConfig( {
-        pkg: grunt.file.readJSON( 'package.json' ),
+    grunt.initConfig({
+        pkg: grunt.file.readJSON('package.json'),
 
         concat: {
             options: {
                 stripBanners: true,
                 banner: '/*! <%= pkg.title %> - v<%= pkg.version %>\n' +
-                ' * <%= pkg.homepage %>\n' +
-                ' * Copyright (c) <%= grunt.template.today("yyyy") %>;' +
-                ' * Licensed GPLv2+' +
-                ' */\n'
+                    ' * <%= pkg.homepage %>\n' +
+                    ' * Copyright (c) <%= grunt.template.today("yyyy") %>;' +
+                    ' * Licensed GPLv2+' +
+                    ' */\n'
             },
             scripts: {
                 files: conf.js_files_concat
@@ -69,19 +67,19 @@ module.exports = function( grunt ) {
                 'assets/js/test/**/*.js'
             ],
             options: {
-                curly:   true,
-                eqeqeq:  true,
-                immed:   true,
+                curly: true,
+                eqeqeq: true,
+                immed: true,
                 latedef: true,
-                newcap:  true,
-                noarg:   true,
-                sub:	 true,
-                undef:   true,
-                boss:	true,
-                eqnull:  true,
+                newcap: true,
+                noarg: true,
+                sub: true,
+                undef: true,
+                boss: true,
+                eqnull: true,
                 globals: {
                     exports: true,
-                    module:  false
+                    module: false
                 }
             }
         },
@@ -90,7 +88,7 @@ module.exports = function( grunt ) {
             all: {
                 files: [{
                     expand: true,
-                    src: ['*.js', '!*.min.js', '!shared*' ],
+                    src: ['*.js', '!*.min.js', '!shared*'],
                     cwd: 'assets/js/',
                     dest: 'assets/js/',
                     ext: '.min.js',
@@ -98,10 +96,10 @@ module.exports = function( grunt ) {
                 }],
                 options: {
                     banner: '/*! <%= pkg.title %> - v<%= pkg.version %>\n' +
-                    ' * <%= pkg.homepage %>\n' +
-                    ' * Copyright (c) <%= grunt.template.today("yyyy") %>;' +
-                    ' * Licensed GPLv2+' +
-                    ' */\n',
+                        ' * <%= pkg.homepage %>\n' +
+                        ' * Copyright (c) <%= grunt.template.today("yyyy") %>;' +
+                        ' * Licensed GPLv2+' +
+                        ' */\n',
                     mangle: {
                         reserved: ['jQuery']
                     }
@@ -109,7 +107,7 @@ module.exports = function( grunt ) {
             }
         },
 
-        test:   {
+        test: {
             files: ['assets/js/test/**/*.js']
         },
 
@@ -129,7 +127,7 @@ module.exports = function( grunt ) {
             }
         },
 
-        sass:   {
+        sass: {
             all: {
                 options: {
                     'sourcemap=none': true, // 'sourcemap': 'none' does not work...
@@ -143,10 +141,10 @@ module.exports = function( grunt ) {
         cssmin: {
             options: {
                 banner: '/*! <%= pkg.title %> - v<%= pkg.version %>\n' +
-                ' * <%= pkg.homepage %>\n' +
-                ' * Copyright (c) <%= grunt.template.today("yyyy") %>;' +
-                ' * Licensed GPLv2+' +
-                ' */\n',
+                    ' * <%= pkg.homepage %>\n' +
+                    ' * Copyright (c) <%= grunt.template.today("yyyy") %>;' +
+                    ' * Licensed GPLv2+' +
+                    ' */\n',
                 mergeIntoShorthands: false
             },
             target: {
@@ -160,7 +158,7 @@ module.exports = function( grunt ) {
             },
         },
 
-        watch:  {
+        watch: {
             sass: {
                 files: [
                     'assets/sass/**/*.scss',
@@ -229,7 +227,7 @@ module.exports = function( grunt ) {
         copy: {
             // Copy the plugin to a versioned release directory
             main: {
-                src:  [
+                src: [
                     '**',
                     '!.git/**',
                     '!.git*',
@@ -262,22 +260,66 @@ module.exports = function( grunt ) {
         // BUILD: Replace conditional tags in code.
         replace: {
             options: {
-                patterns: [
-                    { match: /AUTHOR_NAME/g, replace: '<%= pkg.author[0].name %>' },
-                    { match: /AUTHOR_URI/g, replace: '<%= pkg.author[0].uri %>' },
-                    { match: /BUILDTIME/g, replace: buildtime },
-                    { match: /IWORKS_RATE_TEXTDOMAIN/g, replace: '<%= pkg.name %>' },
-                    { match: /IWORKS_OPTIONS_TEXTDOMAIN/g, replace: '<%= pkg.name %>' },
-                    { match: /PLUGIN_DESCRIPTION/g, replace: '<%= pkg.description %>' },
-                    { match: /PLUGIN_NAME/g, replace: '<%= pkg.name %>' },
-                    { match: /PLUGIN_REQUIRES_PHP/g, replace: '<%= pkg.requires.PHP %>' },
-                    { match: /PLUGIN_REQUIRES_WORDPRESS/g, replace: '<%= pkg.requires.WordPress %>' },
-                    { match: /PLUGIN_TAGLINE/g, replace: '<%= pkg.tagline %>' },
-                    { match: /PLUGIN_TILL_YEAR/g, replace: buildyear },
-                    { match: /PLUGIN_TITLE/g, replace: '<%= pkg.title %>' },
-                    { match: /PLUGIN_URI/g, replace: '<%= pkg.homepage %>' },
-                    { match: /PLUGIN_VERSION/g, replace: '<%= pkg.version %>' },
-                    { match: /^Version: .+$/g, replace: 'Version: <%= pkg.version %>' },
+                patterns: [{
+                        match: /AUTHOR_NAME/g,
+                        replace: '<%= pkg.author[0].name %>'
+                    },
+                    {
+                        match: /AUTHOR_URI/g,
+                        replace: '<%= pkg.author[0].uri %>'
+                    },
+                    {
+                        match: /BUILDTIME/g,
+                        replace: buildtime
+                    },
+                    {
+                        match: /IWORKS_RATE_TEXTDOMAIN/g,
+                        replace: '<%= pkg.name %>'
+                    },
+                    {
+                        match: /IWORKS_OPTIONS_TEXTDOMAIN/g,
+                        replace: '<%= pkg.name %>'
+                    },
+                    {
+                        match: /PLUGIN_DESCRIPTION/g,
+                        replace: '<%= pkg.description %>'
+                    },
+                    {
+                        match: /PLUGIN_NAME/g,
+                        replace: '<%= pkg.name %>'
+                    },
+                    {
+                        match: /PLUGIN_REQUIRES_PHP/g,
+                        replace: '<%= pkg.requires.PHP %>'
+                    },
+                    {
+                        match: /PLUGIN_REQUIRES_WORDPRESS/g,
+                        replace: '<%= pkg.requires.WordPress %>'
+                    },
+                    {
+                        match: /PLUGIN_TAGLINE/g,
+                        replace: '<%= pkg.tagline %>'
+                    },
+                    {
+                        match: /PLUGIN_TILL_YEAR/g,
+                        replace: buildyear
+                    },
+                    {
+                        match: /PLUGIN_TITLE/g,
+                        replace: '<%= pkg.title %>'
+                    },
+                    {
+                        match: /PLUGIN_URI/g,
+                        replace: '<%= pkg.homepage %>'
+                    },
+                    {
+                        match: /PLUGIN_VERSION/g,
+                        replace: '<%= pkg.version %>'
+                    },
+                    {
+                        match: /^Version: .+$/g,
+                        replace: 'Version: <%= pkg.version %>'
+                    },
                 ]
             },
             files: {
@@ -294,7 +336,7 @@ module.exports = function( grunt ) {
             main: {
                 options: {
                     mode: 'zip',
-                    archive: './release/<%= pkg.name %>-<%= pkg.version %>.zip'
+                    archive: './release/<%= pkg.name %>.zip'
                 },
                 expand: true,
                 cwd: 'release/<%= pkg.version %>/',
@@ -305,7 +347,7 @@ module.exports = function( grunt ) {
 
         checktextdomain: {
             options: {
-                text_domain: [ 'og', 'IWORKS_RATE_TEXTDOMAIN' ],
+                text_domain: ['omnibus', 'IWORKS_RATE_TEXTDOMAIN'],
                 keywords: [ //List keyword specifications
                     '__:1,2d',
                     '_e:1,2d',
@@ -313,48 +355,47 @@ module.exports = function( grunt ) {
                     'esc_html__:1,2d',
                     'esc_html_e:1,2d',
                     'esc_html_x:1,2c,3d',
-                    'esc_attr__:1,2d', 
-                    'esc_attr_e:1,2d', 
-                    'esc_attr_x:1,2c,3d', 
+                    'esc_attr__:1,2d',
+                    'esc_attr_e:1,2d',
+                    'esc_attr_x:1,2c,3d',
                     '_ex:1,2c,3d',
-                    '_n:1,2,4d', 
+                    '_n:1,2,4d',
                     '_nx:1,2,4c,5d',
                     '_n_noop:1,2,3d',
                     '_nx_noop:1,2,3c,4d'
                 ]
             },
             files: {
-                src: ['og.php', 'vendor/**/*.php' ], //all php 
+                src: ['omnibus.php', 'vendor/**/*.php'], //all php 
                 expand: true,
             },
         },
 
-    } );
+    });
 
-    grunt.registerTask( 'notes', 'Show release notes', function() {
-        grunt.log.subhead( 'Release notes' );
-        grunt.log.writeln( '  1. Check BITBUCKET for pull-requests' );
-        grunt.log.writeln( '  2. Check ASANA for high-priority bugs' );
-        grunt.log.writeln( '  3. Check EMAILS for high-priority bugs' );
-        grunt.log.writeln( '  4. Check FORUM for open threads' );
-        grunt.log.writeln( '  5. REPLY to forum threads + unsubscribe' );
-        grunt.log.writeln( '  6. Update the TRANSLATION files' );
-        grunt.log.writeln( '  7. Generate ARCHIVE' );
-        grunt.log.writeln( '  8. Check ARCHIVE structure - it should be a folder with plugin name' );
-        grunt.log.writeln( '  9. INSTALL on a clean WordPress installation' );
-        grunt.log.writeln( ' 10. RELEASE the plugin!' );
+    grunt.registerTask('notes', 'Show release notes', function() {
+        grunt.log.subhead('Release notes');
+        grunt.log.writeln('  1. Check FORUM for open threads');
+        grunt.log.writeln('  2. REPLY to forum threads + unsubscribe');
+        grunt.log.writeln('  3. Update the TRANSLATION files');
+        grunt.log.writeln('  4. Generate ARCHIVE');
+        grunt.log.writeln('  5. Check ARCHIVE structure - it should be a folder with plugin name');
+        grunt.log.writeln('  6. INSTALL on a clean WordPress installation');
+        grunt.log.writeln('  7. RELEASE the plugin on WordPress.org!');
+        grunt.log.writeln('  8. Add git tag!');
+        grunt.log.writeln('  9. RELEASE the plugin on GitHub!');
     });
 
     // Default task.
 
-    grunt.registerTask( 'default', ['clean:temp', 'concat', 'uglify', 'sass', 'cssmin' ] );
-    grunt.registerTask( 'js', [ 'concat', 'uglify' ] );
-    grunt.registerTask( 'css', [ 'sass', 'cssmin' ] );
-    grunt.registerTask( 'i18n', [ 'checktextdomain', 'makepot', 'potomo' ] );
+    grunt.registerTask('default', ['clean:temp', 'concat', 'uglify', 'sass', 'cssmin']);
+    grunt.registerTask('js', ['concat', 'uglify']);
+    grunt.registerTask('css', ['sass', 'cssmin']);
+    grunt.registerTask('i18n', ['checktextdomain', 'makepot', 'potomo']);
 
     // grunt.registerTask( 'build', [ 'default', 'i18n', 'clean', 'copy', 'compress', 'notes'] );
-    grunt.registerTask( 'build', [ 'default', 'clean', 'copy', 'replace', 'compress', 'notes'] );
-    grunt.registerTask( 'test', ['phpunit', 'jshint', 'notes'] );
+    grunt.registerTask('build', ['default', 'clean', 'copy', 'replace', 'compress', 'notes']);
+    grunt.registerTask('test', ['phpunit', 'jshint', 'notes']);
 
     grunt.util.linefeed = '\n';
 };
