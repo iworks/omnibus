@@ -368,7 +368,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 */
 		$settings[] = array(
 			'title'         => __( 'Show on admin on', 'omnibus' ),
-			'desc'          => __( 'Product list', 'omnibus' ),
+			'desc'          => __( 'Products list', 'omnibus' ),
 			'id'            => $this->get_name( 'admin_list' ),
 			'default'       => 'yes',
 			'type'          => 'checkbox',
@@ -383,7 +383,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		);
 		$settings[] = array(
 			'title'             => __( 'Number of days', 'omnibus' ),
-			'desc'              => __( 'This controls numbers of days to show. According to Omnibus Directive minimum dasy is 30.', 'omnibus' ),
+			'desc'              => __( 'This controls the number of days to show. According to the Omnibus Directive, minimum days is 30.', 'omnibus' ),
 			'id'                => $this->get_name( 'days' ),
 			'default'           => '30',
 			'type'              => 'number',

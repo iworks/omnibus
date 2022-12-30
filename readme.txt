@@ -69,10 +69,9 @@ There are 3 ways to install this plugin:
 
 == Changelog ==
 
-* Added support for plugin "YITH WooCommerce Product Bundles".
-
 = 1.1.0 (2022-12-30) =
 * Added configuration.
+* Added support for plugin "YITH WooCommerce Product Bundles".
 
 = 1.0.1 (2022-12-29) =
 * Added support for plugin "Tutor LMS".
