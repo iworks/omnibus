@@ -94,7 +94,7 @@ abstract class iworks_omnibus_integration {
 	 *
 	 * @since 1.0.1
 	 */
-	protected function learnpress_get_lowest_price_in_30_days( $post_id ) {
+	protected function learnpress_get_lowest_price_in_history( $post_id ) {
 		if ( ! function_exists( 'learn_press_get_course' ) ) {
 			return;
 		}
@@ -102,7 +102,7 @@ abstract class iworks_omnibus_integration {
 		if ( ! is_a( $course, 'LP_Course' ) ) {
 			return array();
 		}
-		return $this->_get_lowest_price_in_30_days( $course->get_price(), $post_id );
+		return $this->_get_lowest_price_in_history( $course->get_price(), $post_id );
 	}
 
 	/**
@@ -110,14 +110,14 @@ abstract class iworks_omnibus_integration {
 	 *
 	 * @since 1.0.0
 	 */
-	protected function _get_lowest_price_in_30_days( $lowest, $post_id ) {
+	protected function _get_lowest_price_in_history( $lowest, $post_id ) {
 		$meta         = get_post_meta( $post_id, $this->meta_name );
 		$price_lowest = array();
 		if ( empty( $meta ) ) {
 			return $price_lowest;
 		}
 		$price = array();
-		$old   = strtotime( '-30 days' );
+		$old   = strtotime( sprintf( '-%d days', $this->get_days() ) );
 		foreach ( $meta as $data ) {
 			if ( $old > $data['timestamp'] ) {
 				// delete_post_meta( $post_id, $this->meta_name, $data );
@@ -147,7 +147,8 @@ abstract class iworks_omnibus_integration {
 			$price .= sprintf(
 				'<p class="iworks-omnibus">%s</p>',
 				sprintf(
-					__( 'The lowest price in 30 days: %s', 'omnibus' ),
+					__( 'The lowest price in %1$d days: %2$s', 'omnibus' ),
+					$this->get_days(),
 					$price_lowest['price']
 				)
 			);
@@ -166,6 +167,15 @@ abstract class iworks_omnibus_integration {
 				$name
 			)
 		);
+	}
+
+	/**
+	 * get numbers of days
+	 *
+	 * @since 1.1.0
+	 */
+	protected function get_days() {
+		return max( 30, intval( get_option( $this->get_name( 'days' ) ) ) );
 	}
 }
 

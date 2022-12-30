@@ -38,6 +38,7 @@ There are 3 ways to install this plugin:
 1. Search for `PLUGIN_TITLE`
 1. Click to install
 1. Activate the plugin
+1. Visit WPA -> WooCommerce -> Settings -> Products -> Omnibus Directive to check configuration
 
 = 2. The easy way =
 1. Download the plugin (.zip file) on the right column of this page
@@ -45,10 +46,12 @@ There are 3 ways to install this plugin:
 1. Select the button `Upload Plugin`
 1. Upload the .zip file you just downloaded
 1. Activate the plugin
+1. Visit WPA -> WooCommerce -> Settings -> Products -> Omnibus Directive to check configuration
 
 = 3. The old and reliable way (FTP) =
 1. Upload the `omnibus` folder to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
+1. Visit WPA -> WooCommerce -> Settings -> Products -> Omnibus Directive to check configuration
 
 == Frequently Asked Questions ==
 
@@ -62,10 +65,14 @@ There are 3 ways to install this plugin:
 1. Tutor LMS course on front-end.
 1. LearnPress course on front-end.
 1. YITH WooCommerce Product Bundle on front-end.
+1. WooCommerce configuration.
 
 == Changelog ==
 
 * Added support for plugin "YITH WooCommerce Product Bundles".
+
+= 1.1.0 (2022-12-30) =
+* Added configuration.
 
 = 1.0.1 (2022-12-29) =
 * Added support for plugin "Tutor LMS".

@@ -36,9 +36,26 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		add_action( 'woocommerce_after_product_object_save', array( $this, 'action_woocommerce_save_price_history' ), 10, 1 );
 		add_action( 'woocommerce_product_options_pricing', array( $this, 'action_woocommerce_product_options_pricing' ) );
 		add_action( 'woocommerce_variation_options_pricing', array( $this, 'action_woocommerce_variation_options_pricing' ), 10, 3 );
-		add_filter( 'woocommerce_get_price_html', array( $this, 'filter_woocommerce_get_price_html' ), 10, 2 );
 		add_filter( 'woocommerce_get_sections_products', array( $this, 'filter_woocommerce_get_sections_products' ), 999 );
 		add_filter( 'woocommerce_get_settings_products', array( $this, 'filter_woocommerce_get_settings_for_section' ), 10, 2 );
+		/**
+		 * WooCommerce bind message
+		 *
+		 * @since 1.1.0
+		 */
+		$where = get_option( $this->get_name( 'where' ) );
+		switch ( $where ) {
+			case 'woocommerce_product_meta_start':
+			case 'woocommerce_product_meta_end':
+				add_action( $where, array( $this, 'run' ) );
+				break;
+			case 'the_content_start':
+			case 'the_content_end':
+				add_filter( 'the_content', array( $this, 'filter_the_content' ) );
+				break;
+			default:
+				add_filter( 'woocommerce_get_price_html', array( $this, 'filter_woocommerce_get_price_html' ), 10, 2 );
+		}
 		/**
 		 * Tutor LMS (as relatedo to WooCommerce)
 		 *
@@ -48,7 +65,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		/**
 		 * YITH WooCommerce Product Bundles
 		 *
-		 * @since 1.0.2
+		 * @since 1.1.0
 		 */
 		add_action( 'yith_wcpb_after_product_bundle_options_tab', array( $this, 'action_woocommerce_product_options_pricing' ) );
 	}
@@ -73,9 +90,11 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 * @since 1.0.0
 	 */
 	public function action_woocommerce_product_options_pricing() {
+		if ( 'no' === get_option( $this->get_name( 'admin_edit' ) ) ) {
+			return;
+		}
 		global $post_id;
-		$price_lowest = $this->woocommerce_get_lowest_price_in_30_days( $post_id );
-		echo '<hr />';
+		$price_lowest = $this->woocommerce_get_lowest_price_in_history( $post_id );
 		$this->print_header( 'description' );
 		$this->woocommerce_wp_text_input_price( $price_lowest );
 		$this->woocommerce_wp_text_input_date( $price_lowest );
@@ -87,8 +106,11 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 * @since 1.0.0
 	 */
 	public function action_woocommerce_variation_options_pricing( $loop, $variation_data, $variation ) {
+		if ( 'no' === get_option( $this->get_name( 'admin_edit' ) ) ) {
+			return;
+		}
 		$post_id      = $variation->ID;
-		$price_lowest = $this->woocommerce_get_lowest_price_in_30_days( $post_id );
+		$price_lowest = $this->woocommerce_get_lowest_price_in_history( $post_id );
 		echo '</div>';
 		echo '<div>';
 		$this->print_header( 'form-row form-row-full' );
@@ -108,14 +130,46 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 * @since 1.0.0
 	 */
 	public function filter_woocommerce_get_price_html( $price, $product ) {
-		if ( 'variable' === $product->get_type() ) {
-			return $this->woocommerce_get_price_html_for_variable( $price, $product );
+		if (
+			is_admin()
+			&& 'no' === get_option( $this->get_name( 'admin_list' ) )
+		) {
+			return $price;
 		}
-		$price_lowest = $this->woocommerce_get_lowest_price_in_30_days( $product->get_id() );
+		$price_lowest = $this->get_lowest_price( $product );
 		if ( empty( $price_lowest ) ) {
 			return $price;
 		}
 		return $this->add_message( $price, $price_lowest, 'wc_price' );
+	}
+
+	private function get_lowest_price( $product ) {
+		$product_type = $product->get_type();
+		switch ( $product_type ) {
+			case 'variable':
+				return $this->woocommerce_get_price_html_for_variable( $price, $product );
+			default:
+				if (
+				get_post_type() === $product_type
+				|| get_post_type() === 'product'
+				) {
+					if (
+					'no' === get_option( $this->get_name( $product_type ) )
+					) {
+						return $price;
+					}
+				} else {
+					if ( 'courses' === get_post_type() ) {
+						if (
+						defined( 'TUTOR_VERSION' )
+						&& 'no' === get_option( $this->get_name( 'tutor' ) )
+						) {
+							return $price;
+						}
+					}
+				}
+		}
+		return $this->woocommerce_get_lowest_price_in_history( $product->get_id() );
 	}
 
 	/**
@@ -127,20 +181,25 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		return $this->filter_woocommerce_get_price_html( $content, $product );
 	}
 
+	/**
+	 * Add section tab to WooCommerce Settings
+	 *
+	 * @since 1.1.0
+	 */
 	public function filter_woocommerce_get_sections_products( $sections ) {
 		$sections[ $this->meta_name ] = __( 'Omnibus Directive', 'omnibus' );
 		return $sections;
 	}
 
 	/**
-	 * WooCommerce: get lowest price in 30 days
+	 * WooCommerce: get lowest price in history
 	 *
 	 * @since 1.0.0
 	 */
-	private function woocommerce_get_lowest_price_in_30_days( $post_id ) {
+	private function woocommerce_get_lowest_price_in_history( $post_id ) {
 		$product = wc_get_product( $post_id );
 		$lowest  = $product->get_price();
-		return $this->_get_lowest_price_in_30_days( $lowest, $post_id );
+		return $this->_get_lowest_price_in_history( $lowest, $post_id );
 	}
 
 	/**
@@ -149,9 +208,12 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 * @since 1.0.0
 	 */
 	private function woocommerce_get_price_html_for_variable( $price, $product ) {
+		if ( 'no' === get_option( $this->get_name( 'variable' ) ) ) {
+			return $price;
+		}
 		$price_lowest = array();
 		foreach ( $product->get_available_variations() as $variable ) {
-			$o = $this->woocommerce_get_lowest_price_in_30_days( $variable['variation_id'] );
+			$o = $this->woocommerce_get_lowest_price_in_history( $variable['variation_id'] );
 			if ( ! isset( $price_lowest['price'] ) ) {
 				$price_lowest = $o;
 				continue;
@@ -173,13 +235,21 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 					'data_type'         => 'price',
 					'label'             => __( 'Price', 'omnibus' ) . ' (' . get_woocommerce_currency_symbol() . ')',
 					'desc_tip'          => true,
-					'description'       => __( 'The lowest price in 30 days', 'omnibus' ),
+					'description'       => sprintf(
+						__( 'The lowest price in %d days.', 'omnibus' ),
+						$this->get_days()
+					),
 				),
 				$configuration
 			)
 		);
 	}
 
+	/**
+	 * WooCommerce text field helper
+	 *
+	 * @since 1.1.0
+	 */
 	private function woocommerce_wp_text_input_date( $price_lowest, $configuration = array() ) {
 		woocommerce_wp_text_input(
 			wp_parse_args(
@@ -190,16 +260,24 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 					'data_type'         => 'text',
 					'label'             => __( 'Date', 'omnibus' ),
 					'desc_tip'          => true,
-					'description'       => __( 'The date when lowest price in 30 days occurred.', 'omnibus' ),
+					'description'       => sprintf(
+						__( 'The date when lowest price in %d days occurred.', 'omnibus' ),
+						$this->get_days()
+					),
 				),
 				$configuration
 			)
 		);
 	}
 
+	/**
+	 * WooCommerce header helper
+	 *
+	 * @since 1.1.0
+	 */
 	private function print_header( $class ) {
 		printf(
-			'<p class="%s">%s</p>',
+			'<h3 class="%s">%s</h3>',
 			esc_attr( $class ),
 			esc_html__( 'Omnibus Directive', 'omnibus' )
 		);
@@ -208,7 +286,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	/**
 	 * WooCommerce: Settings Page
 	 *
-	 * @since 1.0.2
+	 * @since 1.1.0
 	 */
 	public function filter_woocommerce_get_settings_for_section( $settings, $section_id ) {
 		if ( $section_id !== $this->meta_name ) {
@@ -228,70 +306,153 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 				'id'   => $this->get_name( 'simple' ),
 			),
 			array(
-				'desc' => __( 'Variable product', 'omnibus' ),
+				'desc' => __( 'Variable product: global', 'omnibus' ),
 				'id'   => $this->get_name( 'variable' ),
 			),
+			array(
+				'desc' => __( 'Variable product: variation', 'omnibus' ),
+				'id'   => $this->get_name( 'variation' ),
+			),
 		);
-
+		/**
+		 * Tutor LMS (as relatedo to WooCommerce)
+		 *
+		 * @since 1.0.1
+		 */
 		if ( defined( 'TUTOR_VERSION' ) ) {
 			$products[] = array(
 				'desc' => __( 'Tutor course', 'omnibus' ),
 				'id'   => $this->get_name( 'tutor' ),
 			);
 		}
-
+		/**
+		 * YITH WooCommerce Product Bundles
+		 *
+		 * @since 1.1.0
+		 */
 		if ( defined( 'YITH_WCPB_VERSION' ) ) {
 			$products[] = array(
 				'desc' => __( 'YITH Bundle', 'omnibus' ),
 				'id'   => $this->get_name( 'yith_bundle' ),
 			);
 		}
+		/**
+		 * filter avaialble products list
+		 *
+		 * @since 1.1.0
+		 */
+		$products = apply_filters( 'iworks_omnibus_integration_woocommerce_settings', $products );
+		/**
+		 * add to Settings
+		 */
 		foreach ( $products as $index => $one ) {
 			if ( 0 === $index ) {
-				$one['title']         = __( 'Show for', 'omnibus' );
+				$one['title']         = __( 'Show on front-end for', 'omnibus' );
 				$one['checkboxgroup'] = 'start';
 			}
 			$one = wp_parse_args(
 				$one,
 				array(
-					'default' => 'yes',
-					'type'    => 'checkbox',
+					'default'       => 'yes',
+					'type'          => 'checkbox',
+					'checkboxgroup' => '',
 				)
 			);
-			if ( $index === count( $products ) ) {
+			if ( ( 1 + $index ) === count( $products ) ) {
 				$one['checkboxgroup'] = 'end';
 			}
-
 			$settings[] = $one;
 		}
-		$settings[] =
-			array(
-				'title'           => __( 'Enable reviews', 'woocommerce' ),
-				'desc'            => __( 'Enable product reviews', 'woocommerce' ),
-				'id'              => 'woocommerce_enable_reviews',
-				'default'         => 'yes',
-				'type'            => 'checkbox',
-				'checkboxgroup'   => 'start',
-				'show_if_checked' => 'option',
-			);
+		/**
+		 * admin
+		 */
 		$settings[] = array(
-			'title'    => __( 'Dimensions unit', 'woocommerce' ),
-			'desc'     => __( 'This controls what unit you will define lengths in.', 'woocommerce' ),
-			'id'       => 'woocommerce_dimension_unit',
-			'class'    => 'wc-enhanced-select',
-			'css'      => 'min-width:300px;',
-			'default'  => 'cm',
-			'type'     => 'select',
-			'options'  => array(
-				'm'  => __( 'm', 'woocommerce' ),
-				'cm' => __( 'cm', 'woocommerce' ),
-				'mm' => __( 'mm', 'woocommerce' ),
-				'in' => __( 'in', 'woocommerce' ),
-				'yd' => __( 'yd', 'woocommerce' ),
+			'title'         => __( 'Show on admin on', 'omnibus' ),
+			'desc'          => __( 'Product list', 'omnibus' ),
+			'id'            => $this->get_name( 'admin_list' ),
+			'default'       => 'yes',
+			'type'          => 'checkbox',
+			'checkboxgroup' => 'start',
+		);
+		$settings[] = array(
+			'desc'          => __( 'Product edit', 'omnibus' ),
+			'id'            => $this->get_name( 'admin_edit' ),
+			'default'       => 'yes',
+			'type'          => 'checkbox',
+			'checkboxgroup' => 'end',
+		);
+		$settings[] = array(
+			'title'             => __( 'Number of days', 'omnibus' ),
+			'desc'              => __( 'This controls numbers of days to show. According to Omnibus Directive minimum dasy is 30.', 'omnibus' ),
+			'id'                => $this->get_name( 'days' ),
+			'default'           => '30',
+			'type'              => 'number',
+			'desc_tip'          => true,
+			'custom_attributes' => array(
+				'min' => 30,
 			),
-			'desc_tip' => true,
+		);
+		$settings[] = array(
+			'title'   => __( 'Where to display', 'omnibus' ),
+			'desc'    => __( 'Change if you have only single products.', 'omnibus' ),
+			'id'      => $this->get_name( 'where' ),
+			'default' => 'woocommerce_get_price_html',
+			'type'    => 'select',
+			'options' => array(
+				'woocommerce_get_price_html'     => __( 'After price (recommnded)', 'omnibus' ),
+				'woocommerce_product_meta_start' => __( 'Before product meta data', 'omnibus' ),
+				'woocommerce_product_meta_end'   => __( 'After product meta data', 'omnibus' ),
+				'the_content_start'              => __( 'At the begining of the content', 'omnibus' ),
+				'the_content_end'                => __( 'At the begining of the content', 'omnibus' ),
+			),
+		);
+		$settings[] = array(
+			'type' => 'sectionend',
+			'id'   => $this->get_name( 'sectionend' ),
 		);
 		return $settings;
+	}
+
+	/**
+	 * run helper
+	 *
+	 * @since 1.1.0
+	 */
+	public function run( $context = 'view' ) {
+		if ( ! is_single() ) {
+			return;
+		}
+		$product = wc_get_product( get_the_ID() );
+		if ( empty( $product ) ) {
+			return;
+		}
+		$price_lowest = $this->get_lowest_price( $product );
+		if ( empty( $price_lowest ) ) {
+			return;
+		}
+		$message = $this->add_message( '', $price_lowest, 'wc_price' );
+		if ( 'return' === $context ) {
+			return $message;
+		}
+		echo $message;
+	}
+
+	/**
+	 * the_content filter
+	 *
+	 * @since 1.1.0
+	 */
+	public function filter_the_content( $content ) {
+		$message = $this->run( 'return' );
+		switch ( get_option( $this->get_name( 'where' ) ) ) {
+			case 'the_content_start':
+				$content = $message . $content;
+				break;
+			case 'the_content_end':
+				$content .= $message;
+				break;
+		}
+		return $content;
 	}
 
 }

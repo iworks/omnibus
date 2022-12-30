@@ -37,13 +37,13 @@ $includes = dirname( __FILE__ ) . '/includes';
  * require: Iworksomnibus Class
  */
 if ( ! class_exists( 'iworks_omnibus' ) ) {
-	require_once $includes.'/iworks/class-iworks-omnibus.php';
+	require_once $includes . '/iworks/class-iworks-omnibus.php';
 }
 
 /**
  * i18n
  */
-load_plugin_textdomain( 'omnibus', false, plugin_basename( dirname( __FILE__ ) ).'/languages' );
+load_plugin_textdomain( 'omnibus', false, plugin_basename( dirname( __FILE__ ) ) . '/languages' );
 
 new iworks_omnibus();
 
@@ -52,3 +52,12 @@ new iworks_omnibus();
  */
 // register_activation_hook( __FILE__,   'iworks_omnibus_activate' );
 // register_deactivation_hook( __FILE__, 'iworks_omnibus_deactivate' );
+
+/**
+ * iWorks Rate
+ *
+ * @since 1.0.2
+ */
+include_once dirname( __FILE__ ) . '/includes/iworks/rate/rate.php';
+do_action( 'iworks-register-plugin', plugin_basename( __FILE__ ), __( 'Omnibus', 'omnibus' ), 'omnibus' );
+
