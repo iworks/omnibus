@@ -70,6 +70,15 @@ class iworks_omnibus {
 			include_once $dir . '/integration/class-iworks-omnibus-learnpress.php';
 			$this->objects['learnpress'] = new iworks_omnibus_integration_learnpress();
 		}
+		/**
+		 * Easy Digital Downloads
+		 *
+		 * @since 1.1.1
+		 */
+		if ( class_exists( 'Easy_Digital_Downloads' ) ) {
+			include_once $dir . '/integration/class-iworks-omnibus-easydigitaldownloads.php';
+			$this->objects['easydigitaldownloads'] = new iworks_omnibus_integration_easydigitaldownloads();
+		}
 	}
 
 	/**
