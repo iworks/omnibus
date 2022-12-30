@@ -1,0 +1,3 @@
+[submodule "includes/iworks/rate"]
+	path = includes/iworks/rate
+	url = git@github.com:iworks/iworks-rate.git
