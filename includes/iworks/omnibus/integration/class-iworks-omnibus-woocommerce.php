@@ -43,7 +43,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 *
 		 * @since 1.1.0
 		 */
-		$where = get_option( $this->get_name( 'where' ) );
+		$where = get_option( $this->get_name( 'where' ), 'woocommerce_get_price_html' );
 		switch ( $where ) {
 			case 'woocommerce_product_meta_start':
 			case 'woocommerce_product_meta_end':
@@ -90,7 +90,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 * @since 1.0.0
 	 */
 	public function action_woocommerce_product_options_pricing() {
-		if ( 'no' === get_option( $this->get_name( 'admin_edit' ) ) ) {
+		if ( ! $this->should_it_show_up() ) {
 			return;
 		}
 		global $post_id;
@@ -106,7 +106,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 * @since 1.0.0
 	 */
 	public function action_woocommerce_variation_options_pricing( $loop, $variation_data, $variation ) {
-		if ( 'no' === get_option( $this->get_name( 'admin_edit' ) ) ) {
+		if ( ! $this->should_it_show_up() ) {
 			return;
 		}
 		$post_id      = $variation->ID;
@@ -125,15 +125,70 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	}
 
 	/**
+	 * helper to decide show it or no
+	 */
+	private function should_it_show_up() {
+		/**
+		 * for admin
+		 */
+		if ( is_admin() ) {
+			if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+				if (
+					isset( $_POST['action'] )
+					&& 'woocommerce_load_variations' === $_POST['action']
+				) {
+					if ( 'no' === get_option( $this->get_name( 'admin_edit' ), 'yes' ) ) {
+						return false;
+					}
+				}
+			} else {
+				$screen = get_current_screen();
+				if ( 'product' === $screen->id ) {
+					if ( 'no' === get_option( $this->get_name( 'admin_edit' ), 'yes' ) ) {
+						return false;
+					}
+				}
+				if ( 'edit-product' === $screen->id ) {
+					if ( 'no' === get_option( $this->get_name( 'admin_list' ), 'yes' ) ) {
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+		/**
+		 * front-end
+		 */
+		if ( is_single() ) {
+			if ( is_product() ) {
+				global $woocommerce_loop;
+				if ( 'related' === $woocommerce_loop['name'] ) {
+					if ( 'no' === get_option( $this->get_name( 'related' ), 'no' ) ) {
+						return false;
+					}
+				}
+			}
+			if ( 'no' === get_option( $this->get_name( 'single' ), 'yes' ) ) {
+				return false;
+			}
+			return true;
+		}
+		if ( is_shop() ) {
+			if ( 'no' === get_option( $this->get_name( 'shop' ), 'no' ) ) {
+				return false;
+			}
+			return true;
+		}
+		return true;
+	}
+
+	/**
 	 * WooCommerce: filter for HTML price
 	 *
 	 * @since 1.0.0
 	 */
 	public function filter_woocommerce_get_price_html( $price, $product ) {
-		if (
-			is_admin()
-			&& 'no' === get_option( $this->get_name( 'admin_list' ) )
-		) {
+		if ( ! $this->should_it_show_up() ) {
 			return $price;
 		}
 		$price_lowest = $this->get_lowest_price( $product );
@@ -144,6 +199,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	}
 
 	private function get_lowest_price( $product ) {
+		$price        = $product->get_price();
 		$product_type = $product->get_type();
 		switch ( $product_type ) {
 			case 'variable':
@@ -154,7 +210,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 				|| get_post_type() === 'product'
 				) {
 					if (
-					'no' === get_option( $this->get_name( $product_type ) )
+					'no' === get_option( $this->get_name( $product_type ), 'yes' )
 					) {
 						return $price;
 					}
@@ -162,7 +218,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 					if ( 'courses' === get_post_type() ) {
 						if (
 						defined( 'TUTOR_VERSION' )
-						&& 'no' === get_option( $this->get_name( 'tutor' ) )
+						&& 'no' === get_option( $this->get_name( 'tutor' ), 'yes' )
 						) {
 							return $price;
 						}
@@ -208,7 +264,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 * @since 1.0.0
 	 */
 	private function woocommerce_get_price_html_for_variable( $price, $product ) {
-		if ( 'no' === get_option( $this->get_name( 'variable' ) ) ) {
+		if ( 'no' === get_option( $this->get_name( 'variable' ), 'yes' ) ) {
 			return $price;
 		}
 		$price_lowest = array();
@@ -222,7 +278,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 				$price_lowest = $o;
 			}
 		}
-		return $this->add_message( $price, $price_lowest, 'wc_price' );
+		return $price_lowest;
 	}
 
 	private function woocommerce_wp_text_input_price( $price_lowest, $configuration = array() ) {
@@ -271,19 +327,6 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	}
 
 	/**
-	 * WooCommerce header helper
-	 *
-	 * @since 1.1.0
-	 */
-	private function print_header( $class ) {
-		printf(
-			'<h3 class="%s">%s</h3>',
-			esc_attr( $class ),
-			esc_html__( 'Omnibus Directive', 'omnibus' )
-		);
-	}
-
-	/**
 	 * WooCommerce: Settings Page
 	 *
 	 * @since 1.1.0
@@ -299,12 +342,42 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 				'desc'  => '',
 				'id'    => $this->meta_name,
 			),
+			/**
+			 * Show on
+			 */
+			array(
+				'title'         => __( 'Show on', 'omnibus' ),
+				'desc'          => __( 'Product single', 'omnibus' ),
+				'id'            => $this->get_name( 'product' ),
+				'default'       => 'yes',
+				'type'          => 'checkbox',
+				'checkboxgroup' => 'start',
+			),
+
+			array(
+				'desc'          => __( 'Shop page', 'omnibus' ),
+				'id'            => $this->get_name( 'shop' ),
+				'default'       => 'no',
+				'type'          => 'checkbox',
+				'checkboxgroup' => '',
+			),
+			array(
+				'desc'          => __( 'Related products list', 'omnibus' ),
+				'id'            => $this->get_name( 'related' ),
+				'default'       => 'no',
+				'type'          => 'checkbox',
+				'checkboxgroup' => 'end',
+			),
 		);
 		$products = array(
 			array(
 				'desc' => __( 'Simple product', 'omnibus' ),
 				'id'   => $this->get_name( 'simple' ),
 			),
+			// array(
+				// 'desc' => __( 'Grouped product', 'omnibus' ),
+				// 'id'   => $this->get_name( 'grouped' ),
+			// ),
 			array(
 				'desc' => __( 'Variable product: global', 'omnibus' ),
 				'id'   => $this->get_name( 'variable' ),
@@ -347,7 +420,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 */
 		foreach ( $products as $index => $one ) {
 			if ( 0 === $index ) {
-				$one['title']         = __( 'Show on front-end for', 'omnibus' );
+				$one['title']         = __( 'Show for type', 'omnibus' );
 				$one['checkboxgroup'] = 'start';
 			}
 			$one = wp_parse_args(
@@ -403,7 +476,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 				'woocommerce_product_meta_start' => __( 'Before product meta data', 'omnibus' ),
 				'woocommerce_product_meta_end'   => __( 'After product meta data', 'omnibus' ),
 				'the_content_start'              => __( 'At the begining of the content', 'omnibus' ),
-				'the_content_end'                => __( 'At the begining of the content', 'omnibus' ),
+				'the_content_end'                => __( 'At the end of the content', 'omnibus' ),
 			),
 		);
 		$settings[] = array(
@@ -444,7 +517,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 */
 	public function filter_the_content( $content ) {
 		$message = $this->run( 'return' );
-		switch ( get_option( $this->get_name( 'where' ) ) ) {
+		switch ( get_option( $this->get_name( 'where' ), 'woocommerce_get_price_html' ) ) {
 			case 'the_content_start':
 				$content = $message . $content;
 				break;

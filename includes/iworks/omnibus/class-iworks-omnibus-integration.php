@@ -177,5 +177,19 @@ abstract class iworks_omnibus_integration {
 	protected function get_days() {
 		return max( 30, intval( get_option( $this->get_name( 'days' ) ) ) );
 	}
+
+	/**
+	 * Header helper
+	 *
+	 * @since 1.1.0
+	 */
+	protected function print_header( $class ) {
+		printf(
+			'<h3 class="%s">%s</h3>',
+			esc_attr( $class ),
+			esc_html__( 'Omnibus Directive', 'omnibus' )
+		);
+	}
+
 }
 

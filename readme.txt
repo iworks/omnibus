@@ -1,7 +1,7 @@
 === PLUGIN_TITLE ===
 Contributors: iworks
 Donate link: https://ko-fi.com/iworks?utm_source=og&utm_medium=readme-donate
-Tags: woocommerce, omnibus, price, lms
+Tags: WooCommerce, omnibus, price, LMS
 Requires at least: PLUGIN_REQUIRES_WORDPRESS
 Tested up to: 6.1
 Stable tag: PLUGIN_VERSION
@@ -12,11 +12,11 @@ PLUGIN_TAGLINE
 
 == Description ==
 
-This plugin allows your to be compliant with the Directive of the European Parliament and of the Council (EU) 2019/2161 of November 27, 2019, known as the "Omnibus Directive".
+This plugin allows your site to be compliant with the Directive of the European Parliament and of the Council (EU) 2019/2161 of November 27, 2019, known as the "Omnibus Directive".
 
 This plugin saves the current price and stores it at least for 30 days.
 
-This plugin adds two additional fields in the product or course  edit view – for the lowest price and the effective date.
+This plugin adds two additional fields in the product or course edit view – for the lowest price and the effective date.
 
 This information is displayed on the product page.
 
@@ -57,7 +57,7 @@ There are 3 ways to install this plugin:
 
 == Screenshots ==
 
-1. WooCommerce simple product on front-end.
+1. WooCommerce simple product on the front end.
 1. WooCommerce simple product on admin.
 1. WooCommerce variable product on front-end.
 1. WooCommerce variable product on front-end.
@@ -69,16 +69,26 @@ There are 3 ways to install this plugin:
 
 == Changelog ==
 
+= 1.1.1 = (2022-12-31) =
+* Added ability to toggle Omnibus message in related products. The default is hidden.
+* Added ability to toggle Omnibus message on shop page. The default is hidden.
+* Fixed typo in the "Where to display" option.
+
 = 1.1.0 (2022-12-30) =
-* Added configuration.
+* Added ability to select where Omnibus message should be shown. The default is after the price.
+* Added ability to toggle Omnibus message on admin product edit. The default is shown.
+* Added ability to toggle Omnibus message on admin products list. The default is shown.
+* Added ability to toggle Omnibus message on a single product. The default is shown.
+* Added ability to toggle Omnibus message on variable product. The default is shown.
+* Added ability to toggle Omnibus message on the variant. The default is shown.
 * Added support for plugin "YITH WooCommerce Product Bundles".
 
 = 1.0.1 (2022-12-29) =
 * Added support for plugin "Tutor LMS".
-* Added support for plugin "LearnPress".
+* Added support for the plugin "LearnPress".
 
 = 1.0.0 (2022-12-29) =
-* Added support for plugin "WooCommerce".
+* Added support for the plugin "WooCommerce".
 * Init.
 
 == Upgrade Notice ==
