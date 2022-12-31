@@ -69,7 +69,7 @@ There are 3 ways to install this plugin:
 
 == Changelog ==
 
-= 1.1.1 = (2022-12-31) =
+= 1.1.1 (2022-12-31) =
 * Added ability to toggle Omnibus message in related products. The default is hidden.
 * Added ability to toggle Omnibus message on shop page. The default is hidden.
 * Fixed typo in the "Where to display" option.
