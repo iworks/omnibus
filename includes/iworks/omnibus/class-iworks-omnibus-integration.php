@@ -73,7 +73,7 @@ abstract class iworks_omnibus_integration {
 		if ( empty( $meta ) ) {
 			return 'unknown';
 		}
-		$old       = strtotime( '-30 days' );
+		$old       = strtotime( sprintf( '-%d days', $this->get_days() ) );
 		$timestamp = 0;
 		$last      = array();
 		foreach ( $meta as $data ) {
@@ -90,7 +90,7 @@ abstract class iworks_omnibus_integration {
 	}
 
 	/**
-	 * LearnPress: get lowest price in 30 days
+	 * LearnPress: get lowest price in days
 	 *
 	 * @since 1.0.1
 	 */
@@ -106,7 +106,7 @@ abstract class iworks_omnibus_integration {
 	}
 
 	/**
-	 * Get lowest price in 30 days
+	 * Get lowest price in history
 	 *
 	 * @since 1.0.0
 	 */
@@ -175,7 +175,7 @@ abstract class iworks_omnibus_integration {
 	 * @since 1.1.0
 	 */
 	protected function get_days() {
-		return max( 30, intval( get_option( $this->get_name( 'days' ) ) ) );
+		return max( 30, intval( get_option( $this->get_name( 'days' ), 30 ) ) );
 	}
 
 	/**
@@ -183,10 +183,10 @@ abstract class iworks_omnibus_integration {
 	 *
 	 * @since 1.1.0
 	 */
-	protected function print_header( $class ) {
+	protected function print_header( $class = '' ) {
 		printf(
-			'<h3 class="%s">%s</h3>',
-			esc_attr( $class ),
+			'<h3%s>%s</h3>',
+			empty( $class ) ? '' : sprintf( ' class="%s"', esc_attr( $class ) ),
 			esc_html__( 'Omnibus Directive', 'omnibus' )
 		);
 	}
