@@ -22,10 +22,10 @@ This plugin:
 
 Omnibus plugin support plugins:
 
+* **[WooCommerce](https://wordpress.org/plugins/woocommerce/)**
 * [Easy Digital Downloads](https://wordpress.org/plugins/easy-digital-downloads/)
 * [LearnPress](https://wordpress.org/plugins/learnpress/)
 * [Tutor LMS](https://wordpress.org/plugins/tutor/) with WooCommerce
-* [WooCommerce](https://wordpress.org/plugins/woocommerce/)
 * [YITH WooCommerce Product Bundles](https://wordpress.org/plugins/yith-woocommerce-product-bundles/)
 
 Read more about [Directive 2019/2161](https://eur-lex.europa.eu/eli/dir/2019/2161/oj).
