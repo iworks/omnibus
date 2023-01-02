@@ -86,14 +86,19 @@ do_action( 'iworks_omnibus_wc_lowest_price_message', $product_ID );
 
 == Changelog ==
 
+= 1.2.2 (2023-01-02) =
+
+* A warning in the related products loop check has been fixed.  Props for [pietrzyk25](https://wordpress.org/support/users/pietrzyk25/).
+* If no data is available, displaying the current price as the lowest has been added.
+
 = 1.2.1 (2023-01-02) =
 
-* Fixed critical exception during adding new product. Props for [rask44](https://wordpress.org/support/users/rask44/).
+* Corrected a critical error that occurred while adding a new product. Props for [rask44](https://wordpress.org/support/users/rask44/).
 
 = 1.2.0 (2023-01-02) =
 
 * Added support for the "Easy Digital Downloads" plugin.
-* Changed plugin name from `Omnibus` to `Omnibus — Show the lowest price of a product`.
+* Renamed the plugin "Omnibus — Show the lowest price of a product" instead of "Omnibus."
 * The `iworks_omnibus_days` filter has been added to the number of days amount.
 * The `iworks_omnibus_integration_woocommerce_price_lowest` filter has been added.
 * The `iworks_omnibus_message` filter has been added to the message.

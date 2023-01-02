@@ -1,5 +1,0 @@
-Plugin Name: WordPress Plugin Stub
-Author: Marcin Pietrzak ( iworks.pl )
-
-== Changelog ==
-

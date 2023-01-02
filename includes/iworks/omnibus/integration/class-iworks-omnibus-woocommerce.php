@@ -313,17 +313,20 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		}
 		$price  = $product->get_price();
 		$lowest = $this->_get_lowest_price_in_history( $price, $post_id );
-		if (
-			! is_admin()
-			&& 'no' === get_option( $this->get_name( 'show_no_change' ), 'yes' )
-		) {
+		if ( 'no' === get_option( $this->get_name( 'show_no_change' ), 'yes' ) ) {
 			if (
-				isset( $lowest['price'] )
+				! is_admin()
+				&& isset( $lowest['price'] )
 				&& intval( $lowest['price'] )
 				&& intval( $lowest['price'] ) >= intval( $price )
 			) {
 				return $price;
 			}
+		} elseif ( empty( $lowest ) ) {
+			$lowest = array(
+				'price'     => $price,
+				'timestamp' => time(),
+			);
 		}
 
 		return $lowest;
