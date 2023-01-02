@@ -89,28 +89,29 @@ do_action( 'iworks_omnibus_wc_lowest_price_message', $product_ID );
 = 1.2.0 (2022-12-31) =
 
 * Added support for the "Easy Digital Downloads" plugin.
-* The ability to toggle the Omnibus message on taxonomy page has been added. The default is hidden.
-* The ability to toggle the Omnibus message when price was not changed has been added. The default is shown.
+* Changed plugin name from `Omnibus` to `Omnibus — Show the lowest price of a product`.
 * The `iworks_omnibus_days` filter has been added to the number of days amount.
 * The `iworks_omnibus_integration_woocommerce_price_lowest` filter has been added.
 * The `iworks_omnibus_message` filter has been added to the message.
 * The `iworks_omnibus_show` filter has been added.
 * The `iworks_omnibus_wc_lowest_price_message` action has been added to show the Omnibus message by product ID.
+* The ability to toggle the Omnibus message on taxonomy page has been added. By default is hidden.
+* The ability to toggle the Omnibus message when price was not changed has been added. By default is shown.
 
 = 1.1.1 (2022-12-31) =
 
-* The ability to toggle the Omnibus message in related products has been added. The default is hidden.
-* On the shop page, you can now toggle the Omnibus message. The default is hidden.
+* The ability to toggle the Omnibus message in related products has been added. By default is hidden.
+* On the shop page, you can now toggle the Omnibus message. By default is hidden.
 * Fixed a typo in the "Where to display" option.
 
 = 1.1.0 (2022-12-30) =
 
-* Control over where Omnibus messages appear has been added. The default is after the price.
-* Added the ability to toggle the Omnibus message when editing an admin product. The default is shown.
-* Added the ability to toggle the Omnibus message on the admin products list. The default is shown.
-* The ability to toggle the Omnibus message on a single product has been added. The default is shown.
-* The ability to toggle the Omnibus message on variable products has been added. The default is shown.
-* The ability to toggle the Omnibus message on the variant has been added. The default is shown.
+* Control over where Omnibus messages appear has been added. By default is after the price.
+* Added the ability to toggle the Omnibus message when editing an admin product. By default is shown.
+* Added the ability to toggle the Omnibus message on the admin products list. By default is shown.
+* The ability to toggle the Omnibus message on a single product has been added. By default is shown.
+* The ability to toggle the Omnibus message on variable products has been added. By default is shown.
+* The ability to toggle the Omnibus message on the variant has been added. By default is shown.
 * Added support for the "YITH WooCommerce Product Bundles" plugin.
 
 = 1.0.1 (2022-12-29) =
