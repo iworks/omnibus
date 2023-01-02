@@ -144,12 +144,15 @@ abstract class iworks_omnibus_integration {
 			if ( is_callable( $format_price_callback ) ) {
 				$price_lowest['price'] = $format_price_callback( $price_lowest['price'] );
 			}
-			$price .= sprintf(
-				'<p class="iworks-omnibus">%s</p>',
+			$price .= apply_filters(
+				'iworks_omnibus_message',
 				sprintf(
-					__( 'The lowest price in %1$d days: %2$s', 'omnibus' ),
-					$this->get_days(),
-					$price_lowest['price']
+					'<p class="iworks-omnibus">%s</p>',
+					sprintf(
+						__( 'The lowest price in %1$d days: %2$s', 'omnibus' ),
+						$this->get_days(),
+						$price_lowest['price']
+					)
 				)
 			);
 		}
@@ -175,7 +178,10 @@ abstract class iworks_omnibus_integration {
 	 * @since 1.1.0
 	 */
 	protected function get_days() {
-		return max( 30, intval( get_option( $this->get_name( 'days' ), 30 ) ) );
+		return apply_filters(
+			'iworks_omnibus_days',
+			max( 30, intval( get_option( $this->get_name( 'days' ), 30 ) ) )
+		);
 	}
 
 	/**

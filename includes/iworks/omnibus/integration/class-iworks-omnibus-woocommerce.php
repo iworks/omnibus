@@ -29,6 +29,10 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 
 	public function __construct() {
 		/**
+		 * own action
+		 */
+		add_action( 'iworks_omnibus_wc_lowest_price_message', array( $this, 'action_get_message' ) );
+		/**
 		 * WooCommerce
 		 *
 		 * @since 1.0.0
@@ -138,23 +142,23 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 					&& 'woocommerce_load_variations' === $_POST['action']
 				) {
 					if ( 'no' === get_option( $this->get_name( 'admin_edit' ), 'yes' ) ) {
-						return false;
+						return apply_filters( 'iworks_omnibus_show', false );
 					}
 				}
 			} else {
 				$screen = get_current_screen();
 				if ( 'product' === $screen->id ) {
 					if ( 'no' === get_option( $this->get_name( 'admin_edit' ), 'yes' ) ) {
-						return false;
+						return apply_filters( 'iworks_omnibus_show', false );
 					}
 				}
 				if ( 'edit-product' === $screen->id ) {
 					if ( 'no' === get_option( $this->get_name( 'admin_list' ), 'yes' ) ) {
-						return false;
+						return apply_filters( 'iworks_omnibus_show', false );
 					}
 				}
 			}
-			return true;
+			return apply_filters( 'iworks_omnibus_show', true );
 		}
 		/**
 		 * front-end
@@ -164,22 +168,37 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 				global $woocommerce_loop;
 				if ( 'related' === $woocommerce_loop['name'] ) {
 					if ( 'no' === get_option( $this->get_name( 'related' ), 'no' ) ) {
-						return false;
+						return apply_filters( 'iworks_omnibus_show', false );
 					}
 				}
 			}
 			if ( 'no' === get_option( $this->get_name( 'single' ), 'yes' ) ) {
-				return false;
+				return apply_filters( 'iworks_omnibus_show', false );
 			}
-			return true;
+			return apply_filters( 'iworks_omnibus_show', true );
 		}
+		/**
+		 * shop page
+		 */
 		if ( is_shop() ) {
 			if ( 'no' === get_option( $this->get_name( 'shop' ), 'no' ) ) {
-				return false;
+				return apply_filters( 'iworks_omnibus_show', false );
 			}
-			return true;
+			return apply_filters( 'iworks_omnibus_show', true );
 		}
-		return true;
+		/**
+		 * Taxonomy Page
+		 */
+		if ( is_tax() ) {
+			if ( 'no' === get_option( $this->get_name( 'tax' ), 'no' ) ) {
+				return apply_filters( 'iworks_omnibus_show', false );
+			}
+			return apply_filters( 'iworks_omnibus_show', true );
+		}
+		/**
+		 * at least add filter
+		 */
+		return apply_filters( 'iworks_omnibus_show', true );
 	}
 
 	/**
@@ -203,7 +222,8 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		$product_type = $product->get_type();
 		switch ( $product_type ) {
 			case 'variable':
-				return $this->woocommerce_get_price_html_for_variable( $price, $product );
+				$price_lowest = $this->woocommerce_get_price_html_for_variable( $price, $product );
+				return apply_filters( 'iworks_omnibus_integration_woocommerce_price_lowest', $price_lowest, $product );
 			default:
 				if (
 				get_post_type() === $product_type
@@ -225,7 +245,8 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 					}
 				}
 		}
-		return $this->woocommerce_get_lowest_price_in_history( $product->get_id() );
+		$price_lowest = $this->woocommerce_get_lowest_price_in_history( $product->get_id() );
+		return apply_filters( 'iworks_omnibus_integration_woocommerce_price_lowest', $price_lowest, $product );
 	}
 
 	/**
@@ -254,8 +275,22 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 */
 	private function woocommerce_get_lowest_price_in_history( $post_id ) {
 		$product = wc_get_product( $post_id );
-		$lowest  = $product->get_price();
-		return $this->_get_lowest_price_in_history( $lowest, $post_id );
+		$price   = $product->get_price();
+		$lowest  = $this->_get_lowest_price_in_history( $price, $post_id );
+		if (
+			! is_admin()
+			&& 'no' === get_option( $this->get_name( 'show_no_change' ), 'yes' )
+		) {
+			if (
+				isset( $lowest['price'] )
+				&& intval( $lowest['price'] )
+				&& intval( $lowest['price'] ) >= intval( $price )
+			) {
+				return $price;
+			}
+		}
+
+		return $lowest;
 	}
 
 	/**
@@ -352,14 +387,23 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 				'default'       => 'yes',
 				'type'          => 'checkbox',
 				'checkboxgroup' => 'start',
+				'desc_tip'      => __( 'Show or hide on a single product page.', 'omnibus' ),
 			),
-
 			array(
 				'desc'          => __( 'Shop page', 'omnibus' ),
 				'id'            => $this->get_name( 'shop' ),
 				'default'       => 'no',
 				'type'          => 'checkbox',
 				'checkboxgroup' => '',
+				'desc_tip'      => __( 'Show or hide on the shop page.', 'omnibus' ),
+			),
+			array(
+				'desc'          => __( 'Taxonomy page', 'omnibus' ),
+				'id'            => $this->get_name( 'tax' ),
+				'default'       => 'no',
+				'type'          => 'checkbox',
+				'checkboxgroup' => '',
+				'desc_tip'      => __( 'Show or hide on any taxonomy (tags, categories, custom taxonomies).', 'omnibus' ),
 			),
 			array(
 				'desc'          => __( 'Related products list', 'omnibus' ),
@@ -367,7 +411,46 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 				'default'       => 'no',
 				'type'          => 'checkbox',
 				'checkboxgroup' => 'end',
+				'desc_tip'      => __( 'Show or hide on the related products box.', 'omnibus' ),
 			),
+			array(
+				'title'    => __( 'Show price change', 'omnibus' ),
+				'id'       => $this->get_name( 'show_no_change' ),
+				'default'  => 'yes',
+				'type'     => 'checkbox',
+				'desc'     => __( 'Show message', 'omnibus' ),
+				'desc_tip' => __( 'Show or hide when price doesn\'t change in the past.', 'omnibus' ),
+			),
+			/*
+			array(
+				'title'    => __( 'Show price change', 'omnibus' ),
+				'id'       => $this->get_name( 'show_no_change' ),
+				'default'  => 'yes',
+				'type'     => 'select',
+				'desc' => __( 'Show or hide when price doesn\'t change in the past.', 'omnibus' ),
+				'checkboxgroup' => 'start',
+				'options' => array(
+					'yes' => __( 'Show', 'omnibus' ),
+					'no' => __( 'Hide', 'omnibus' ),
+					'custom' => __( 'Custom message', 'omnibus' ),
+				),
+			),
+			array(
+				'desc' => __( 'Custom message', 'omnibus' ),
+				'id'       => $this->get_name( 'no_change_message' ),
+				'default'  => esc_attr(
+					_n(
+						'There has been no price change in the last %d day.',
+						'There has been no price change in the last %d days.',
+						get_option( $this->get_name( 'days' ),
+						'omnibus'
+						)
+					)
+				),
+				'type'     => 'text',
+				'checkboxgroup' => 'end',
+			),
+			 */
 		);
 		$products = array(
 			array(
@@ -491,11 +574,11 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 *
 	 * @since 1.1.0
 	 */
-	public function run( $context = 'view' ) {
-		if ( ! is_single() ) {
-			return;
+	public function run( $context = 'view', $post_id = null ) {
+		if ( empty( $post_id ) ) {
+			$post_id = get_the_ID();
 		}
-		$product = wc_get_product( get_the_ID() );
+		$product = wc_get_product( $post_id );
 		if ( empty( $product ) ) {
 			return;
 		}
@@ -526,6 +609,13 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 				break;
 		}
 		return $content;
+	}
+
+	/**
+	 * get message by id
+	 */
+	public function action_get_message( $post_id = null ) {
+		$this->run( 'view', $post_id );
 	}
 
 }
