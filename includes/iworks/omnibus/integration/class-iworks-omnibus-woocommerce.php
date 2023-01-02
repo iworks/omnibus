@@ -174,7 +174,11 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		if ( is_single() ) {
 			if ( is_product() ) {
 				global $woocommerce_loop;
-				if ( 'related' === $woocommerce_loop['name'] ) {
+				if (
+					is_array( $woocommerce_loop )
+					&& isset( $woocommerce_loop['name'] )
+					&& 'related' === $woocommerce_loop['name']
+				) {
 					if ( 'no' === get_option( $this->get_name( 'related' ), 'no' ) ) {
 						return apply_filters( 'iworks_omnibus_show', false );
 					}
