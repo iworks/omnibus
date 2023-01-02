@@ -177,7 +177,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		/**
 		 * front-end
 		 */
-		if ( is_single() ) {
+		if ( is_single() && is_main_query() ) {
 			if ( is_product() ) {
 				global $woocommerce_loop;
 				if (
@@ -225,7 +225,8 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		/**
 		 * at least add filter
 		 */
-		return apply_filters( 'iworks_omnibus_show', true );
+		$show = 'yes' === get_option( $this->get_name( 'default' ), 'no' );
+		return apply_filters( 'iworks_omnibus_show', $show );
 	}
 
 	/**
@@ -343,7 +344,6 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 				'timestamp' => time(),
 			);
 		}
-
 		return $lowest;
 	}
 
@@ -444,12 +444,21 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 				'desc_tip'      => __( 'Show or hide on a single product page.', 'omnibus' ),
 			),
 			array(
-				'desc'          => __( 'Shop page', 'omnibus' ),
+				'desc'          => __( 'WooCommerce Shop page', 'omnibus' ),
 				'id'            => $this->get_name( 'shop' ),
 				'default'       => 'no',
 				'type'          => 'checkbox',
 				'checkboxgroup' => '',
-				'desc_tip'      => __( 'Show or hide on the shop page.', 'omnibus' ),
+				'desc_tip'      => sprintf(
+					__( 'Show or hide on the shop page (<a href="%s#woocommerce_shop_page_id">WooCommerce Shop Page ID</a>).', 'omnibus' ),
+					add_query_arg(
+						array(
+							'page' => 'wc-settings',
+							'tab'  => 'products',
+						),
+						admin_url( 'admin.php' )
+					)
+				),
 			),
 			array(
 				'desc'          => __( 'Any loop', 'omnibus' ),
@@ -474,6 +483,14 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 				'type'          => 'checkbox',
 				'checkboxgroup' => 'end',
 				'desc_tip'      => __( 'Show or hide on the related products box.', 'omnibus' ),
+			),
+			array(
+				'title'    => __( 'Default', 'omnibus' ),
+				'id'       => $this->get_name( 'default' ),
+				'default'  => 'no',
+				'type'     => 'checkbox',
+				'desc'     => __( 'Display anywhere else', 'omnibus' ),
+				'desc_tip' => __( 'Display anywhere else that doesn\'t fit any of the above.', 'omnibus' ),
 			),
 			array(
 				'title'    => __( 'Show price change', 'omnibus' ),

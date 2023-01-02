@@ -63,7 +63,7 @@ There are 3 ways to install this plugin:
 
 You can use the `omnibus_price_message` shortcode:
 
-Just edit your product and insert into content:
+Just edit your product and insert it into the content:
 
 `
 [omnibus_price_message]
@@ -105,10 +105,15 @@ do_action( 'iworks_omnibus_wc_lowest_price_message', $product_ID );
 
 = 1.2.4 (2023-01-02) =
 
+* The `is_main_query()` function check has been added to checking `is_single()`.
+* The ability to toggle the Omnibus message on any other places has been added. By default is hidden.
+
+= 1.2.3 (2023-01-02) =
+
 * The ability to toggle the Omnibus message on any loop has been added. By default is hidden.
 * The `omnibus_price_message` shortcode has been added.
 
-= 1.2.3 (2023-01-02) =
+= 1.2.2 (2023-01-02) =
 
 * A warning in the related products loop check has been fixed.  Props for [pietrzyk25](https://wordpress.org/support/users/pietrzyk25/).
 * If no data is available, displaying the current price as the lowest has been added.
