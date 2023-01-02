@@ -29,6 +29,12 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 
 	public function __construct() {
 		/**
+		 * Show message
+		 *
+		 * @since 1.2.3
+		 */
+		add_shortcode( 'omnibus_price_message', array( $this, 'shortcode' ) );
+		/**
 		 * own action
 		 */
 		add_action( 'iworks_omnibus_wc_lowest_price_message', array( $this, 'action_get_message' ) );
@@ -203,6 +209,15 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 */
 		if ( is_tax() ) {
 			if ( 'no' === get_option( $this->get_name( 'tax' ), 'no' ) ) {
+				return apply_filters( 'iworks_omnibus_show', false );
+			}
+			return apply_filters( 'iworks_omnibus_show', true );
+		}
+		/**
+		 * any loop
+		 */
+		if ( in_the_loop() ) {
+			if ( 'no' === get_option( $this->get_name( 'loop' ), 'no' ) ) {
 				return apply_filters( 'iworks_omnibus_show', false );
 			}
 			return apply_filters( 'iworks_omnibus_show', true );
@@ -437,6 +452,14 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 				'desc_tip'      => __( 'Show or hide on the shop page.', 'omnibus' ),
 			),
 			array(
+				'desc'          => __( 'Any loop', 'omnibus' ),
+				'id'            => $this->get_name( 'loop' ),
+				'default'       => 'no',
+				'type'          => 'checkbox',
+				'checkboxgroup' => '',
+				'desc_tip'      => __( 'Show or hide on any product list.', 'omnibus' ),
+			),
+			array(
 				'desc'          => __( 'Taxonomy page', 'omnibus' ),
 				'id'            => $this->get_name( 'tax' ),
 				'default'       => 'no',
@@ -457,7 +480,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 				'id'       => $this->get_name( 'show_no_change' ),
 				'default'  => 'yes',
 				'type'     => 'checkbox',
-				'desc'     => __( 'Show message', 'omnibus' ),
+				'desc'     => __( 'Display even when prices are the same', 'omnibus' ),
 				'desc_tip' => __( 'Show or hide when price doesn\'t change in the past.', 'omnibus' ),
 			),
 			/*
@@ -655,6 +678,26 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 */
 	public function action_get_message( $post_id = null ) {
 		$this->run( 'view', $post_id );
+	}
+
+	/**
+	 * shortcode to get message
+	 *
+	 * @since 1.2.3
+	 */
+	public function shortcode( $atts ) {
+		$atts = shortcode_atts(
+			array( 'id' => null ),
+			$atts,
+			'iworks_omnibus_wc_lowest_price_message'
+		);
+		if ( empty( $atts['id'] ) ) {
+			$atts['id'] = get_the_ID();
+		}
+		if ( empty( $atts['id'] ) ) {
+			return;
+		}
+		return $this->run( 'return', $atts['id'] );
 	}
 
 }

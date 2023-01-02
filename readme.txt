@@ -60,6 +60,23 @@ There are 3 ways to install this plugin:
 == Frequently Asked Questions ==
 
 = How can I display the Omnibus message anywhere? =
+
+You can use the `omnibus_price_message` shortcode:
+
+Just edit your product and insert into content:
+
+`
+[omnibus_price_message]
+`
+
+If you need Omnibus message outside a product, you have to add `id` param with product ID.
+
+`
+[omnibus_price_message id="example-id"]
+`
+
+= How can I display the Omnibus message anywhere by action? =
+
 Use the `iworks_omnibus_wc_lowest_price_message` action with the product ID or on a single product page.
 
 For a single product:
@@ -86,7 +103,12 @@ do_action( 'iworks_omnibus_wc_lowest_price_message', $product_ID );
 
 == Changelog ==
 
-= 1.2.2 (2023-01-02) =
+= 1.2.4 (2023-01-02) =
+
+* The ability to toggle the Omnibus message on any loop has been added. By default is hidden.
+* The `omnibus_price_message` shortcode has been added.
+
+= 1.2.3 (2023-01-02) =
 
 * A warning in the related products loop check has been fixed.  Props for [pietrzyk25](https://wordpress.org/support/users/pietrzyk25/).
 * If no data is available, displaying the current price as the lowest has been added.
