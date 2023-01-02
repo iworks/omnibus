@@ -105,8 +105,9 @@ do_action( 'iworks_omnibus_wc_lowest_price_message', $product_ID );
 
 = 1.2.4 (2023-01-02) =
 
+* Clarified the "Shop page" setting's meaning.
+* The ability to toggle the Omnibus message in any other place has been added. By default is hidden.
 * The `is_main_query()` function check has been added to checking `is_single()`.
-* The ability to toggle the Omnibus message on any other places has been added. By default is hidden.
 
 = 1.2.3 (2023-01-02) =
 
