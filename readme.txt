@@ -86,7 +86,11 @@ do_action( 'iworks_omnibus_wc_lowest_price_message', $product_ID );
 
 == Changelog ==
 
-= 1.2.0 (2022-12-31) =
+= 1.2.1 (2023-01-02) =
+
+* Fixed critical exception during adding new product. Props for [rask44](https://wordpress.org/support/users/rask44/).
+
+= 1.2.0 (2023-01-02) =
 
 * Added support for the "Easy Digital Downloads" plugin.
 * Changed plugin name from `Omnibus` to `Omnibus — Show the lowest price of a product`.

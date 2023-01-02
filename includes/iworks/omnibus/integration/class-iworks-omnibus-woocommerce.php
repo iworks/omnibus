@@ -80,6 +80,14 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 * @since 1.0.0
 	 */
 	public function action_woocommerce_save_price_history( $product ) {
+		/**
+		 * check method_exists
+		 *
+		 * @since 1.2.1
+		 */
+		if ( ! method_exists( $product, 'get_price' ) ) {
+			return;
+		}
 		$price = $product->get_price();
 		if ( empty( $price ) ) {
 			return;
@@ -218,6 +226,14 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	}
 
 	private function get_lowest_price( $product ) {
+		/**
+		 * check method_exists
+		 *
+		 * @since 1.2.1
+		 */
+		if ( ! method_exists( $product, 'get_price' ) ) {
+			return;
+		}
 		$price        = $product->get_price();
 		$product_type = $product->get_type();
 		switch ( $product_type ) {
@@ -275,8 +291,24 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 */
 	private function woocommerce_get_lowest_price_in_history( $post_id ) {
 		$product = wc_get_product( $post_id );
-		$price   = $product->get_price();
-		$lowest  = $this->_get_lowest_price_in_history( $price, $post_id );
+		/**
+		 * check is object
+		 *
+		 * @since 1.2.1
+		 */
+		if ( ! is_object( $product ) ) {
+			return;
+		}
+		/**
+		 * check method_exists
+		 *
+		 * @since 1.2.1
+		 */
+		if ( ! method_exists( $product, 'get_price' ) ) {
+			return;
+		}
+		$price  = $product->get_price();
+		$lowest = $this->_get_lowest_price_in_history( $price, $post_id );
 		if (
 			! is_admin()
 			&& 'no' === get_option( $this->get_name( 'show_no_change' ), 'yes' )
