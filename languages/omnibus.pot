@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Omnibus PLUGIN_VERSION\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/omnibus\n"
-"POT-Creation-Date: 2023-01-03 11:57:31+00:00\n"
+"POT-Creation-Date: 2023-01-03 15:48:56+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -36,19 +36,23 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:144
-msgid "The lowest price in %1$d days: %2$s"
-msgstr ""
-
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:150
-msgid "The lowest price in %1$d days: %2$s (without tax)."
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:145
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:149
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:690
+msgid "The lowest price in %1$d days: %2$s."
 msgstr ""
 
 #: includes/iworks/omnibus/class-iworks-omnibus-integration.php:157
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:161
+msgid "The lowest price in %1$d days: %2$s (without tax)."
+msgstr ""
+
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:170
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:174
 msgid "The lowest price in %1$d days: %2$s (include tax)."
 msgstr ""
 
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:213
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:232
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:309
 msgid "Omnibus Directive"
 msgstr ""
@@ -269,6 +273,50 @@ msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:668
 msgid "At the end of the content"
+msgstr ""
+
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:675
+msgid "Messages"
+msgstr ""
+
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:681
+msgid "Default messages (recommnded)."
+msgstr ""
+
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:682
+msgid "Custom messages."
+msgstr ""
+
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:684
+msgid ""
+"Custom messages will be used only when you choose \"Custom messages.\" "
+"option."
+msgstr ""
+
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:688
+msgid "Message for prices entered with tax"
+msgstr ""
+
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:691
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:700
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:708
+msgid "%1$d - number of days, %2$s - the lowest price."
+msgstr ""
+
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:696
+msgid "Message for prices entered exclusive of tax - with tax"
+msgstr ""
+
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:698
+msgid "The lowest price in %1$d days: %2$s (with tax)."
+msgstr ""
+
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:704
+msgid "Message for prices entered exclusive of tax - without tax"
+msgstr ""
+
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:706
+msgid "The lowest price in %1$d days: %2$s"
 msgstr ""
 
 #: includes/iworks/rate/rate.php:130

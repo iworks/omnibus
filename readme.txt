@@ -103,6 +103,12 @@ do_action( 'iworks_omnibus_wc_lowest_price_message', $product_ID );
 
 == Changelog ==
 
+= 1.2.6 (2023-01-03) =
+
+* Renamed the plugin "Omnibus — show the lowest price" instead of "Omnibus — Show the lowest price of a product."
+* The ability to configure custom messages has been added.
+* The options have been reordered.
+
 = 1.2.5 (2023-01-03) =
 
 * The ability to handle product prices with or without taxes has been added.
