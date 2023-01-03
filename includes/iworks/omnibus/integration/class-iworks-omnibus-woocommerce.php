@@ -108,10 +108,10 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 * @since 1.0.0
 	 */
 	public function action_woocommerce_product_options_pricing() {
-		if ( ! $this->should_it_show_up() ) {
+		global $post_id;
+		if ( ! $this->should_it_show_up( $post_id ) ) {
 			return;
 		}
-		global $post_id;
 		$price_lowest = $this->woocommerce_get_lowest_price_in_history( $post_id );
 		$this->print_header( 'description' );
 		$this->woocommerce_wp_text_input_price( $price_lowest );
@@ -124,10 +124,10 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 * @since 1.0.0
 	 */
 	public function action_woocommerce_variation_options_pricing( $loop, $variation_data, $variation ) {
-		if ( ! $this->should_it_show_up() ) {
+		$post_id = $variation->ID;
+		if ( ! $this->should_it_show_up( $post_id ) ) {
 			return;
 		}
-		$post_id      = $variation->ID;
 		$price_lowest = $this->woocommerce_get_lowest_price_in_history( $post_id );
 		echo '</div>';
 		echo '<div>';
@@ -145,7 +145,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	/**
 	 * helper to decide show it or no
 	 */
-	private function should_it_show_up() {
+	private function should_it_show_up( $post_id ) {
 		/**
 		 * for admin
 		 */
@@ -177,6 +177,12 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		/**
 		 * front-end
 		 */
+		if ( 'yes' === get_option( $this->get_name( 'on_sale' ), 'no' ) ) {
+			$product = wc_get_product( $post_id );
+			if ( ! $product->is_on_sale() ) {
+				return apply_filters( 'iworks_omnibus_show', false );
+			}
+		}
 		if ( is_single() && is_main_query() ) {
 			if ( is_product() ) {
 				global $woocommerce_loop;
@@ -235,7 +241,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 * @since 1.0.0
 	 */
 	public function filter_woocommerce_get_price_html( $price, $product ) {
-		if ( ! $this->should_it_show_up() ) {
+		if ( ! $this->should_it_show_up( $product->id ) ) {
 			return $price;
 		}
 		$price_lowest = $this->get_lowest_price( $product );
@@ -343,6 +349,10 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 				'price'     => $price,
 				'timestamp' => time(),
 			);
+		}
+		if ( isset( $lowest['price'] ) ) {
+			$lowest['qty']                 = 1;
+			$lowest['price_including_tax'] = wc_get_price_including_tax( $product, $lowest );
 		}
 		return $lowest;
 	}
@@ -485,12 +495,20 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 				'desc_tip'      => __( 'Show or hide on the related products box.', 'omnibus' ),
 			),
 			array(
-				'title'    => __( 'Default', 'omnibus' ),
-				'id'       => $this->get_name( 'default' ),
-				'default'  => 'no',
-				'type'     => 'checkbox',
-				'desc'     => __( 'Display anywhere else', 'omnibus' ),
-				'desc_tip' => __( 'Display anywhere else that doesn\'t fit any of the above.', 'omnibus' ),
+				'title'         => __( 'Default', 'omnibus' ),
+				'id'            => $this->get_name( 'default' ),
+				'default'       => 'no',
+				'type'          => 'checkbox',
+				'desc'          => __( 'Display anywhere else', 'omnibus' ),
+				'desc_tip'      => __( 'Display anywhere else that doesn\'t fit any of the above.', 'omnibus' ),
+				'checkboxgroup' => 'start',
+			),
+			array(
+				'id'            => $this->get_name( 'on_sale' ),
+				'default'       => 'no',
+				'type'          => 'checkbox',
+				'desc'          => __( 'Display only for products on sale', 'omnibus' ),
+				'checkboxgroup' => 'end',
 			),
 			array(
 				'title'    => __( 'Show price change', 'omnibus' ),
@@ -531,6 +549,15 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			),
 			 */
 		);
+		if ( 'no' === get_option( 'woocommerce_prices_include_tax', 'no' ) ) {
+			$settings[] = array(
+				'title'   => __( 'Include tax', 'omnibus' ),
+				'id'      => $this->get_name( 'include_tax' ),
+				'default' => 'yes',
+				'type'    => 'checkbox',
+				'desc'    => __( 'Display price with tax', 'omnibus' ),
+			);
+		}
 		$products = array(
 			array(
 				'desc' => __( 'Simple product', 'omnibus' ),

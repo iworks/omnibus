@@ -141,17 +141,34 @@ abstract class iworks_omnibus_integration {
 			is_array( $price_lowest )
 			&& isset( $price_lowest['price'] )
 		) {
+			$message       = __( 'The lowest price in %1$d days: %2$s', 'omnibus' );
+			$price_to_show = $price_lowest['price'];
+			/**
+			 * WooCommerce: include tax
+			 */
+			if ( 'no' === get_option( 'woocommerce_prices_include_tax' ) ) {
+				$message = __( 'The lowest price in %1$d days: %2$s (without tax).', 'omnibus' );
+				if ( 'yes' === get_option( $this->get_name( 'include_tax' ), 'yes' ) ) {
+					if (
+						isset( $price_lowest['price_including_tax'] )
+						&& $price_lowest['price_including_tax'] > $price_to_show
+					) {
+						$price_to_show = $price_lowest['price_including_tax'];
+						$message       = __( 'The lowest price in %1$d days: %2$s (include tax).', 'omnibus' );
+					}
+				}
+			}
 			if ( is_callable( $format_price_callback ) ) {
-				$price_lowest['price'] = $format_price_callback( $price_lowest['price'] );
+				$price_to_show = $format_price_callback( $price_to_show );
 			}
 			$price .= apply_filters(
 				'iworks_omnibus_message',
 				sprintf(
 					'<p class="iworks-omnibus">%s</p>',
 					sprintf(
-						__( 'The lowest price in %1$d days: %2$s', 'omnibus' ),
+						$message,
 						$this->get_days(),
-						$price_lowest['price']
+						$price_to_show
 					)
 				)
 			);

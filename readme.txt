@@ -17,7 +17,7 @@ This plugin allows your site to be compliant with the Directive of the European 
 This plugin:
 
 * Saves the current price and keeps it for at least 30 days (depending on settings).
-* Adds two additional fields in the product or course edit view: for the lowest price and the effective date.
+* Adds two additional fields in the product or course edit view: the lowest price and the effective date.
 * Display information on the product.
 
 Omnibus plugin support plugins:
@@ -69,13 +69,13 @@ Just edit your product and insert it into the content:
 [omnibus_price_message]
 `
 
-If you need Omnibus message outside a product, you have to add `id` param with product ID.
+If you need the Omnibus message outside of a product, you have to add the `id` param with the product ID.
 
 `
 [omnibus_price_message id="example-id"]
 `
 
-= How can I display the Omnibus message anywhere by action? =
+= How can I use an action to display the Omnibus message anywhere? =
 
 Use the `iworks_omnibus_wc_lowest_price_message` action with the product ID or on a single product page.
 
@@ -103,9 +103,15 @@ do_action( 'iworks_omnibus_wc_lowest_price_message', $product_ID );
 
 == Changelog ==
 
+= 1.2.5 (2023-01-03) =
+
+* The ability to handle product prices with or without taxes has been added.
+* The ability to toggle the Omnibus message only for products on sale has been added. This is turned off by default.
+* Two tax-related versions of the message have been added.
+
 = 1.2.4 (2023-01-02) =
 
-* Clarified the "Shop page" setting's meaning.
+* Clarified the meaning of the "Shop Page" setting.
 * The ability to toggle the Omnibus message in any other place has been added. By default is hidden.
 * The `is_main_query()` function check has been added to checking `is_single()`.
 
@@ -132,8 +138,8 @@ do_action( 'iworks_omnibus_wc_lowest_price_message', $product_ID );
 * The `iworks_omnibus_message` filter has been added to the message.
 * The `iworks_omnibus_show` filter has been added.
 * The `iworks_omnibus_wc_lowest_price_message` action has been added to show the Omnibus message by product ID.
-* The ability to toggle the Omnibus message on taxonomy page has been added. By default is hidden.
-* The ability to toggle the Omnibus message when price was not changed has been added. By default is shown.
+* The ability to toggle the Omnibus message on the taxonomy page has been added. By default is hidden.
+* The ability to toggle the Omnibus message when the price was not changed has been added. By default is shown.
 
 = 1.1.1 (2022-12-31) =
 
