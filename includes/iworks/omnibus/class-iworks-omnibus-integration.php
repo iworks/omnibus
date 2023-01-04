@@ -157,18 +157,19 @@ abstract class iworks_omnibus_integration {
 			'from'      => $now,
 		);
 		$old                       = strtotime( sprintf( '-%d days', $this->get_days() ) );
-		$last_price_drop_timestamp = get_post_meta( $post_id, $this->last_price_drop_timestamp, true );
+		$last_price_drop_timestamp = intval( get_post_meta( $post_id, $this->last_price_drop_timestamp, true ) );
 		if ( ! empty( $last_price_drop_timestamp ) ) {
 			$old = strtotime( sprintf( '-%d days', $this->get_days() ), $last_price_drop_timestamp );
+
 		}
 		foreach ( $meta as $data ) {
-			if ( $old >= $data['timestamp'] ) {
+			if ( intval( $old ) >= intval( $data['timestamp'] ) ) {
 				continue;
 			}
-			if ( $last_price_drop_timestamp <= $data['timestamp'] ) {
+			if ( $last_price_drop_timestamp <= intval( $data['timestamp'] ) ) {
 				continue;
 			}
-			if ( $data['price'] <= $price['price'] ) {
+			if ( floatval( $data['price'] ) <= floatval( $price['price'] ) ) {
 				$price         = $data;
 				$price['from'] = $old;
 			}

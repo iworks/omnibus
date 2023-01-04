@@ -10,7 +10,7 @@ Author URI: http://iworks.pl/
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Copyright 2018 Marcin Pietrzak (marcin@iworks.pl)
+Copyright 2022-PLUGIN_TILL_YEAR Marcin Pietrzak (marcin@iworks.pl)
 
 this program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License, version 2, as

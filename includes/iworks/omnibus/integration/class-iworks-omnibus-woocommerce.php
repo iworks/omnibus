@@ -86,15 +86,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 * @since 1.0.0
 	 */
 	public function action_woocommerce_save_price_history( $product ) {
-		/**
-		 * check method_exists
-		 *
-		 * @since 1.2.1
-		 */
-		if ( ! method_exists( $product, 'get_sale_price' ) ) {
-			return;
-		}
-		$price = $product->get_sale_price();
+		$price = $this->get_price( $product );
 		if ( empty( $price ) ) {
 			return;
 		}
@@ -253,14 +245,14 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 
 	private function get_lowest_price( $product ) {
 		/**
-		 * check method_exists
+		 * get price
 		 *
-		 * @since 1.2.1
+		 * @since 2.0.2
 		 */
-		if ( ! method_exists( $product, 'get_sale_price' ) ) {
+		$price = $this->get_price( $product );
+		if ( empty( $price ) ) {
 			return;
 		}
-		$price        = $product->get_sale_price();
 		$product_type = $product->get_type();
 		switch ( $product_type ) {
 			case 'variable':
@@ -326,14 +318,11 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			return;
 		}
 		/**
-		 * check method_exists
+		 * get price
 		 *
-		 * @since 1.2.1
+		 * @since 2.0.2
 		 */
-		if ( ! method_exists( $product, 'get_sale_price' ) ) {
-			return;
-		}
-		$price  = $product->get_sale_price();
+		$price  = $this->get_price( $product );
 		$lowest = $this->_get_lowest_price_in_history( $price, $post_id );
 		if ( empty( $lowest ) ) {
 			$lowest = array(
@@ -713,6 +702,35 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			return;
 		}
 		return $this->run( 'return', $atts['id'] );
+	}
+
+	/**
+	 * get price helper
+	 *
+	 * @since 2.0.2
+	 */
+	private function get_price( $product ) {
+		/**
+		 * check method_exists
+		 *
+		 * @since 1.2.1
+		 */
+		if ( ! is_object( $product ) ) {
+			return;
+		}
+		/**
+		 * check method_exists
+		 *
+		 * @since 1.2.1
+		 */
+		if ( ! method_exists( $product, 'get_sale_price' ) ) {
+			return;
+		}
+		$price = $product->get_sale_price();
+		if ( empty( $price ) ) {
+			$price = $product->get_price();
+		}
+		return $price;
 	}
 
 }
