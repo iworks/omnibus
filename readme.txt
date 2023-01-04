@@ -109,6 +109,10 @@ do_action( 'iworks_omnibus_wc_lowest_price_message', $product_ID );
 
 == Changelog ==
 
+= 2.0.2 (2023-01-04) =
+
+* Price-checking so as not to log it if it's not there has been added.
+
 = 2.0.1 (2023-01-04) =
 
 * Resolved a problem with empty prices in history.

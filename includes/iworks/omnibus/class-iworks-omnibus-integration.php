@@ -53,6 +53,14 @@ abstract class iworks_omnibus_integration {
 		if ( 'publish' !== get_post_status( $post_id ) ) {
 			return;
 		}
+		/**
+		 * do not save empty price
+		 *
+		 * @since 2.0.2
+		 */
+		if ( empty( $price ) ) {
+			return;
+		}
 		$now  = time();
 		$data = array(
 			'price'     => $price,
