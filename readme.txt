@@ -1,7 +1,7 @@
 === PLUGIN_TITLE ===
 Contributors: iworks
 Donate link: https://ko-fi.com/iworks?utm_source=og&utm_medium=readme-donate
-Tags: WooCommerce, omnibus, price, LMS
+Tags: WooCommerce, omnibus, price, LMS, shop, e-commerce
 Requires at least: PLUGIN_REQUIRES_WORDPRESS
 Tested up to: 6.1
 Stable tag: PLUGIN_VERSION
