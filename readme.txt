@@ -16,9 +16,9 @@ This plugin allows your site to be compliant with the Directive of the European 
 
 This plugin:
 
-* Saves the current price and keeps it for at least 30 days (depending on settings).
+* Saves the current price and keeps it.
 * Adds two additional fields in the product or course edit view: the lowest price and the effective date.
-* Display information on the product.
+* Display information on the item (product, curse, etc).
 
 Omnibus plugin support plugins:
 
@@ -109,12 +109,16 @@ do_action( 'iworks_omnibus_wc_lowest_price_message', $product_ID );
 
 == Changelog ==
 
+= 2.0.1 (2023-01-04) =
+
+* Resolved a problem with empty prices in history.
+
 = 2.0.0 (2023-01-04) =
 
 * Adequate implementation of Directive (EU) 2019/2161 - Article 6a.
 * Custom tax-related messages has been removed.
-* Data saving has been modified to only apply to published items.
-* Use the `get_sale_price()` function instead of `get_price()`.
+* Data saving has been restricted to only published items.
+* The `get_sale_price()` function has been used instead of `get_price()`.
 
 = 1.2.6 (2023-01-03) =
 

@@ -180,6 +180,7 @@ abstract class iworks_omnibus_integration {
 		if (
 			is_array( $price_lowest )
 			&& isset( $price_lowest['price'] )
+			&& ! empty( $price_lowest['price'] )
 		) {
 			$message = __( 'Previous lowest price: %2$s.', 'omnibus' );
 			if ( 'custom' === get_option( $this->get_name( 'message_settings' ), 'default' ) ) {
