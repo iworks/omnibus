@@ -18,7 +18,7 @@ This plugin:
 
 * Saves the current price and keeps it.
 * Adds two additional fields in the product or course edit view: the lowest price and the effective date.
-* Display information on the item (product, curse, etc).
+* Display information on the item (product, course, etc).
 
 Omnibus plugin support plugins:
 
