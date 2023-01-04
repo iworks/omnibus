@@ -49,6 +49,12 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		add_filter( 'woocommerce_get_sections_products', array( $this, 'filter_woocommerce_get_sections_products' ), 999 );
 		add_filter( 'woocommerce_get_settings_products', array( $this, 'filter_woocommerce_get_settings_for_section' ), 10, 2 );
 		/**
+		 * WooCommerce: exclude meta
+		 *
+		 * @since 2.0.3
+		 */
+		add_filter( 'woocommerce_duplicate_product_exclude_meta', array( $this, 'filter_woocommerce_duplicate_product_exclude_meta' ), 10, 2 );
+		/**
 		 * WooCommerce bind message
 		 *
 		 * @since 1.1.0
@@ -731,6 +737,20 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			$price = $product->get_price();
 		}
 		return $price;
+	}
+
+	/**
+	 * Filter to allow us to exclude meta keys from product duplication..
+	 *
+	 * @param array $exclude_meta The keys to exclude from the duplicate.
+	 * @param array $existing_meta_keys The meta keys that the product already has.
+	 *
+	 * @since 2.0.3
+	 */
+	public function filter_woocommerce_duplicate_product_exclude_meta( $meta_to_exclude, $existing_meta_keys ) {
+		$meta_to_exclude[] = $this->meta_name;
+		$meta_to_exclude[] = $this->last_price_drop_timestamp;
+		return $meta_to_exclude;
 	}
 
 }
