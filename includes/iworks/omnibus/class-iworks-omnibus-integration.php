@@ -123,22 +123,6 @@ abstract class iworks_omnibus_integration {
 	}
 
 	/**
-	 * LearnPress: get lowest price in days
-	 *
-	 * @since 1.0.1
-	 */
-	protected function learnpress_get_lowest_price_in_history( $post_id ) {
-		if ( ! function_exists( 'learn_press_get_course' ) ) {
-			return;
-		}
-		$course = learn_press_get_course( $post_id );
-		if ( ! is_a( $course, 'LP_Course' ) ) {
-			return array();
-		}
-		return $this->_get_lowest_price_in_history( $course->get_price(), $post_id );
-	}
-
-	/**
 	 * Get lowest price in history
 	 *
 	 * @since 1.0.0
@@ -269,5 +253,51 @@ abstract class iworks_omnibus_integration {
 		);
 	}
 
+	protected function settings_title() {
+		return array(
+			'title' => __( 'Omnibus Directive Settings', 'omnibus' ),
+			'type'  => 'title',
+			'desc'  => '',
+			'id'    => $this->meta_name,
+		);
+	}
+
+	protected function settings_days() {
+		return array(
+			'title'             => __( 'Number of days', 'omnibus' ),
+			'desc'              => __( 'This controls the number of days to show. According to the Omnibus Directive, minimum days is 30 after curent sale was started.', 'omnibus' ),
+			'id'                => $this->get_name( 'days' ),
+			'default'           => '30',
+			'type'              => 'number',
+			'custom_attributes' => array(
+				'min' => 30,
+			),
+		);
+	}
+
+	protected function settings_message_settings() {
+		return array(
+			'title'         => __( 'Messages', 'omnibus' ),
+			'checkboxgroup' => 'start',
+			'type'          => 'radio',
+			'default'       => 'default',
+			'id'            => $this->get_name( 'message_settings' ),
+			'options'       => array(
+				'default' => __( 'Default messages (recommnded).', 'omnibus' ),
+				'custom'  => __( 'Custom messages.', 'omnibus' ),
+			),
+			'desc'          => __( 'Custom messages will be used only when you choose "Custom messages." option.', 'omnibus' ),
+		);
+	}
+
+	protected function settings_message() {
+		return array(
+			'type'          => 'text',
+			'id'            => $this->get_name( 'message' ),
+			'default'       => __( 'Previous lowest price: %2$s.', 'omnibus' ),
+			'desc'          => __( '%1$d - number of days, %2$s - the lowest price.', 'omnibus' ),
+			'checkboxgroup' => 'end',
+		);
+	}
 }
 

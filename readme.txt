@@ -112,6 +112,9 @@ do_action( 'iworks_omnibus_wc_lowest_price_message', $product_ID );
 = 2.0.3 (2023-01-04) =
 
 * Exclude meta keys from WooCommerce product duplication has been added.
+* Default values form LearnPress configuration has been added.
+* The LearnPress plugin configuration has been added.
+* The LearnPress plugin configuration has been removed from WooCommerce configuration..
 
 = 2.0.2 (2023-01-04) =
 

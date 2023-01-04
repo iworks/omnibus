@@ -421,18 +421,13 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			return $settings;
 		}
 		$settings = array(
-			array(
-				'title' => __( 'Omnibus Directive Settings', 'omnibus' ),
-				'type'  => 'title',
-				'desc'  => '',
-				'id'    => $this->meta_name,
-			),
+			$this->settings_title(),
 			array(
 				'title'   => __( 'Products on sale', 'omnibus' ),
 				'id'      => $this->get_name( 'on_sale' ),
 				'default' => 'yes',
 				'type'    => 'checkbox',
-				'desc'    => __( 'Display only for product on sale', 'omnibus' ),
+				'desc'    => __( 'Display only for the product on sale', 'omnibus' ),
 			),
 			/**
 			 * Show on
@@ -586,16 +581,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			'type'          => 'checkbox',
 			'checkboxgroup' => 'end',
 		);
-		$settings[] = array(
-			'title'             => __( 'Number of days', 'omnibus' ),
-			'desc'              => __( 'This controls the number of days to show. According to the Omnibus Directive, minimum days is 30 after curent sale was started.', 'omnibus' ),
-			'id'                => $this->get_name( 'days' ),
-			'default'           => '30',
-			'type'              => 'number',
-			'custom_attributes' => array(
-				'min' => 30,
-			),
-		);
+		$settings[] = $this->settings_days();
 		$settings[] = array(
 			'title'   => __( 'Where to display', 'omnibus' ),
 			'desc'    => __( 'Change if you have only single products.', 'omnibus' ),
@@ -613,26 +599,8 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		/**
 		 * messages
 		 */
-		$settings[] = array(
-			'title'         => __( 'Messages', 'omnibus' ),
-			'checkboxgroup' => 'start',
-			'type'          => 'radio',
-			'default'       => 'default',
-			'id'            => $this->get_name( 'message_settings' ),
-			'options'       => array(
-				'default' => __( 'Default messages (recommnded).', 'omnibus' ),
-				'custom'  => __( 'Custom messages.', 'omnibus' ),
-			),
-			'desc'          => __( 'Custom messages will be used only when you choose "Custom messages." option.', 'omnibus' ),
-		);
-		$settings[] = array(
-			'type'          => 'text',
-			'desc'          => __( 'Message for prices entered with tax', 'omnibus' ),
-			'id'            => $this->get_name( 'message' ),
-			'default'       => __( 'Previous lowest price: %2$s.', 'omnibus' ),
-			'desc_tip'      => __( '%1$d - number of days, %2$s - the lowest price.', 'omnibus' ),
-			'checkboxgroup' => 'end',
-		);
+		$settings[] = $this->settings_message_settings();
+		$settings[] = $this->settings_message();
 
 		$settings[] = array(
 			'type' => 'sectionend',
