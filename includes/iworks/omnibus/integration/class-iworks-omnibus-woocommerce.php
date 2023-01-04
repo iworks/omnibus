@@ -91,10 +91,10 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 *
 		 * @since 1.2.1
 		 */
-		if ( ! method_exists( $product, 'get_price' ) ) {
+		if ( ! method_exists( $product, 'get_sale_price' ) ) {
 			return;
 		}
-		$price = $product->get_price();
+		$price = $product->get_sale_price();
 		if ( empty( $price ) ) {
 			return;
 		}
@@ -257,10 +257,10 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 *
 		 * @since 1.2.1
 		 */
-		if ( ! method_exists( $product, 'get_price' ) ) {
+		if ( ! method_exists( $product, 'get_sale_price' ) ) {
 			return;
 		}
-		$price        = $product->get_price();
+		$price        = $product->get_sale_price();
 		$product_type = $product->get_type();
 		switch ( $product_type ) {
 			case 'variable':
@@ -330,21 +330,12 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 *
 		 * @since 1.2.1
 		 */
-		if ( ! method_exists( $product, 'get_price' ) ) {
+		if ( ! method_exists( $product, 'get_sale_price' ) ) {
 			return;
 		}
-		$price  = $product->get_price();
+		$price  = $product->get_sale_price();
 		$lowest = $this->_get_lowest_price_in_history( $price, $post_id );
-		if ( 'no' === get_option( $this->get_name( 'show_no_change' ), 'yes' ) ) {
-			if (
-				! is_admin()
-				&& isset( $lowest['price'] )
-				&& intval( $lowest['price'] )
-				&& intval( $lowest['price'] ) >= intval( $price )
-			) {
-				return $price;
-			}
-		} elseif ( empty( $lowest ) ) {
+		if ( empty( $lowest ) ) {
 			$lowest = array(
 				'price'     => $price,
 				'timestamp' => time(),
@@ -509,44 +500,6 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 				'desc'     => __( 'Display anywhere else', 'omnibus' ),
 				'desc_tip' => __( 'Display anywhere else that doesn\'t fit any of the above.', 'omnibus' ),
 			),
-			array(
-				'title'    => __( 'Show price change', 'omnibus' ),
-				'id'       => $this->get_name( 'show_no_change' ),
-				'default'  => 'yes',
-				'type'     => 'checkbox',
-				'desc'     => __( 'Display even when prices are the same', 'omnibus' ),
-				'desc_tip' => __( 'Show or hide when price doesn\'t change in the past.', 'omnibus' ),
-			),
-			/*
-			array(
-				'title'    => __( 'Show price change', 'omnibus' ),
-				'id'       => $this->get_name( 'show_no_change' ),
-				'default'  => 'yes',
-				'type'     => 'select',
-				'desc' => __( 'Show or hide when price doesn\'t change in the past.', 'omnibus' ),
-				'checkboxgroup' => 'start',
-				'options' => array(
-					'yes' => __( 'Show', 'omnibus' ),
-					'no' => __( 'Hide', 'omnibus' ),
-					'custom' => __( 'Custom message', 'omnibus' ),
-				),
-			),
-			array(
-				'desc' => __( 'Custom message', 'omnibus' ),
-				'id'       => $this->get_name( 'no_change_message' ),
-				'default'  => esc_attr(
-					_n(
-						'There has been no price change in the last %d day.',
-						'There has been no price change in the last %d days.',
-						get_option( $this->get_name( 'days' ),
-						'omnibus'
-						)
-					)
-				),
-				'type'     => 'text',
-				'checkboxgroup' => 'end',
-			),
-			 */
 		);
 		if ( 'no' === get_option( 'woocommerce_prices_include_tax', 'no' ) ) {
 			$settings[] = array(
@@ -562,10 +515,6 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 				'desc' => __( 'Simple product', 'omnibus' ),
 				'id'   => $this->get_name( 'simple' ),
 			),
-			// array(
-				// 'desc' => __( 'Grouped product', 'omnibus' ),
-				// 'id'   => $this->get_name( 'grouped' ),
-			// ),
 			array(
 				'desc' => __( 'Variable product: global', 'omnibus' ),
 				'id'   => $this->get_name( 'variable' ),
@@ -644,11 +593,10 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		);
 		$settings[] = array(
 			'title'             => __( 'Number of days', 'omnibus' ),
-			'desc'              => __( 'This controls the number of days to show. According to the Omnibus Directive, minimum days is 30.', 'omnibus' ),
+			'desc'              => __( 'This controls the number of days to show. According to the Omnibus Directive, minimum days is 30 after curent sale was started.', 'omnibus' ),
 			'id'                => $this->get_name( 'days' ),
 			'default'           => '30',
 			'type'              => 'number',
-			'desc_tip'          => true,
 			'custom_attributes' => array(
 				'min' => 30,
 			),
@@ -685,26 +633,10 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		$settings[] = array(
 			'type'          => 'text',
 			'desc'          => __( 'Message for prices entered with tax', 'omnibus' ),
-			'id'            => $this->get_name( 'message_standard' ),
-			'default'       => __( 'The lowest price in %1$d days: %2$s.', 'omnibus' ),
+			'id'            => $this->get_name( 'message' ),
+			'default'       => __( 'Previous lowest price: %2$s.', 'omnibus' ),
 			'desc_tip'      => __( '%1$d - number of days, %2$s - the lowest price.', 'omnibus' ),
-			'checkboxgroup' => '',
-		);
-		$settings[] = array(
-			'type'          => 'text',
-			'desc'          => __( 'Message for prices entered exclusive of tax - with tax', 'omnibus' ),
-			'id'            => $this->get_name( 'message_with_tax' ),
-			'default'       => __( 'The lowest price in %1$d days: %2$s (with tax).', 'omnibus' ),
-			'checkboxgroup' => '',
-			'desc_tip'      => __( '%1$d - number of days, %2$s - the lowest price.', 'omnibus' ),
-		);
-		$settings[] = array(
-			'type'          => 'text',
-			'desc'          => __( 'Message for prices entered exclusive of tax - without tax', 'omnibus' ),
-			'id'            => $this->get_name( 'message_without_tax' ),
-			'default'       => __( 'The lowest price in %1$d days: %2$s', 'omnibus' ),
 			'checkboxgroup' => 'end',
-			'desc_tip'      => __( '%1$d - number of days, %2$s - the lowest price.', 'omnibus' ),
 		);
 
 		$settings[] = array(

@@ -28,7 +28,13 @@ Omnibus plugin support plugins:
 * [Tutor LMS](https://wordpress.org/plugins/tutor/) with WooCommerce
 * [YITH WooCommerce Product Bundles](https://wordpress.org/plugins/yith-woocommerce-product-bundles/)
 
-Read more about [Directive 2019/2161](https://eur-lex.europa.eu/eli/dir/2019/2161/oj).
+= Directive (EU) 2019/2161 of the European Parliament =
+
+> ‘Article 6a
+> 1. Any announcement of a price reduction shall indicate the prior price applied by the trader for a determined period of time prior to the application of the price reduction.
+> 2. The prior price means the lowest price applied by the trader during a period of time not shorter than 30 days prior to the application of the price reduction.
+
+Read more: [Directive 2019/2161](https://eur-lex.europa.eu/eli/dir/2019/2161/oj).
 
 == Installation ==
 
@@ -103,6 +109,13 @@ do_action( 'iworks_omnibus_wc_lowest_price_message', $product_ID );
 
 == Changelog ==
 
+= 2.0.0 (2023-01-04) =
+
+* Adequate implementation of Directive (EU) 2019/2161 - Article 6a.
+* Custom tax-related messages has been removed.
+* Data saving has been modified to only apply to published items.
+* Use the `get_sale_price()` function instead of `get_price()`.
+
 = 1.2.6 (2023-01-03) =
 
 * Renamed the plugin "Omnibus — show the lowest price" instead of "Omnibus — Show the lowest price of a product."
@@ -174,3 +187,8 @@ do_action( 'iworks_omnibus_wc_lowest_price_message', $product_ID );
 * Init.
 
 == Upgrade Notice ==
+
+= 2.0.0 =
+
+The most important change is the correct implementation of the directive, which says that the last lowest price from 30 days after the activation of the promotion should be presented. This means that the price may be earlier than the last 30 days and may be higher than the current promotional price.
+

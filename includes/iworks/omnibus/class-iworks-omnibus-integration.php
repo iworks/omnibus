@@ -26,24 +26,50 @@ if ( class_exists( 'iworks_omnibus_integration' ) ) {
 abstract class iworks_omnibus_integration {
 
 	/**
-	 * Add price log
-	 *
-	 * @since 1.0.0
-	 */
-	private function add_price_log( $post_id, $price ) {
-		$data = array(
-			'price'     => $price,
-			'timestamp' => time(),
-		);
-		add_post_meta( $post_id, $this->meta_name, $data );
-	}
-
-	/**
 	 * meta field name
 	 *
 	 * @since 1.0.0
 	 */
 	protected $meta_name = '_iwo_price_lowest';
+
+	/**
+	 * last price drop timestamp
+	 *
+	 * @since 2.0.0
+	 */
+	protected $last_price_drop_timestamp = '_iwo_last_price_drop_timestamp';
+
+	/**
+	 * Add price log
+	 *
+	 * @since 1.0.0
+	 */
+	private function add_price_log( $post_id, $price, $update_last_drop ) {
+		/**
+		 * save only for published posts
+		 *
+		 * @since 2.0.0
+		 */
+		if ( 'publish' !== get_post_status( $post_id ) ) {
+			return;
+		}
+		$now  = time();
+		$data = array(
+			'price'     => $price,
+			'timestamp' => $now,
+		);
+		add_post_meta( $post_id, $this->meta_name, $data );
+		/**
+		 * update last price drop timestamp
+		 *
+		 * @since 2.0.0
+		 */
+		if ( $update_last_drop ) {
+			if ( ! update_post_meta( $post_id, $this->last_price_drop_timestamp, $now ) ) {
+				add_post_meta( $post_id, $this->last_price_drop_timestamp, $now, true );
+			}
+		}
+	}
 
 	/**
 	 * Save price history
@@ -53,13 +79,13 @@ abstract class iworks_omnibus_integration {
 	protected function save_price_history( $post_id, $price ) {
 		$price_last = $this->get_last_price( $post_id );
 		if ( 'unknown' === $price_last ) {
-			$this->add_price_log( $post_id, $price );
+			$this->add_price_log( $post_id, $price, true );
 		}
 		if (
 			is_array( $price_last )
 			&& $price !== $price_last['price']
 		) {
-			$this->add_price_log( $post_id, $price );
+			$this->add_price_log( $post_id, $price, $price < $price_last['price'] );
 		}
 	}
 
@@ -77,8 +103,7 @@ abstract class iworks_omnibus_integration {
 		$timestamp = 0;
 		$last      = array();
 		foreach ( $meta as $data ) {
-			if ( $old > $data['timestamp'] ) {
-				// delete_post_meta( $post_id, $this->meta_name, $data );
+			if ( $old >= $data['timestamp'] ) {
 				continue;
 			}
 			if ( $timestamp < $data['timestamp'] ) {
@@ -116,17 +141,32 @@ abstract class iworks_omnibus_integration {
 		if ( empty( $meta ) ) {
 			return $price_lowest;
 		}
-		$price = array();
-		$old   = strtotime( sprintf( '-%d days', $this->get_days() ) );
+		$now                       = time();
+		$price                     = array(
+			'init'      => true,
+			'price'     => PHP_INT_MAX,
+			'timestamp' => $now,
+			'from'      => $now,
+		);
+		$old                       = strtotime( sprintf( '-%d days', $this->get_days() ) );
+		$last_price_drop_timestamp = get_post_meta( $post_id, $this->last_price_drop_timestamp, true );
+		if ( ! empty( $last_price_drop_timestamp ) ) {
+			$old = strtotime( sprintf( '-%d days', $this->get_days() ), $last_price_drop_timestamp );
+		}
 		foreach ( $meta as $data ) {
-			if ( $old > $data['timestamp'] ) {
-				// delete_post_meta( $post_id, $this->meta_name, $data );
+			if ( $old >= $data['timestamp'] ) {
 				continue;
 			}
-			if ( $data['price'] <= $lowest ) {
-				$price  = $data;
-				$lowest = $data['price'];
+			if ( $last_price_drop_timestamp <= $data['timestamp'] ) {
+				continue;
 			}
+			if ( $data['price'] <= $price['price'] ) {
+				$price         = $data;
+				$price['from'] = $old;
+			}
+		}
+		if ( isset( $price['init'] ) ) {
+			return array();
 		}
 		return $price;
 	}
@@ -141,12 +181,11 @@ abstract class iworks_omnibus_integration {
 			is_array( $price_lowest )
 			&& isset( $price_lowest['price'] )
 		) {
-			$use_custom_messages = 'custom' === get_option( $this->get_name( 'message_settings' ), 'default' );
-			$message             = __( 'The lowest price in %1$d days: %2$s.', 'omnibus' );
-			if ( $use_custom_messages ) {
+			$message = __( 'Previous lowest price: %2$s.', 'omnibus' );
+			if ( 'custom' === get_option( $this->get_name( 'message_settings' ), 'default' ) ) {
 				$message = get_option(
-					$this->get_name( 'message_standard' ),
-					__( 'The lowest price in %1$d days: %2$s.', 'omnibus' )
+					$this->get_name( 'message' ),
+					__( 'Previous lowest price: %2$s.', 'omnibus' )
 				);
 			}
 			$price_to_show = $price_lowest['price'];
@@ -154,26 +193,12 @@ abstract class iworks_omnibus_integration {
 			 * WooCommerce: include tax
 			 */
 			if ( 'no' === get_option( 'woocommerce_prices_include_tax' ) ) {
-				$message = __( 'The lowest price in %1$d days: %2$s (without tax).', 'omnibus' );
-				if ( $use_custom_messages ) {
-					$message = get_option(
-						$this->get_name( 'message_without_tax' ),
-						__( 'The lowest price in %1$d days: %2$s (without tax).', 'omnibus' )
-					);
-				}
 				if ( 'yes' === get_option( $this->get_name( 'include_tax' ), 'yes' ) ) {
 					if (
 						isset( $price_lowest['price_including_tax'] )
 						&& $price_lowest['price_including_tax'] > $price_to_show
 					) {
 						$price_to_show = $price_lowest['price_including_tax'];
-						$message       = __( 'The lowest price in %1$d days: %2$s (include tax).', 'omnibus' );
-						if ( $use_custom_messages ) {
-							$message = get_option(
-								$this->get_name( 'message_with_tax' ),
-								__( 'The lowest price in %1$d days: %2$s (include tax).', 'omnibus' )
-							);
-						}
 					}
 				}
 			}
@@ -183,7 +208,8 @@ abstract class iworks_omnibus_integration {
 			$price .= apply_filters(
 				'iworks_omnibus_message',
 				sprintf(
-					'<p class="iworks-omnibus">%s</p>',
+					'<p class="iworks-omnibus" data-previous-timestamp="%d">%s</p>',
+					esc_attr( isset( $price_lowest['from'] ) ? $price_lowest['from'] : '' ),
 					sprintf(
 						$message,
 						$this->get_days(),
