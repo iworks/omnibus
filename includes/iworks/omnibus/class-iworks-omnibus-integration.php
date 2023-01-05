@@ -144,7 +144,6 @@ abstract class iworks_omnibus_integration {
 		$last_price_drop_timestamp = intval( get_post_meta( $post_id, $this->last_price_drop_timestamp, true ) );
 		if ( ! empty( $last_price_drop_timestamp ) ) {
 			$old = strtotime( sprintf( '-%d days', $this->get_days() ), $last_price_drop_timestamp );
-
 		}
 		foreach ( $meta as $data ) {
 			if ( intval( $old ) >= intval( $data['timestamp'] ) ) {
@@ -257,7 +256,6 @@ abstract class iworks_omnibus_integration {
 		return array(
 			'title' => __( 'Omnibus Directive Settings', 'omnibus' ),
 			'type'  => 'title',
-			'desc'  => '',
 			'id'    => $this->meta_name,
 		);
 	}

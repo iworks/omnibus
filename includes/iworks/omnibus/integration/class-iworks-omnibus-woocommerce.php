@@ -39,6 +39,12 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 */
 		add_action( 'iworks_omnibus_wc_lowest_price_message', array( $this, 'action_get_message' ) );
 		/**
+		 * admin init
+		 *
+		 * @since 2.1.0
+		 */
+		add_action( 'admin_init', array( $this, 'action_admin_init' ) );
+		/**
 		 * WooCommerce
 		 *
 		 * @since 1.0.0
@@ -84,6 +90,15 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 * @since 1.1.0
 		 */
 		add_action( 'yith_wcpb_after_product_bundle_options_tab', array( $this, 'action_woocommerce_product_options_pricing' ) );
+	}
+
+	/**
+	 * admin init
+	 *
+	 * @since 2.1.0
+	 */
+	public function action_admin_init() {
+		add_filter( 'plugin_action_links', array( $this, 'filter_add_link_omnibus_configuration' ), PHP_INT_MAX, 4 );
 	}
 
 	/**
@@ -719,6 +734,32 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		$meta_to_exclude[] = $this->meta_name;
 		$meta_to_exclude[] = $this->last_price_drop_timestamp;
 		return $meta_to_exclude;
+	}
+
+	/**
+	 * Add configuration link to plugin_row_meta.
+	 *
+	 * @since 2.1.0
+	 *
+	 */
+	public function filter_add_link_omnibus_configuration( $actions, $plugin_file, $plugin_data, $context ) {
+		if ( 'woocommerce/woocommerce.php' !== $plugin_file ) {
+			return $actions;
+		}
+		$settings_page_url  = add_query_arg(
+			array(
+				'page'    => 'wc-settings',
+				'tab'     => 'products',
+				'section' => $this->get_name(),
+			),
+			admin_url( 'admin.php' )
+		);
+		$actions['omnibus'] = sprintf(
+			'<a href="%s">%s</a>',
+			$settings_page_url,
+			__( 'Omnibus', 'omnibus' )
+		);
+		return $actions;
 	}
 
 }

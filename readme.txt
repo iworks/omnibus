@@ -1,7 +1,7 @@
 === PLUGIN_TITLE ===
 Contributors: iworks
-Donate link: https://ko-fi.com/iworks?utm_source=og&utm_medium=readme-donate
-Tags: WooCommerce, omnibus, price, LMS, shop, e-commerce
+Donate link: https://ko-fi.com/iworks?utm_source=omnibus&utm_medium=readme-donate
+Tags: WooCommerce, omnibus, price, LMS, shop, e-commerce, product, course, download
 Requires at least: PLUGIN_REQUIRES_WORDPRESS
 Tested up to: 6.1
 Stable tag: PLUGIN_VERSION
@@ -30,7 +30,7 @@ Omnibus plugin support plugins:
 
 = Directive (EU) 2019/2161 of the European Parliament =
 
-> ‘Article 6a
+> Article 6a
 > 1. Any announcement of a price reduction shall indicate the prior price applied by the trader for a determined period of time prior to the application of the price reduction.
 > 2. The prior price means the lowest price applied by the trader during a period of time not shorter than 30 days prior to the application of the price reduction.
 
@@ -46,7 +46,8 @@ There are 3 ways to install this plugin:
 1. Search for `PLUGIN_TITLE`.
 1. Click to install.
 1. Activate the plugin.
-1. Check the configuration by going to WPA > WooCommerce > Settings > Products > Omnibus Directive.
+1. WooCommerce: Check the configuration by going to WPA > WooCommerce > Settings > Products > Omnibus Directive.
+1. LearnPress: Check the configuration by going to WPA > LearnPress > Settings > Courses > Omnibus Directive Settings.
 
 = 2. The easy way =
 
@@ -55,13 +56,15 @@ There are 3 ways to install this plugin:
 1. Select the button `Upload Plugin`.
 1. Upload the .zip file you just downloaded.
 1. Activate the plugin.
-1. Check the configuration by going to WPA > WooCommerce > Settings > Products > Omnibus Directive.
+1. WooCommerce: Check the configuration by going to WPA > WooCommerce > Settings > Products > Omnibus Directive.
+1. LearnPress: Check the configuration by going to WPA > LearnPress > Settings > Courses > Omnibus Directive Settings.
 
 = 3. The old and reliable way (FTP) =
 
 1. Upload the `omnibus` folder to the `/wp-content/plugins/` directory.
 1. Activate the plugin through the 'Plugins' menu in WordPress.
-1. Check the configuration by going to WPA > WooCommerce > Settings > Products > Omnibus Directive.
+1. WooCommerce: Check the configuration by going to WPA > WooCommerce > Settings > Products > Omnibus Directive.
+1. LearnPress: Check the configuration by going to WPA > LearnPress > Settings > Courses > Omnibus Directive Settings.
 
 == Frequently Asked Questions ==
 
@@ -109,12 +112,14 @@ do_action( 'iworks_omnibus_wc_lowest_price_message', $product_ID );
 
 == Changelog ==
 
-= 2.0.3 (2023-01-04) =
+= 2.1.0 (2023-01-05) =
 
+* Default values from the LearnPress configuration have been added.
 * Exclude meta keys from WooCommerce product duplication has been added.
-* Default values form LearnPress configuration has been added.
 * The LearnPress plugin configuration has been added.
-* The LearnPress plugin configuration has been removed from WooCommerce configuration..
+* The LearnPress plugin configuration has been removed from the WooCommerce configuration.
+* The link to the LearnPress Omnibus configuration has been added to the plugin row actions.
+* The link to the WooCommerce Omnibus configuration has been added to the plugin row actions.
 
 = 2.0.2 (2023-01-04) =
 
@@ -203,6 +208,10 @@ do_action( 'iworks_omnibus_wc_lowest_price_message', $product_ID );
 * Init.
 
 == Upgrade Notice ==
+
+= 2.1.0 =
+
+Better integration with the LearnPress plugin has been added.
 
 = 2.0.0 =
 

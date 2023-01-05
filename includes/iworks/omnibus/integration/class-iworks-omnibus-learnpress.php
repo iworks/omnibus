@@ -28,11 +28,52 @@ include_once dirname( dirname( __FILE__ ) ) . '/class-iworks-omnibus-integration
 class iworks_omnibus_integration_learnpress extends iworks_omnibus_integration {
 
 	public function __construct() {
-		add_action( 'save_post_lp_course', array( $this, 'action_learnpress_save_post_lp_course' ), 10, 2 );
 		add_filter( 'learn_press_course_price_html', array( $this, 'filter_learn_press_course_price_html' ), 10, 3 );
-		add_filter( 'lp/course/meta-box/fields/price', array( $this, 'filter_learnpress_admin_show_omnibus' ) );
-		add_filter( 'learn-press/courses-settings-fields', array( $this, 'filter_learnpress_courses_settings_fields' ) );
 		add_filter( 'pre_option', array( $this, 'filter_pre_option' ), 10, 3 );
+		/**
+		 * admin init
+		 *
+		 * @since 2.1.0
+		 */
+		add_action( 'admin_init', array( $this, 'action_admin_init' ) );
+	}
+
+	/**
+	 * admin init
+	 *
+	 * @since 2.1.0
+	 */
+	public function action_admin_init() {
+		add_action( 'save_post_lp_course', array( $this, 'action_learnpress_save_post_lp_course' ), 10, 2 );
+		add_filter( 'learn-press/courses-settings-fields', array( $this, 'filter_learnpress_courses_settings_fields' ) );
+		add_filter( 'lp/course/meta-box/fields/price', array( $this, 'filter_learnpress_admin_show_omnibus' ) );
+		add_filter( 'plugin_action_links', array( $this, 'filter_add_link_omnibus_configuration' ), PHP_INT_MAX, 4 );
+	}
+
+	/**
+	 * Add configuration link to plugin_row_meta.
+	 *
+	 * @since 2.1.0
+	 *
+	 */
+	public function filter_add_link_omnibus_configuration( $actions, $plugin_file, $plugin_data, $context ) {
+		if ( 'learnpress/learnpress.php' !== $plugin_file ) {
+			return $actions;
+		}
+		$settings_page_url  = add_query_arg(
+			array(
+				'page' => 'learn-press-settings',
+				'tab'  => 'courses',
+			),
+			admin_url( 'admin.php' )
+		);
+		$actions['omnibus'] = sprintf(
+			'<a href="%s#learn_press_%s">%s</a>',
+			$settings_page_url,
+			$this->get_name( 'on_sale' ),
+			__( 'Omnibus', 'omnibus' )
+		);
+		return $actions;
 	}
 
 	/**
@@ -44,7 +85,14 @@ class iworks_omnibus_integration_learnpress extends iworks_omnibus_integration {
 		if ( ! preg_match( '/^_iwo_price_lowest_lp_/', $option ) ) {
 			return $pre;
 		}
-		return get_option( 'learn_press_' . $option, $default );
+		$value = get_option( 'learn_press_' . $option, $default );
+		if ( false === $value ) {
+			return 'no';
+		}
+		if ( true === $value ) {
+			return 'yes';
+		}
+		return $value;
 	}
 
 	/**
@@ -58,7 +106,7 @@ class iworks_omnibus_integration_learnpress extends iworks_omnibus_integration {
 			array(
 				$this->settings_title(),
 				array(
-					'title'   => __( 'Courses on sale', 'omnibus' ),
+					'title'   => __( 'Only on sale', 'omnibus' ),
 					'id'      => $this->get_name( 'on_sale' ),
 					'default' => 'yes',
 					'type'    => 'checkbox',
@@ -77,42 +125,12 @@ class iworks_omnibus_integration_learnpress extends iworks_omnibus_integration {
 					'desc_tip'      => __( 'Show or hide on a single course page.', 'omnibus' ),
 				),
 				array(
-					'desc'          => __( 'Any loop', 'omnibus' ),
-					'id'            => $this->get_name( 'loop' ),
+					'id'            => $this->get_name( 'default' ),
 					'default'       => 'no',
 					'type'          => 'checkbox',
-					'checkboxgroup' => '',
-					'desc_tip'      => __( 'Show or hide on any courses list.', 'omnibus' ),
-				),
-				array(
-					'desc'          => __( 'Taxonomy page', 'omnibus' ),
-					'id'            => $this->get_name( 'tax' ),
-					'default'       => 'no',
-					'type'          => 'checkbox',
+					'desc'          => __( 'Display anywhere else', 'omnibus' ),
+					'desc_tip'      => __( 'Display anywhere else that doesn\'t fit any of the above.', 'omnibus' ),
 					'checkboxgroup' => 'end',
-					'desc_tip'      => __( 'Show or hide on any taxonomy (tags, categories, custom taxonomies).', 'omnibus' ),
-				),
-				array(
-					'title'    => __( 'Default', 'omnibus' ),
-					'id'       => $this->get_name( 'default' ),
-					'default'  => 'no',
-					'type'     => 'checkbox',
-					'desc'     => __( 'Display anywhere else', 'omnibus' ),
-					'desc_tip' => __( 'Display anywhere else that doesn\'t fit any of the above.', 'omnibus' ),
-				),
-				array(
-					'title'   => esc_html__( 'Review courses', 'learnpress' ),
-					'desc'    => esc_html__( 'Courses created by instructors will be pending review first.', 'learnpress' ),
-					'id'      => 'required_review',
-					'default' => 'yes',
-					'type'    => 'checkbox',
-				),
-				array(
-					'title'   => esc_html__( 'Auto start', 'learnpress' ),
-					'id'      => 'auto_enroll',
-					'default' => 'yes',
-					'type'    => 'checkbox',
-					'desc'    => esc_html__( 'Students will get started on courses immediately after successfully purchasing them.', 'learnpress' ),
 				),
 				/**
 				 * admin
@@ -247,21 +265,24 @@ class iworks_omnibus_integration_learnpress extends iworks_omnibus_integration {
 	 * helper to decide show it or no
 	 */
 	private function should_it_show_up( $post_id ) {
-			// if ( 'no' === get_option( $this->get_name( 'learnpress' ), 'yes' ) ) {
-				// return $price_html;
-			// }
+
+		if ( 'yes' === get_option( $this->get_name( 'on_sale' ), 'yes' ) ) {
+			$course = learn_press_get_course( $post_id );
+			if ( ! $course->has_sale_price() ) {
+				return apply_filters( 'iworks_omnibus_show', false );
+			}
+		}
 		/**
 		 * for admin
 		 */
 		if ( is_admin() ) {
 			$screen = get_current_screen();
-			// d($screen);
 			if ( 'lp_course' === $screen->id ) {
 				if ( 'no' === get_option( $this->get_name( 'admin_edit' ), 'yes' ) ) {
 					return apply_filters( 'iworks_omnibus_show', false );
 				}
 			}
-			if ( 'edit-product' === $screen->id ) {
+			if ( 'edit-lp_course' === $screen->id ) {
 				if ( 'no' === get_option( $this->get_name( 'admin_list' ), 'yes' ) ) {
 					return apply_filters( 'iworks_omnibus_show', false );
 				}
@@ -271,11 +292,15 @@ class iworks_omnibus_integration_learnpress extends iworks_omnibus_integration {
 		/**
 		 * front-end
 		 */
-		if ( 'yes' === get_option( $this->get_name( 'on_sale' ), 'no' ) ) {
-			// $product = wc_get_product( $post_id );
-			// if ( ! $product->is_on_sale() ) {
-				// return apply_filters( 'iworks_omnibus_show', false );
-			// }
+		if (
+			is_single()
+			&& is_main_query()
+			&& ( learn_press_is_course() )
+		) {
+			if ( 'no' === get_option( $this->get_name( 'single' ), 'yes' ) ) {
+				return apply_filters( 'iworks_omnibus_show', false );
+			}
+			return apply_filters( 'iworks_omnibus_show', true );
 		}
 		/**
 		 * at least add filter
