@@ -257,7 +257,10 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 * @since 1.0.0
 	 */
 	public function filter_woocommerce_get_price_html( $price, $product ) {
-		if ( ! $this->should_it_show_up( $product->id ) ) {
+		if ( ! is_object( $product ) ) {
+			return $price;
+		}
+		if ( ! $this->should_it_show_up( $product->get_id() ) ) {
 			return $price;
 		}
 		$price_lowest = $this->get_lowest_price( $product );
