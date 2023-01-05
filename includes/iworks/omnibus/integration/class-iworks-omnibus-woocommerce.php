@@ -190,12 +190,15 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		/**
 		 * front-end
 		 */
-		if ( 'yes' === get_option( $this->get_name( 'on_sale' ), 'no' ) ) {
+		if ( 'yes' === get_option( $this->get_name( 'on_sale' ), 'yes' ) ) {
 			$product = wc_get_product( $post_id );
 			if ( ! $product->is_on_sale() ) {
 				return apply_filters( 'iworks_omnibus_show', false );
 			}
 		}
+		/**
+		 * single product
+		 */
 		if ( is_single() && is_main_query() ) {
 			if ( is_product() ) {
 				global $woocommerce_loop;
@@ -209,37 +212,37 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 					}
 				}
 			}
-			if ( 'no' === get_option( $this->get_name( 'single' ), 'yes' ) ) {
-				return apply_filters( 'iworks_omnibus_show', false );
+			if ( 'yes' === get_option( $this->get_name( 'single' ), 'yes' ) ) {
+				return apply_filters( 'iworks_omnibus_show', true );
 			}
-			return apply_filters( 'iworks_omnibus_show', true );
+			return apply_filters( 'iworks_omnibus_show', false );
 		}
 		/**
 		 * shop page
 		 */
 		if ( is_shop() ) {
-			if ( 'no' === get_option( $this->get_name( 'shop' ), 'no' ) ) {
-				return apply_filters( 'iworks_omnibus_show', false );
+			if ( 'yes' === get_option( $this->get_name( 'shop' ), 'yes' ) ) {
+				return apply_filters( 'iworks_omnibus_show', true );
 			}
-			return apply_filters( 'iworks_omnibus_show', true );
+			return apply_filters( 'iworks_omnibus_show', false );
 		}
 		/**
 		 * Taxonomy Page
 		 */
 		if ( is_tax() ) {
-			if ( 'no' === get_option( $this->get_name( 'tax' ), 'no' ) ) {
-				return apply_filters( 'iworks_omnibus_show', false );
+			if ( 'yes' === get_option( $this->get_name( 'tax' ), 'yes' ) ) {
+				return apply_filters( 'iworks_omnibus_show', true );
 			}
-			return apply_filters( 'iworks_omnibus_show', true );
+			return apply_filters( 'iworks_omnibus_show', false );
 		}
 		/**
 		 * any loop
 		 */
 		if ( in_the_loop() ) {
-			if ( 'no' === get_option( $this->get_name( 'loop' ), 'no' ) ) {
-				return apply_filters( 'iworks_omnibus_show', false );
+			if ( 'yes' === get_option( $this->get_name( 'loop' ), 'yes' ) ) {
+				return apply_filters( 'iworks_omnibus_show', true );
 			}
-			return apply_filters( 'iworks_omnibus_show', true );
+			return apply_filters( 'iworks_omnibus_show', talse );
 		}
 		/**
 		 * at least add filter
