@@ -175,17 +175,17 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			} else {
 				$screen = get_current_screen();
 				if ( 'product' === $screen->id ) {
-					if ( 'no' === get_option( $this->get_name( 'admin_edit' ), 'yes' ) ) {
-						return apply_filters( 'iworks_omnibus_show', false );
+					if ( 'yes' === get_option( $this->get_name( 'admin_edit' ), 'yes' ) ) {
+						return apply_filters( 'iworks_omnibus_show', true );
 					}
 				}
 				if ( 'edit-product' === $screen->id ) {
-					if ( 'no' === get_option( $this->get_name( 'admin_list' ), 'yes' ) ) {
-						return apply_filters( 'iworks_omnibus_show', false );
+					if ( 'yes' === get_option( $this->get_name( 'admin_list' ), 'no' ) ) {
+						return apply_filters( 'iworks_omnibus_show', true );
 					}
 				}
 			}
-			return apply_filters( 'iworks_omnibus_show', true );
+			return apply_filters( 'iworks_omnibus_show', false );
 		}
 		/**
 		 * front-end
@@ -221,7 +221,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 * shop page
 		 */
 		if ( is_shop() ) {
-			if ( 'yes' === get_option( $this->get_name( 'shop' ), 'yes' ) ) {
+			if ( 'yes' === get_option( $this->get_name( 'shop' ), 'no' ) ) {
 				return apply_filters( 'iworks_omnibus_show', true );
 			}
 			return apply_filters( 'iworks_omnibus_show', false );
@@ -230,7 +230,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 * Taxonomy Page
 		 */
 		if ( is_tax() ) {
-			if ( 'yes' === get_option( $this->get_name( 'tax' ), 'yes' ) ) {
+			if ( 'yes' === get_option( $this->get_name( 'tax' ), 'no' ) ) {
 				return apply_filters( 'iworks_omnibus_show', true );
 			}
 			return apply_filters( 'iworks_omnibus_show', false );
@@ -239,10 +239,10 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 * any loop
 		 */
 		if ( in_the_loop() ) {
-			if ( 'yes' === get_option( $this->get_name( 'loop' ), 'yes' ) ) {
+			if ( 'yes' === get_option( $this->get_name( 'loop' ), 'no' ) ) {
 				return apply_filters( 'iworks_omnibus_show', true );
 			}
-			return apply_filters( 'iworks_omnibus_show', talse );
+			return apply_filters( 'iworks_omnibus_show', false );
 		}
 		/**
 		 * at least add filter
@@ -588,7 +588,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			'title'         => __( 'Show on admin on', 'omnibus' ),
 			'desc'          => __( 'Products list', 'omnibus' ),
 			'id'            => $this->get_name( 'admin_list' ),
-			'default'       => 'yes',
+			'default'       => 'no',
 			'type'          => 'checkbox',
 			'checkboxgroup' => 'start',
 		);

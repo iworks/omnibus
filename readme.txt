@@ -112,6 +112,9 @@ do_action( 'iworks_omnibus_wc_lowest_price_message', $product_ID );
 
 == Changelog ==
 
+= 2.1.2 (2023-01-05) =
+* Fixed typo.
+
 = 2.1.1 (2023-01-05) =
 
 * The wrong default for the "Display only for the product on sale" field has been fixed. Props for [krzyszt](https://wordpress.org/support/users/krzyszt/).
