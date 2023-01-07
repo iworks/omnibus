@@ -116,11 +116,11 @@ do_action( 'iworks_omnibus_wc_lowest_price_message', $product_ID );
 
 == Changelog ==
 
-= 2.1.4 (2023-xx-xx) =
+= 2.1.4 (2023-01-96) =
 
-* The action `omnibus/loaded` has been added. It is fired at the and of `plugins_loaded` action.
-* Resolved an issue with retrieving Omnibus data for variants. Props for [Mychal](https://wordpress.org/support/users/mychal/).
 * Missing check for content has been fixed. Props for [kowaliix](https://wordpress.org/support/users/kowaliix/).
+* Resolved an issue with retrieving Omnibus data for variants. Props for [Mychal](https://wordpress.org/support/users/mychal/).
+* The action `omnibus/loaded` has been added. It is fired at the and of `plugins_loaded` action.
 * The "do not show" option has been added for anybody who wants to use the action or the shortcode.
 
 = 2.1.3 (2023-01-05) =
