@@ -393,8 +393,7 @@ module.exports = function(grunt) {
     grunt.registerTask('css', ['sass', 'cssmin']);
     grunt.registerTask('i18n', ['checktextdomain', 'makepot', 'potomo']);
 
-    // grunt.registerTask( 'build', [ 'default', 'i18n', 'clean', 'copy', 'compress', 'notes'] );
-    grunt.registerTask('build', ['default', 'makepot', 'clean', 'copy', 'replace', 'compress', 'notes']);
+    grunt.registerTask('build', ['default', 'i18n', 'clean', 'copy', 'replace', 'compress', 'notes']);
     grunt.registerTask('test', ['phpunit', 'jshint', 'notes']);
 
     grunt.util.linefeed = '\n';
