@@ -79,6 +79,12 @@ class iworks_omnibus {
 			include_once $dir . '/integration/class-iworks-omnibus-easydigitaldownloads.php';
 			$this->objects['easydigitaldownloads'] = new iworks_omnibus_integration_easydigitaldownloads();
 		}
+		/**
+		 * Omnibus loaded action
+		 *
+		 * @since 2.1.4
+		 */
+		do_action( 'omnibus/loaded' );
 	}
 
 	/**

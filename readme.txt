@@ -112,6 +112,10 @@ do_action( 'iworks_omnibus_wc_lowest_price_message', $product_ID );
 
 == Changelog ==
 
+= 2.1.4 (2023-xx-xx) =
+
+* The action `omnibus/loaded` has been added. It is fired at the and of `plugins_loaded` action.
+
 = 2.1.3 (2023-01-05) =
 
 * Fixed issue with getting ID. Props for [shamppi](https://wordpress.org/support/users/shamppi/).
