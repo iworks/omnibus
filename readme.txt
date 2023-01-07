@@ -36,6 +36,10 @@ Omnibus plugin support plugins:
 
 Read more: [Directive 2019/2161](https://eur-lex.europa.eu/eli/dir/2019/2161/oj).
 
+= GitHub =
+
+The Omnibus plugin is available also on [GitHub - Omnibus](https://github.com/iworks/omnibus).
+
 == Installation ==
 
 There are 3 ways to install this plugin:
