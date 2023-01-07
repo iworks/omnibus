@@ -67,6 +67,8 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 */
 		$where = get_option( $this->get_name( 'where' ), 'woocommerce_get_price_html' );
 		switch ( $where ) {
+			case 'do_not_show':
+				break;
 			case 'woocommerce_product_meta_start':
 			case 'woocommerce_product_meta_end':
 				add_action( $where, array( $this, 'run' ) );
@@ -168,8 +170,8 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 					isset( $_POST['action'] )
 					&& 'woocommerce_load_variations' === $_POST['action']
 				) {
-					if ( 'no' === get_option( $this->get_name( 'admin_edit' ), 'yes' ) ) {
-						return apply_filters( 'iworks_omnibus_show', false );
+					if ( 'yes' === get_option( $this->get_name( 'admin_edit' ), 'yes' ) ) {
+						return apply_filters( 'iworks_omnibus_show', true );
 					}
 				}
 			} else {
@@ -615,6 +617,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 				'woocommerce_product_meta_end'   => __( 'After product meta data', 'omnibus' ),
 				'the_content_start'              => __( 'At the begining of the content', 'omnibus' ),
 				'the_content_end'                => __( 'At the end of the content', 'omnibus' ),
+				'do_not_show'                    => __( 'Do not show. I will handle it myself.', 'omnibus' ),
 			),
 		);
 		/**
@@ -660,6 +663,12 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 * @since 1.1.0
 	 */
 	public function filter_the_content( $content ) {
+		if ( 'product' !== get_post_type() ) {
+			return $content;
+		}
+		if ( ! $this->should_it_show_up( get_the_ID() ) ) {
+			return $content;
+		}
 		$message = $this->run( 'return' );
 		switch ( get_option( $this->get_name( 'where' ), 'woocommerce_get_price_html' ) ) {
 			case 'the_content_start':
