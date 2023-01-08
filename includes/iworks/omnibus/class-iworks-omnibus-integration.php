@@ -171,49 +171,71 @@ abstract class iworks_omnibus_integration {
 	 * @since 1.0.0
 	 */
 	protected function add_message( $price, $price_lowest, $format_price_callback = null ) {
-		if (
-			is_array( $price_lowest )
-			&& isset( $price_lowest['price'] )
-			&& ! empty( $price_lowest['price'] )
-		) {
-			$message = __( 'Previous lowest price was %2$s.', 'omnibus' );
-			if ( 'custom' === get_option( $this->get_name( 'message_settings' ), 'default' ) ) {
-				$message = get_option(
-					$this->get_name( 'message' ),
-					__( 'Previous lowest price was %2$s.', 'omnibus' )
-				);
-			}
-			$price_to_show = $price_lowest['price'];
-			/**
-			 * WooCommerce: include tax
-			 */
-			if ( 'no' === get_option( 'woocommerce_prices_include_tax' ) ) {
-				if ( 'yes' === get_option( $this->get_name( 'include_tax' ), 'yes' ) ) {
-					if (
-						isset( $price_lowest['price_including_tax'] )
-						&& $price_lowest['price_including_tax'] > $price_to_show
-					) {
-						$price_to_show = $price_lowest['price_including_tax'];
-					}
-				}
-			}
-			if ( is_callable( $format_price_callback ) ) {
-				$price_to_show = $format_price_callback( $price_to_show );
-			}
-			$price .= apply_filters(
-				'iworks_omnibus_message',
-				sprintf(
-					'<p class="iworks-omnibus" data-previous-timestamp="%d">%s</p>',
-					esc_attr( isset( $price_lowest['from'] ) ? $price_lowest['from'] : '' ),
-					sprintf(
-						$message,
-						$this->get_days(),
-						$price_to_show
-					)
-				)
+		if ( ! is_array( $price_lowest ) ) {
+			return $price;
+		}
+		if ( ! isset( $price_lowest['price'] ) ) {
+			return $price;
+		}
+		if ( empty( $price_lowest['price'] ) ) {
+			return $price;
+		}
+		$message = __( 'Previous lowest price was %2$s.', 'omnibus' );
+		if ( 'custom' === get_option( $this->get_name( 'message_settings' ), 'default' ) ) {
+			$message = get_option(
+				$this->get_name( 'message' ),
+				__( 'Previous lowest price was %2$s.', 'omnibus' )
 			);
 		}
-		return $price;
+		$price_to_show = $price_lowest['price'];
+		/**
+		 * WooCommerce: include tax
+		 */
+		if ( 'no' === get_option( 'woocommerce_prices_include_tax' ) ) {
+			if ( 'yes' === get_option( $this->get_name( 'include_tax' ), 'yes' ) ) {
+				if (
+					isset( $price_lowest['price_including_tax'] )
+					&& $price_lowest['price_including_tax'] > $price_to_show
+				) {
+					$price_to_show = $price_lowest['price_including_tax'];
+				}
+			}
+		}
+		if ( is_callable( $format_price_callback ) ) {
+			$price_to_show = $format_price_callback( $price_to_show );
+		}
+		/**
+		 * add attributes
+		 */
+		$attributes = array();
+		foreach ( $price_lowest as $key => $value ) {
+			$attributes[] = sprintf( 'data-iwo-%s=%s"', esc_html( $key ), esc_attr( $value ) );
+		}
+		$price .= apply_filters(
+			'iworks_omnibus_message',
+			sprintf(
+				'<p class="iworks-omnibus" %s>%s</p>',
+				implode( ' ', $attributes ),
+				sprintf(
+					$message,
+					$this->get_days(),
+					$price_to_show
+				)
+			)
+		);
+		/**
+		 * replace
+		 *
+		 * @since 2.1.7
+		 */
+		$price = preg_replace( '/{days}/', $this->get_days(), $price );
+		$price = preg_replace( '/{price}/', $price_lowest['price'], $price );
+		$price = preg_replace( '/{timestamp}/', $price_lowest['timestamp'], $price );
+		$price = preg_replace( '/{when}/', date_i18n( get_option( 'date_format' ), $price_lowest['timestamp'] ), $price );
+		/**
+		 * return
+		 */
+		return apply_filters( 'iworks_omnibus_message_html', $price, $price_lowest );
 	}
 
 	protected function get_name( $name = '' ) {
@@ -306,12 +328,27 @@ abstract class iworks_omnibus_integration {
 	}
 
 	protected function settings_message() {
+
+		$description = array();
+		/* translators: Do not translate {price}, it is the replacement placeholder ! */
+		$description[] = esc_html__( 'Use the {price} placeholder to display price.', 'omnibus' );
+		/* translators: Do not translate {timestamp}, it is the replacement placeholder ! */
+		$description[] = esc_html__( 'Use the {timestamp} placeholder to display timestamp.', 'omnibus' );
+		/* translators: Do not translate {days}, it is the replacement placeholder ! */
+		$description[] = esc_html__( 'Use the {days} placeholder to display days.', 'omnibus' );
+		/* translators: Do not translate {when}, it is the replacement placeholder ! */
+		$description[] = esc_html__( 'Use the {when} placeholder to display date.', 'omnibus' );
 		return array(
 			'type'          => 'text',
 			'id'            => $this->get_name( 'message' ),
-			'default'       => __( 'Previous lowest price: %2$s.', 'omnibus' ),
-			'desc'          => __( '%1$d - number of days, %2$s - the lowest price.', 'omnibus' ),
+			'default'       => __( 'Previous lowest price: {price}.', 'omnibus' ),
 			'checkboxgroup' => 'end',
+			'desc'          => __( '%1$d - number of days<br>%2$s - the lowest price.', 'omnibus' ),
+			'desc'          => str_replace(
+				array( '{', '}' ),
+				array( '<code>{', '}</code>' ),
+				implode( '<br />', $description )
+			),
 		);
 	}
 

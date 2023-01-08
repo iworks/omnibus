@@ -120,6 +120,11 @@ You can do it on [Support Threads](https://wordpress.org/support/plugin/omnibus/
 
 == Changelog ==
 
+= 2.1.7 (2023-01-09) =
+
+* Placeholders: `{price}`, `{timestamp}`, `{days}` and `{when}` has been added to the price message.
+* A few new message display positions have been added.
+
 = 2.1.6 (2023-01-08) =
 
 * In order to reduce confusion, the default displayed data for a product in the admin panel that does not have a previous price saved has been changed.

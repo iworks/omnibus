@@ -69,14 +69,23 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		switch ( $where ) {
 			case 'do_not_show':
 				break;
-			case 'woocommerce_product_meta_start':
+			case 'woocommerce_after_add_to_cart_button':
+			case 'woocommerce_after_add_to_cart_quantity':
+			case 'woocommerce_after_single_product_summary':
+			case 'woocommerce_before_add_to_cart_button':
+			case 'woocommerce_before_add_to_cart_form':
+			case 'woocommerce_before_add_to_cart_quantity':
+			case 'woocommerce_before_single_product_summary':
 			case 'woocommerce_product_meta_end':
-				add_action( $where, array( $this, 'run' ) );
+			case 'woocommerce_product_meta_start':
+			case 'woocommerce_single_product_summary':
+				add_action( $where, array( $this, 'action_check_and_add_message' ) );
 				break;
 			case 'the_content_start':
 			case 'the_content_end':
 				add_filter( 'the_content', array( $this, 'filter_the_content' ) );
 				break;
+
 			default:
 				add_filter( 'woocommerce_get_price_html', array( $this, 'filter_woocommerce_get_price_html' ), 10, 2 );
 		}
@@ -670,12 +679,26 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			'default' => 'woocommerce_get_price_html',
 			'type'    => 'select',
 			'options' => array(
-				'woocommerce_get_price_html'     => __( 'After price (recommended)', 'omnibus' ),
-				'woocommerce_product_meta_start' => __( 'Before product meta data', 'omnibus' ),
-				'woocommerce_product_meta_end'   => __( 'After product meta data', 'omnibus' ),
-				'the_content_start'              => __( 'At the begining of the content', 'omnibus' ),
-				'the_content_end'                => __( 'At the end of the content', 'omnibus' ),
-				'do_not_show'                    => __( 'Do not show. I will handle it myself.', 'omnibus' ),
+				'woocommerce_get_price_html'               => esc_html__( 'After price (recommended)', 'omnibus' ),
+				'do_not_show'                              => esc_html__( 'Do not show. I will handle it myself.', 'omnibus' ),
+				/** meta */
+				'woocommerce_product_meta_start'           => esc_html__( 'Before product meta data', 'omnibus' ),
+				'woocommerce_product_meta_end'             => esc_html__( 'After product meta data', 'omnibus' ),
+				/** product summary */
+				'woocommerce_before_single_product_summary' => esc_html__( 'Before single product summary', 'omnibus' ),
+				'woocommerce_after_single_product_summary' => esc_html__( 'After single product summary', 'omnibus' ),
+				/** cart form */
+				'woocommerce_before_add_to_cart_form'      => esc_html__( 'Before add to cart form', 'omnibus' ),
+				/** cart button */
+				'woocommerce_before_add_to_cart_button'    => esc_html__( 'Before add to cart button', 'omnibus' ),
+				'woocommerce_after_add_to_cart_button'     => esc_html__( 'After add to cart button', 'omnibus' ),
+				/** cart quantity */
+				'woocommerce_before_add_to_cart_quantity'  => esc_html__( 'Before add to cart quantity', 'omnibus' ),
+				'woocommerce_after_add_to_cart_quantity'   => esc_html__( 'After add to cart quantity', 'omnibus' ),
+				// 'woocommerce_single_product_summary'        => esc_html__( 'Single product summary', 'omnibus' ),
+				/** content */
+				'the_content_start'                        => esc_html__( 'At the begining of the content', 'omnibus' ),
+				'the_content_end'                          => esc_html__( 'At the end of the content', 'omnibus' ),
 			),
 		);
 		$settings[] = array(
@@ -851,4 +874,21 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		return $this->add_message( $price, $price_lowest, 'wc_price' );
 	}
 
+	/**
+	 * WooCommerce show at start or end of product meta
+	 *
+	 * @since 2.1.7
+	 */
+	public function action_check_and_add_message() {
+		if ( ! is_singular( 'product' ) ) {
+			return;
+		}
+		if ( ! is_main_query() ) {
+			return;
+		}
+		if ( ! $this->should_it_show_up( get_the_ID() ) ) {
+			return;
+		}
+		$this->run( get_the_ID() );
+	}
 }
