@@ -446,11 +446,15 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		$settings = array(
 			$this->settings_title(),
 			array(
-				'title'   => __( 'Products on sale', 'omnibus' ),
-				'id'      => $this->get_name( 'on_sale' ),
-				'default' => 'yes',
-				'type'    => 'checkbox',
-				'desc'    => __( 'Display only for the product on sale', 'omnibus' ),
+				'title'    => __( 'Display minimal price', 'omnibus' ),
+				'id'       => $this->get_name( 'on_sale' ),
+				'default'  => 'yes',
+				'type'     => 'radio',
+				'options'  => array(
+					'yes' => esc_html__( 'Only when the product is on sale (strongly advised)', 'omnibus' ),
+					'no'  => esc_html__( 'Always', 'omnibus' ),
+				),
+				'desc_tip' => esc_html__( 'European Union guidance requires displaying the minimal price if a product is on sale.', 'omnibus' ),
 			),
 			/**
 			 * Show on

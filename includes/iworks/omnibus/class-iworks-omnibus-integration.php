@@ -174,11 +174,11 @@ abstract class iworks_omnibus_integration {
 			&& isset( $price_lowest['price'] )
 			&& ! empty( $price_lowest['price'] )
 		) {
-			$message = __( 'Previous lowest price: %2$s.', 'omnibus' );
+			$message = __( 'Previous lowest price was %2$s.', 'omnibus' );
 			if ( 'custom' === get_option( $this->get_name( 'message_settings' ), 'default' ) ) {
 				$message = get_option(
 					$this->get_name( 'message' ),
-					__( 'Previous lowest price: %2$s.', 'omnibus' )
+					__( 'Previous lowest price was %2$s.', 'omnibus' )
 				);
 			}
 			$price_to_show = $price_lowest['price'];
