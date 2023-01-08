@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Omnibus PLUGIN_VERSION\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/omnibus\n"
-"POT-Creation-Date: 2023-01-08 14:56:52+00:00\n"
+"POT-Creation-Date: 2023-01-08 17:11:01+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -42,7 +42,7 @@ msgid "Previous lowest price was %2$s."
 msgstr ""
 
 #: includes/iworks/omnibus/class-iworks-omnibus-integration.php:253
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:340
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:350
 msgid "Omnibus Directive"
 msgstr ""
 
@@ -61,51 +61,55 @@ msgid ""
 "Directive, minimum days is 30 after curent sale was started."
 msgstr ""
 
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:280
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:282
 msgid "Messages"
 msgstr ""
 
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:286
-msgid "Default messages (recommnded)."
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:295
+msgid "Price Message"
 msgstr ""
 
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:287
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:301
+msgid "Default messages (recommended)."
+msgstr ""
+
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:302
 msgid "Custom messages."
 msgstr ""
 
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:289
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:304
 msgid ""
 "Custom messages will be used only when you choose \"Custom messages.\" "
 "option."
 msgstr ""
 
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:297
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:312
 msgid "Previous lowest price: %2$s."
 msgstr ""
 
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:298
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:313
 msgid "%1$d - number of days, %2$s - the lowest price."
 msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-easydigitaldownloads.php:98
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:410
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:426
 msgid "Price"
 msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-easydigitaldownloads.php:101
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-learnpress.php:200
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:413
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:429
 msgid "The lowest price in %d days."
 msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-easydigitaldownloads.php:105
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:435
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:451
 msgid "Date"
 msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-easydigitaldownloads.php:108
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-learnpress.php:214
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:438
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:454
 msgid "The date when lowest price in %d days occurred."
 msgstr ""
 
@@ -115,7 +119,7 @@ msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-easydigitaldownloads.php:126
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-learnpress.php:119
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:473
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:500
 msgid "Show on"
 msgstr ""
 
@@ -154,17 +158,17 @@ msgid "Show or hide on a single course page."
 msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-learnpress.php:131
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:544
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:571
 msgid "Display anywhere else"
 msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-learnpress.php:132
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:545
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:572
 msgid "Display anywhere else that doesn't fit any of the above."
 msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-learnpress.php:139
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:624
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:651
 msgid "Show on admin on"
 msgstr ""
 
@@ -189,149 +193,170 @@ msgstr ""
 msgid "Omnibus Date"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:459
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:424
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:449
+msgid "no data"
+msgstr ""
+
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:475
 msgid "Display minimal price"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:464
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:480
 msgid "Only when the product is on sale (strongly advised)"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:465
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:481
 msgid "Always"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:467
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:483
 msgid ""
 "European Union guidance requires displaying the minimal price if a product "
 "is on sale."
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:474
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:486
+msgid "No previous price"
+msgstr ""
+
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:491
+msgid "Display current price"
+msgstr ""
+
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:492
+msgid "Do not display anything"
+msgstr ""
+
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:494
+msgid "What do you show when no data is available?"
+msgstr ""
+
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:501
 msgid "Product single"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:479
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:506
 msgid "Show or hide on a single product page."
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:482
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:509
 msgid "WooCommerce Shop"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:488
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:515
 msgid ""
 "Show or hide on the <a href=\"%s#woocommerce_shop_page_id\" "
 "target=\"_blank\">Shop Page</a>."
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:499
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:526
 msgid "WooCommerce Cart"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:505
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:532
 msgid ""
 "Show or hide on the <a href=\"%s#woocommerce_cart_page_id\" "
 "target=\"_blank\">Cart Page</a>."
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:516
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:543
 msgid "Any loop"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:521
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:548
 msgid "Show or hide on any product list."
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:524
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:551
 msgid "Taxonomy page"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:529
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:556
 msgid "Show or hide on any taxonomy (tags, categories, custom taxonomies)."
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:532
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:559
 msgid "Related products list"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:537
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:564
 msgid "Show or hide on the related products box."
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:540
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:567
 msgid "Default"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:550
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:577
 msgid "Include tax"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:554
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:581
 msgid "Display price with tax"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:559
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:586
 msgid "Simple product"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:563
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:590
 msgid "Variable product: global"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:567
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:594
 msgid "Variable product: variation"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:578
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:605
 msgid "Tutor course"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:589
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:616
 msgid "YITH Bundle"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:604
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:631
 msgid "Show for type"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:625
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:652
 msgid "Products list"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:632
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:659
 msgid "Product edit"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:640
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:667
 msgid "Where to display"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:641
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:668
 msgid "Change if you have only single products."
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:646
-msgid "After price (recommnded)"
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:673
+msgid "After price (recommended)"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:647
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:674
 msgid "Before product meta data"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:648
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:675
 msgid "After product meta data"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:649
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:676
 msgid "At the begining of the content"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:650
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:677
 msgid "At the end of the content"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:651
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-woocommerce.php:678
 msgid "Do not show. I will handle it myself."
 msgstr ""
 

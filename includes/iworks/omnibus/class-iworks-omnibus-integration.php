@@ -275,15 +275,30 @@ abstract class iworks_omnibus_integration {
 		);
 	}
 
+	protected function settings_messages() {
+		return array(
+			array(
+				'type'  => 'title',
+				'title' => __( 'Messages', 'omnibus' ),
+			),
+			$this->settings_message_settings(),
+			$this->settings_message(),
+			array(
+				'type' => 'sectionend',
+				'id'   => $this->get_name( 'sectionend' ),
+			),
+		);
+	}
+
 	protected function settings_message_settings() {
 		return array(
-			'title'         => __( 'Messages', 'omnibus' ),
+			'title'         => __( 'Price Message', 'omnibus' ),
 			'checkboxgroup' => 'start',
 			'type'          => 'radio',
 			'default'       => 'default',
 			'id'            => $this->get_name( 'message_settings' ),
 			'options'       => array(
-				'default' => __( 'Default messages (recommnded).', 'omnibus' ),
+				'default' => __( 'Default messages (recommended).', 'omnibus' ),
 				'custom'  => __( 'Custom messages.', 'omnibus' ),
 			),
 			'desc'          => __( 'Custom messages will be used only when you choose "Custom messages." option.', 'omnibus' ),

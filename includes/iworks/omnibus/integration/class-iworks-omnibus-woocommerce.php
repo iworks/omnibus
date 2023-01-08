@@ -221,6 +221,16 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 						return apply_filters( 'iworks_omnibus_show', false );
 					}
 				}
+				/**
+				 * variation
+				 */
+				$product = wc_get_product( $post_id );
+				if ( 'variation' === $product->get_type() ) {
+					if ( 'no' === get_option( $this->get_name( 'variation' ), 'yes' ) ) {
+						return apply_filters( 'iworks_omnibus_show', false );
+					}
+					return apply_filters( 'iworks_omnibus_show', true );
+				}
 			}
 			if ( 'yes' === get_option( $this->get_name( 'single' ), 'yes' ) ) {
 				return apply_filters( 'iworks_omnibus_show', true );
@@ -363,6 +373,12 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 */
 		$price  = $this->get_price( $product );
 		$lowest = $this->_get_lowest_price_in_history( $price, $post_id );
+		if ( is_admin() ) {
+			return $lowest;
+		}
+		if ( 'current' !== get_option( $this->get_name( 'missing' ), 'current' ) ) {
+			return $lowest;
+		}
 		if ( empty( $lowest ) ) {
 			$lowest = array(
 				'price'     => $price,
@@ -405,7 +421,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 				array(
 					'id'                => $this->meta_name . '_price',
 					'custom_attributes' => array( 'disabled' => 'disabled' ),
-					'value'             => empty( $price_lowest ) ? '' : $price_lowest['price'],
+					'value'             => empty( $price_lowest ) ? __( 'no data', 'omnibus' ) : $price_lowest['price'],
 					'data_type'         => 'price',
 					'label'             => __( 'Price', 'omnibus' ) . ' (' . get_woocommerce_currency_symbol() . ')',
 					'desc_tip'          => true,
@@ -430,7 +446,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 				array(
 					'id'                => $this->meta_name . '_date',
 					'custom_attributes' => array( 'disabled' => 'disabled' ),
-					'value'             => empty( $price_lowest ) ? '' : date_i18n( get_option( 'date_format' ), $price_lowest['timestamp'] ),
+					'value'             => empty( $price_lowest ) ? esc_html__( 'no data', 'omnibus' ) : date_i18n( get_option( 'date_format' ), $price_lowest['timestamp'] ),
 					'data_type'         => 'text',
 					'label'             => __( 'Date', 'omnibus' ),
 					'desc_tip'          => true,
@@ -456,15 +472,26 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		$settings = array(
 			$this->settings_title(),
 			array(
-				'title'    => __( 'Display minimal price', 'omnibus' ),
-				'id'       => $this->get_name( 'on_sale' ),
-				'default'  => 'yes',
-				'type'     => 'radio',
-				'options'  => array(
+				'title'   => __( 'Display minimal price', 'omnibus' ),
+				'id'      => $this->get_name( 'on_sale' ),
+				'default' => 'yes',
+				'type'    => 'radio',
+				'options' => array(
 					'yes' => esc_html__( 'Only when the product is on sale (strongly advised)', 'omnibus' ),
 					'no'  => esc_html__( 'Always', 'omnibus' ),
 				),
-				'desc_tip' => esc_html__( 'European Union guidance requires displaying the minimal price if a product is on sale.', 'omnibus' ),
+				'desc'    => esc_html__( 'European Union guidance requires displaying the minimal price if a product is on sale.', 'omnibus' ),
+			),
+			array(
+				'title'   => __( 'No previous price', 'omnibus' ),
+				'id'      => $this->get_name( 'missing' ),
+				'default' => 'current',
+				'type'    => 'radio',
+				'options' => array(
+					'current' => esc_html__( 'Display current price', 'omnibus' ),
+					'no'      => esc_html__( 'Do not display anything', 'omnibus' ),
+				),
+				'desc'    => esc_html__( 'What do you show when no data is available?', 'omnibus' ),
 			),
 			/**
 			 * Show on
@@ -643,7 +670,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			'default' => 'woocommerce_get_price_html',
 			'type'    => 'select',
 			'options' => array(
-				'woocommerce_get_price_html'     => __( 'After price (recommnded)', 'omnibus' ),
+				'woocommerce_get_price_html'     => __( 'After price (recommended)', 'omnibus' ),
 				'woocommerce_product_meta_start' => __( 'Before product meta data', 'omnibus' ),
 				'woocommerce_product_meta_end'   => __( 'After product meta data', 'omnibus' ),
 				'the_content_start'              => __( 'At the begining of the content', 'omnibus' ),
@@ -651,16 +678,14 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 				'do_not_show'                    => __( 'Do not show. I will handle it myself.', 'omnibus' ),
 			),
 		);
-		/**
-		 * messages
-		 */
-		$settings[] = $this->settings_message_settings();
-		$settings[] = $this->settings_message();
-
 		$settings[] = array(
 			'type' => 'sectionend',
 			'id'   => $this->get_name( 'sectionend' ),
 		);
+		/**
+		 * messages
+		 */
+		$settings = array_merge( $settings, $this->settings_messages() );
 		return $settings;
 	}
 

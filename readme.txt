@@ -120,6 +120,12 @@ You can do it on [Support Threads](https://wordpress.org/support/plugin/omnibus/
 
 == Changelog ==
 
+= 2.1.6 (2023-01-08) =
+
+* In order to reduce confusion, the default displayed data for a product in the admin panel that does not have a previous price saved has been changed.
+* Resolved an issue with retrieving Omnibus price for variant. Props for [Mychal](https://wordpress.org/support/users/mychal/).
+* The ability to toggle the Omnibus message when we do not have enough previous data available has been added. By default, it shows current price.
+
 = 2.1.5 (2023-01-08) =
 
 * Resolved an issue with retrieving Omnibus price for variants. Props for [Mychal](https://wordpress.org/support/users/mychal/).
