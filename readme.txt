@@ -1,7 +1,7 @@
 === PLUGIN_TITLE ===
 Contributors: iworks
 Donate link: https://ko-fi.com/iworks?utm_source=omnibus&utm_medium=readme-donate
-Tags: WooCommerce, omnibus, price, LMS, shop, e-commerce, product, course, download
+Tags: WooCommerce, omnibus, price, LMS, shop, e-commerce, product, course, download, history
 Requires at least: PLUGIN_REQUIRES_WORDPRESS
 Tested up to: 6.1
 Stable tag: PLUGIN_VERSION
@@ -101,6 +101,10 @@ For any WooCommerce product:
 `
 do_action( 'iworks_omnibus_wc_lowest_price_message', $product_ID );
 `
+
+= I have a problem with the plugin, or I want to suggest a feature. Where can I do this? =
+
+You can do it on [Support Threads](https://wordpress.org/support/plugin/omnibus/#new-topic-0), but please add your ticket to [Github Issues](https://github.com/iworks/omnibu/issues).
 
 == Screenshots ==
 
