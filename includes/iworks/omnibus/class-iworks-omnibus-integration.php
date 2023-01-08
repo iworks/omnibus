@@ -128,11 +128,12 @@ abstract class iworks_omnibus_integration {
 	 * @since 1.0.0
 	 */
 	protected function _get_lowest_price_in_history( $lowest, $post_id ) {
-		$meta         = get_post_meta( $post_id, $this->meta_name );
-		$price_lowest = array();
+		$meta = get_post_meta( $post_id, $this->meta_name );
 		if ( empty( $meta ) ) {
-			return $price_lowest;
+			return array();
 		}
+		uasort( $meta, array( $this, 'sort_meta_by_price' ) );
+		$price_lowest              = array();
 		$now                       = time();
 		$price                     = array(
 			'init'      => true,
@@ -146,16 +147,17 @@ abstract class iworks_omnibus_integration {
 			$old = strtotime( sprintf( '-%d days', $this->get_days() ), $last_price_drop_timestamp );
 		}
 		foreach ( $meta as $data ) {
+			if ( floatval( $data['price'] ) > $price['price'] ) {
+				continue;
+			}
 			if ( intval( $old ) >= intval( $data['timestamp'] ) ) {
 				continue;
 			}
-			if ( $last_price_drop_timestamp <= intval( $data['timestamp'] ) ) {
+			if ( intval( $last_price_drop_timestamp ) === intval( $data['timestamp'] ) ) {
 				continue;
 			}
-			if ( floatval( $data['price'] ) <= floatval( $price['price'] ) ) {
-				$price         = $data;
-				$price['from'] = $old;
-			}
+			$price         = $data;
+			$price['from'] = $old;
 		}
 		if ( isset( $price['init'] ) ) {
 			return array();
@@ -296,6 +298,13 @@ abstract class iworks_omnibus_integration {
 			'desc'          => __( '%1$d - number of days, %2$s - the lowest price.', 'omnibus' ),
 			'checkboxgroup' => 'end',
 		);
+	}
+
+	private function sort_meta_by_price( $a, $b ) {
+		if ( floatval( $a['price'] ) === floatval( $b['price'] ) ) {
+			return 0;
+		}
+		return  floatval( $a['price'] ) > floatval( $b['price'] ) ? 1 : -1;
 	}
 }
 

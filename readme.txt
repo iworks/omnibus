@@ -120,8 +120,10 @@ You can do it on [Support Threads](https://wordpress.org/support/plugin/omnibus/
 
 == Changelog ==
 
-= 2.1.5 (2023-01-07) =
+= 2.1.5 (2023-01-08) =
 
+* Resolved an issue with retrieving Omnibus price for variants. Props for [Mychal](https://wordpress.org/support/users/mychal/).
+* The ability to toggle the Omnibus message on WooCommerce Cart Page has been added. By default is hidden.
 * The settings screen has been slightly improved.
 
 = 2.1.4 (2023-01-07) =

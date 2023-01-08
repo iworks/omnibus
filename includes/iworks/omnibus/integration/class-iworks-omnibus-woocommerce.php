@@ -81,6 +81,14 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 				add_filter( 'woocommerce_get_price_html', array( $this, 'filter_woocommerce_get_price_html' ), 10, 2 );
 		}
 		/**
+		 * WooCommerce show in cart
+		 *
+		 * @since 2.1.5
+		 */
+		if ( 'yes' === get_option( $this->get_name( 'cart' ), 'no' ) ) {
+			add_filter( 'woocommerce_cart_item_price', array( $this, 'filter_woocommerce_cart_item_price' ), 10, 3 );
+		}
+		/**
 		 * Tutor LMS (as relatedo to WooCommerce)
 		 *
 		 * @since 1.0.1
@@ -287,6 +295,8 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			case 'variable':
 				$price_lowest = $this->woocommerce_get_price_html_for_variable( $price, $product );
 				return apply_filters( 'iworks_omnibus_integration_woocommerce_price_lowest', $price_lowest, $product );
+			case 'variation':
+				break;
 			default:
 				if (
 				get_post_type() === $product_type
@@ -375,7 +385,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		if ( 'no' === get_option( $this->get_name( 'variable' ), 'yes' ) ) {
 			return $price;
 		}
-		$price_lowest = array();
+		$price_lowest = $this->woocommerce_get_lowest_price_in_history( $product->get_ID() );
 		foreach ( $product->get_available_variations() as $variable ) {
 			$o = $this->woocommerce_get_lowest_price_in_history( $variable['variation_id'] );
 			if ( ! isset( $price_lowest['price'] ) ) {
@@ -469,17 +479,34 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 				'desc_tip'      => __( 'Show or hide on a single product page.', 'omnibus' ),
 			),
 			array(
-				'desc'          => __( 'WooCommerce Shop page', 'omnibus' ),
+				'desc'          => __( 'WooCommerce Shop', 'omnibus' ),
 				'id'            => $this->get_name( 'shop' ),
 				'default'       => 'no',
 				'type'          => 'checkbox',
 				'checkboxgroup' => '',
 				'desc_tip'      => sprintf(
-					__( 'Show or hide on the shop page (<a href="%s#woocommerce_shop_page_id">WooCommerce Shop Page ID</a>).', 'omnibus' ),
+					__( 'Show or hide on the <a href="%s#woocommerce_shop_page_id" target="_blank">Shop Page</a>.', 'omnibus' ),
 					add_query_arg(
 						array(
 							'page' => 'wc-settings',
 							'tab'  => 'products',
+						),
+						admin_url( 'admin.php' )
+					)
+				),
+			),
+			array(
+				'desc'          => __( 'WooCommerce Cart', 'omnibus' ),
+				'id'            => $this->get_name( 'cart' ),
+				'default'       => 'no',
+				'type'          => 'checkbox',
+				'checkboxgroup' => '',
+				'desc_tip'      => sprintf(
+					__( 'Show or hide on the <a href="%s#woocommerce_cart_page_id" target="_blank">Cart Page</a>.', 'omnibus' ),
+					add_query_arg(
+						array(
+							'page' => 'wc-settings',
+							'tab'  => 'advanced',
 						),
 						admin_url( 'admin.php' )
 					)
@@ -779,6 +806,24 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			__( 'Omnibus', 'omnibus' )
 		);
 		return $actions;
+	}
+
+	/**
+	 * WooCommerce show in cart
+	 *
+	 * @since 2.1.5
+	 */
+	public function filter_woocommerce_cart_item_price( $price, $cart_item, $cart_item_key ) {
+		if ( 'yes' === get_option( $this->get_name( 'on_sale' ), 'yes' ) ) {
+			if ( ! $cart_item['data']->is_on_sale() ) {
+				return $price;
+			}
+		}
+		$price_lowest = $this->get_lowest_price( $cart_item['data'] );
+		if ( empty( $price_lowest ) ) {
+			return $price;
+		}
+		return $this->add_message( $price, $price_lowest, 'wc_price' );
 	}
 
 }
