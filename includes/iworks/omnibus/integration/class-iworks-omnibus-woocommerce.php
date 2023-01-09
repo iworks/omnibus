@@ -383,9 +383,13 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		$price  = $this->get_price( $product );
 		$lowest = $this->_get_lowest_price_in_history( $price, $post_id );
 		if ( is_admin() ) {
-			return $lowest;
-		}
-		if ( 'current' !== get_option( $this->get_name( 'missing' ), 'current' ) ) {
+			if ( empty( $lowest ) ) {
+				$value = get_post_meta( $post_id, $this->get_name() );
+				if ( empty( $value ) ) {
+					return $lowest;
+				}
+			}
+		} elseif ( 'current' !== get_option( $this->get_name( 'missing' ), 'current' ) ) {
 			return $lowest;
 		}
 		if ( empty( $lowest ) ) {

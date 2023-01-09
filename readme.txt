@@ -120,10 +120,11 @@ You can do it on [Support Threads](https://wordpress.org/support/plugin/omnibus/
 
 == Changelog ==
 
-= 2.1.7 (2023-01-09) =
+= 2.2.0 (2023-01-09) =
 
 * Placeholders: `{price}`, `{timestamp}`, `{days}` and `{when}` has been added to the price message.
 * A few new message display positions have been added.
+* An issue with saving the last price change has been fixed. It was saved only when the sale price was changed, not always when the price was changed. Props for [Rafał Bieleniewicz](https://wordpress.org/support/users/bielen2k/).
 
 = 2.1.6 (2023-01-08) =
 

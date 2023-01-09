@@ -93,7 +93,7 @@ abstract class iworks_omnibus_integration {
 			is_array( $price_last )
 			&& $price !== $price_last['price']
 		) {
-			$this->add_price_log( $post_id, $price, $price < $price_last['price'] );
+			$this->add_price_log( $post_id, $price, floatval( $price ) !== floatval( $price_last['price'] ) );
 		}
 	}
 
