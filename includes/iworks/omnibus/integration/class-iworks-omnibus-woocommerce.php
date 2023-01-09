@@ -504,7 +504,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 					'current' => esc_html__( 'Display current price', 'omnibus' ),
 					'no'      => esc_html__( 'Do not display anything', 'omnibus' ),
 				),
-				'desc'    => esc_html__( 'What do you show when no data is available?', 'omnibus' ),
+				'desc'    => esc_html__( 'What do you want to show when no data is available?', 'omnibus' ),
 			),
 			/**
 			 * Show on
@@ -683,22 +683,22 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			'default' => 'woocommerce_get_price_html',
 			'type'    => 'select',
 			'options' => array(
-				'woocommerce_get_price_html'               => esc_html__( 'After price (recommended)', 'omnibus' ),
+				'woocommerce_get_price_html'               => esc_html__( 'After the price (recommended)', 'omnibus' ),
 				'do_not_show'                              => esc_html__( 'Do not show. I will handle it myself.', 'omnibus' ),
 				/** meta */
-				'woocommerce_product_meta_start'           => esc_html__( 'Before product meta data', 'omnibus' ),
-				'woocommerce_product_meta_end'             => esc_html__( 'After product meta data', 'omnibus' ),
+				'woocommerce_product_meta_start'           => esc_html__( 'Before the product meta data', 'omnibus' ),
+				'woocommerce_product_meta_end'             => esc_html__( 'After the product meta data', 'omnibus' ),
 				/** product summary */
-				'woocommerce_before_single_product_summary' => esc_html__( 'Before single product summary', 'omnibus' ),
-				'woocommerce_after_single_product_summary' => esc_html__( 'After single product summary', 'omnibus' ),
+				'woocommerce_before_single_product_summary' => esc_html__( 'Before the single product summary', 'omnibus' ),
+				'woocommerce_after_single_product_summary' => esc_html__( 'After the single product summary', 'omnibus' ),
 				/** cart form */
-				'woocommerce_before_add_to_cart_form'      => esc_html__( 'Before add to cart form', 'omnibus' ),
+				'woocommerce_before_add_to_cart_form'      => esc_html__( 'Before the add to cart form', 'omnibus' ),
 				/** cart button */
-				'woocommerce_before_add_to_cart_button'    => esc_html__( 'Before add to cart button', 'omnibus' ),
-				'woocommerce_after_add_to_cart_button'     => esc_html__( 'After add to cart button', 'omnibus' ),
+				'woocommerce_before_add_to_cart_button'    => esc_html__( 'Before the add to cart button', 'omnibus' ),
+				'woocommerce_after_add_to_cart_button'     => esc_html__( 'After the add to cart button', 'omnibus' ),
 				/** cart quantity */
-				'woocommerce_before_add_to_cart_quantity'  => esc_html__( 'Before add to cart quantity', 'omnibus' ),
-				'woocommerce_after_add_to_cart_quantity'   => esc_html__( 'After add to cart quantity', 'omnibus' ),
+				'woocommerce_before_add_to_cart_quantity'  => esc_html__( 'Before the add to cart quantity', 'omnibus' ),
+				'woocommerce_after_add_to_cart_quantity'   => esc_html__( 'After the add to cart quantity', 'omnibus' ),
 				// 'woocommerce_single_product_summary'        => esc_html__( 'Single product summary', 'omnibus' ),
 				/** content */
 				'the_content_start'                        => esc_html__( 'At the begining of the content', 'omnibus' ),
