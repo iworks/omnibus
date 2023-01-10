@@ -233,9 +233,19 @@ abstract class iworks_omnibus_integration {
 		$price = preg_replace( '/{timestamp}/', $price_lowest['timestamp'], $price );
 		$price = preg_replace( '/{when}/', date_i18n( get_option( 'date_format' ), $price_lowest['timestamp'] ), $price );
 		/**
+		 * use filter `iworks_omnibus_message_html`
+		 */
+		$message = apply_filters( 'iworks_omnibus_message_html', $price, $price_lowest );
+		/**
+		 * use filter `orphan_replace`
+		 *
+		 * @since 2.2.2
+		 */
+		$message = apply_filters( 'orphan_replace', $message );
+		/**
 		 * return
 		 */
-		return apply_filters( 'iworks_omnibus_message_html', $price, $price_lowest );
+		return $message;
 	}
 
 	protected function get_name( $name = '' ) {

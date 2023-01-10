@@ -120,6 +120,11 @@ You can do it on [Support Threads](https://wordpress.org/support/plugin/omnibus/
 
 == Changelog ==
 
+= 2.2.2 (2023-01-10) =
+
+* When browsing the products, the plugin will try to complete the data; if it is missing, it will save the current price with the date of the last modification of the product.
+* The filter 'orphan_replace` from the [Orphans](https://wordpress.org/plugins/sierotki/) plugins has been added to the price message.
+
 = 2.2.1 (2023-01-10) =
 
 * An issue with ignoring taxes by price is replaced by a placeholder. Props for [Agniesz Kalukoszek](https://wordpress.org/support/users/agnieszkalukoszek/).

@@ -45,6 +45,12 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 */
 		add_action( 'admin_init', array( $this, 'action_admin_init' ) );
 		/**
+		 * maybe save initial data
+		 *
+		 * @since 2.2.2
+		 */
+		add_action( 'shutdown', array( $this, 'action_shutdown_maybe_save_product_price' ) );
+		/**
 		 * WooCommerce
 		 *
 		 * @since 1.0.0
@@ -922,5 +928,26 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			),
 		);
 		return $settings;
+	}
+
+	/**
+	 * maybe save product price
+	 */
+	public function action_shutdown_maybe_save_product_price() {
+		if ( ! is_singular( 'product' ) ) {
+			return;
+		}
+		if ( ! empty( get_post_meta( get_the_ID(), $this->get_name() ) ) ) {
+			return;
+		}
+		global $product;
+		$data = array(
+			'price'     => $this->get_price( $product ),
+			'timestamp' => get_the_modified_date( 'U' ),
+		);
+		if ( empty( $data['price'] ) ) {
+			return;
+		}
+		add_post_meta( $product->get_ID(), $this->meta_name, $data );
 	}
 }
