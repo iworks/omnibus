@@ -229,7 +229,7 @@ abstract class iworks_omnibus_integration {
 		 * @since 2.1.7
 		 */
 		$price = preg_replace( '/{days}/', $this->get_days(), $price );
-		$price = preg_replace( '/{price}/', $price_lowest['price'], $price );
+		$price = preg_replace( '/{price}/', $price_to_show, $price );
 		$price = preg_replace( '/{timestamp}/', $price_lowest['timestamp'], $price );
 		$price = preg_replace( '/{when}/', date_i18n( get_option( 'date_format' ), $price_lowest['timestamp'] ), $price );
 		/**
@@ -328,7 +328,6 @@ abstract class iworks_omnibus_integration {
 	}
 
 	protected function settings_message() {
-
 		$description = array();
 		/* translators: Do not translate {price}, it is the replacement placeholder ! */
 		$description[] = esc_html__( 'Use the {price} placeholder to display price.', 'omnibus' );

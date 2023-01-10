@@ -85,7 +85,6 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			case 'the_content_end':
 				add_filter( 'the_content', array( $this, 'filter_the_content' ) );
 				break;
-
 			default:
 				add_filter( 'woocommerce_get_price_html', array( $this, 'filter_woocommerce_get_price_html' ), 10, 2 );
 		}
@@ -713,6 +712,12 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 * messages
 		 */
 		$settings = array_merge( $settings, $this->settings_messages() );
+		/**
+		 * Reviews
+		 *
+		 * @since 2.3.0
+		 */
+		// $settings = array_merge( $settings, $this->settings_review() );
 		return $settings;
 	}
 
@@ -894,5 +899,28 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			return;
 		}
 		$this->run( get_the_ID() );
+	}
+
+	/**
+	 * Reviews Settings
+	 *
+	 * @since 2.3.0
+	 */
+	private function settings_review() {
+		if ( 'yes' !== get_option( 'woocommerce_enable_reviews', 'yes' ) ) {
+			return array();
+		}
+		$settings = array(
+			array(
+				'title' => __( 'Reviews', 'omnibus' ),
+				'type'  => 'title',
+				'id'    => $this->get_name( 'reviews' ),
+			),
+			array(
+				'type' => 'sectionend',
+				'id'   => $this->get_name( 'reviews_sectionend' ),
+			),
+		);
+		return $settings;
 	}
 }

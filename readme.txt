@@ -120,6 +120,10 @@ You can do it on [Support Threads](https://wordpress.org/support/plugin/omnibus/
 
 == Changelog ==
 
+= 2.2.1 (2023-01-10) =
+
+* An issue with ignoring taxes by price is replaced by a placeholder. Props for [Agniesz Kalukoszek](https://wordpress.org/support/users/agnieszkalukoszek/).
+
 = 2.2.0 (2023-01-09) =
 
 * Placeholders: `{price}`, `{timestamp}`, `{days}` and `{when}` has been added to the price message.
