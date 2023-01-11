@@ -120,6 +120,9 @@ You can do it on [Support Threads](https://wordpress.org/support/plugin/omnibus/
 
 == Changelog ==
 
+
+* To avoid incorrect filter calls without a second parameter, the `woocommerce_duplicate_product_exclude_meta` filter function now has a default value for the second parameter.
+
 = 2.2.2 (2023-01-10) =
 
 * When browsing the products, the plugin will try to complete the data; if it is missing, it will save the current price with the date of the last modification of the product.

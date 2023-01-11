@@ -839,7 +839,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 *
 	 * @since 2.0.3
 	 */
-	public function filter_woocommerce_duplicate_product_exclude_meta( $meta_to_exclude, $existing_meta_keys ) {
+	public function filter_woocommerce_duplicate_product_exclude_meta( $meta_to_exclude, $existing_meta_keys = array() ) {
 		$meta_to_exclude[] = $this->meta_name;
 		$meta_to_exclude[] = $this->last_price_drop_timestamp;
 		return $meta_to_exclude;
