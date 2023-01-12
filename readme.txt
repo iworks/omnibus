@@ -120,8 +120,10 @@ You can do it on [Support Threads](https://wordpress.org/support/plugin/omnibus/
 
 == Changelog ==
 
+= 2.2.3 (2023-01-12) =
 
 * To avoid incorrect filter calls without a second parameter, the `woocommerce_duplicate_product_exclude_meta` filter function now has a default value for the second parameter.
+* Unquoted attribute values in HTML have been fixed. Props for [Michał](https://wordpress.org/support/users/mkrawczykowski/).
 
 = 2.2.2 (2023-01-10) =
 

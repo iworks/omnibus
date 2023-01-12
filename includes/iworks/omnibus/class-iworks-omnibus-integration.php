@@ -209,7 +209,7 @@ abstract class iworks_omnibus_integration {
 		 */
 		$attributes = array();
 		foreach ( $price_lowest as $key => $value ) {
-			$attributes[] = sprintf( 'data-iwo-%s=%s"', esc_html( $key ), esc_attr( $value ) );
+			$attributes[] = sprintf( 'data-iwo-%s="%s"', esc_html( $key ), esc_attr( $value ) );
 		}
 		$price .= apply_filters(
 			'iworks_omnibus_message',
