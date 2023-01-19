@@ -181,7 +181,10 @@ abstract class iworks_omnibus_integration {
 			return $price;
 		}
 		$message = __( 'Previous lowest price was %2$s.', 'omnibus' );
-		if ( 'custom' === get_option( $this->get_name( 'message_settings' ), 'default' ) ) {
+		if (
+			'custom' === get_option( $this->get_name( 'message_settings' ), 'no' )
+			|| 'yes' === get_option( $this->get_name( 'message_settings' ), 'no' )
+		) {
 			$message = get_option(
 				$this->get_name( 'message' ),
 				__( 'Previous lowest price was %2$s.', 'omnibus' )
@@ -192,7 +195,10 @@ abstract class iworks_omnibus_integration {
 		 *
 		 * @since 2.3.0
 		 */
-		$message = apply_filters( 'iworks_omnibus_message_template', $message );
+		$message = apply_filters( 'iworks_omnibus_message_template', $message, $price, $price_lowest );
+		if ( empty( $message ) ) {
+			return $price;
+		}
 		/**
 		 * price to show
 		 */

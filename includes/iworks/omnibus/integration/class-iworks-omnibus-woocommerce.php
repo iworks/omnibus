@@ -43,6 +43,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		add_action( 'iworks_omnibus_wc_lowest_price_message', array( $this, 'action_get_message' ) );
 		add_filter( 'iworks_omnibus_get_name', array( $this, 'get_name' ) );
 		add_filter( 'iworks_omnibus_message_template', array( $this, 'filter_iworks_omnibus_message_template_for_admin_list' ) );
+		add_filter( 'iworks_omnibus_message_template', array( $this, 'filter_iworks_omnibus_message_template_for_product' ), 10, 3 );
 		/**
 		 * admin init
 		 *
@@ -60,6 +61,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 *
 		 * @since 1.0.0
 		 */
+		add_action( 'woocommerce_after_product_object_save', array( $this, 'action_woocommerce_save_maybe_save_short' ), 10, 1 );
 		add_action( 'woocommerce_after_product_object_save', array( $this, 'action_woocommerce_save_price_history' ), 10, 1 );
 		add_action( 'woocommerce_product_options_pricing', array( $this, 'action_woocommerce_product_options_pricing' ) );
 		add_action( 'woocommerce_variation_options_pricing', array( $this, 'action_woocommerce_variation_options_pricing' ), 10, 3 );
@@ -128,6 +130,26 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 */
 	public function action_admin_init() {
 		add_filter( 'plugin_action_links', array( $this, 'filter_add_link_omnibus_configuration' ), PHP_INT_MAX, 4 );
+		add_action( 'admin_enqueue_scripts', array( $this, 'action_admin_enqueue_scripts_register' ) );
+		add_action( 'load-woocommerce_page_wc-settings', array( $this, 'enqueue_scripts' ) );
+	}
+
+	public function enqueue_scripts() {
+		wp_enqueue_script( $this->get_name( __CLASS__ ) );
+	}
+
+	/**
+	 * Enqueue scripts for all admin pages.
+	 *
+	 * @since 2.3.0
+	 */
+	public function action_admin_enqueue_scripts_register() {
+		wp_register_script(
+			$this->get_name( __CLASS__ ),
+			plugins_url( 'assets/scripts/admin/woocommerce.min.js', dirname( dirname( dirname( __DIR__ ) ) ) ),
+			array( 'jquery' ),
+			'PLUGIN_VERSION',
+		);
 	}
 
 	/**
@@ -158,6 +180,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		$this->print_header( 'description' );
 		$this->woocommerce_wp_text_input_price( $price_lowest );
 		$this->woocommerce_wp_text_input_date( $price_lowest );
+		$this->woocommerce_wp_checkbox_short( $post_id );
 	}
 
 	/**
@@ -217,7 +240,17 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			return apply_filters( 'iworks_omnibus_show', false );
 		}
 		/**
-		 * front-end
+		 * front-end short term good
+		 */
+		if ( 'yes' === get_option( $this->get_name( 'admin_short' ), 'no' ) ) {
+			if ( 'yes' === get_post_meta( $post_id, $this->get_name( 'is_short' ), true ) ) {
+				if ( 'no' === get_option( $this->get_name( 'short_message' ), 'no' ) ) {
+					return apply_filters( 'iworks_omnibus_show', false );
+				}
+			}
+		}
+		/**
+		 * front-end on sale
 		 */
 		if ( 'yes' === get_option( $this->get_name( 'on_sale' ), 'yes' ) ) {
 			$product = wc_get_product( $post_id );
@@ -493,6 +526,16 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			return $settings;
 		}
 		$settings = array(
+			array(
+				'title' => __( 'Settings has been moved', 'omnibus' ),
+				'id'    => $this->get_name( 'moved' ),
+				'type'  => 'title',
+				'desc'  => sprintf(
+					esc_html__( 'Please visit new %1$ssettings page%2$s.', 'omnibus' ),
+					sprintf( '<a href="%s">', remove_query_arg( 'section', add_query_arg( 'tab', 'omnibus' ) ) ),
+					'</a>'
+				),
+			),
 			$this->settings_title(),
 			array(
 				'title'   => __( 'Display minimal price', 'omnibus' ),
@@ -949,6 +992,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		$data = array(
 			'price'     => $this->get_price( $product ),
 			'timestamp' => get_the_modified_date( 'U' ),
+			'type'      => 'autosaved',
 		);
 		if ( empty( $data['price'] ) ) {
 			return;
@@ -961,24 +1005,103 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		return $settings;
 	}
 
-	public function filter_iworks_omnibus_message_template_for_admin_list( $message ) {
+	public function filter_iworks_omnibus_message_template_for_admin_list( $template ) {
 		if ( ! is_admin() ) {
-			return $message;
+			return $template;
 		}
 		$screen = get_current_screen();
 		if ( empty( $screen ) ) {
-			return $message;
+			return $template;
 		}
 		if ( ! is_a( $screen, 'WP_Screen' ) ) {
-			return $message;
+			return $template;
 		}
 		if ( 'product' !== $screen->post_type ) {
-			return $message;
+			return $template;
 		}
 		if ( 'no' === get_option( $this->get_name( 'admin_list_short' ), 'no' ) ) {
-			return $message;
+			return $template;
 		}
-		return __( 'OP: {price}', 'omnibus' );
+		return __( 'OD: {price}', 'omnibus' );
+	}
+
+	public function filter_iworks_omnibus_message_template_for_product( $template, $price, $price_lowest ) {
+		if ( is_admin() ) {
+			return $template;
+		}
+		/**
+		 * short term product
+		 */
+		$post_id = get_the_ID();
+		if ( 'yes' === get_post_meta( $post_id, $this->get_name( 'is_short' ), true ) ) {
+			switch ( get_option( $this->get_name( 'short_message' ), 'no' ) ) {
+				case 'no':
+					return '';
+				case 'inform':
+					if ( 'yes' == get_option( $this->get_name( 'message_settings' ), 'no' ) ) {
+						$v = get_option( $this->get_name( 'message_short' ), false );
+						if ( ! empty( $v ) ) {
+							return $v;
+						}
+					}
+					return __( 'This is short term product.', 'omnibus' );
+			}
+		}
+		/**
+		 * no price
+		 */
+		if (
+			empty( $price_lowest )
+			|| (
+				isset( $price_lowest['type'] )
+				&& 'autosaved' === $price_lowest['type']
+			)
+		) {
+			switch ( get_option( $this->get_name( 'missing' ), 'current' ) ) {
+				case 'no':
+					return '';
+				case 'custom':
+					if ( 'yes' == get_option( $this->get_name( 'message_settings' ), 'no' ) ) {
+						$v = get_option( $this->get_name( 'message_no_data' ), false );
+						if ( ! empty( $v ) ) {
+							return $v;
+						}
+					}
+					return __( 'The previous price is not available.', 'omnibus' );
+			}
+		}
+		return $template;
+	}
+
+	public function woocommerce_wp_checkbox_short( $post_id ) {
+		if ( 'no' === get_option( $this->get_name( 'admin_short' ), 'no' ) ) {
+			return;
+		}
+		woocommerce_wp_checkbox(
+			wp_parse_args(
+				array(
+					'id'          => $this->get_name( 'is_short' ),
+					'value'       => get_post_meta( $post_id, $this->get_name( 'is_short' ), true ),
+					'label'       => __( 'Hide Omnibus', 'omnibus' ),
+					'description' => sprintf(
+						__( 'This is a short-term product, keep the message hidden. ', 'omnibus' ),
+						$this->get_days()
+					),
+				),
+				$configuration
+			)
+		);
+	}
+
+	public function action_woocommerce_save_maybe_save_short( $product ) {
+		$short = filter_input( INPUT_POST, $this->get_name( 'is_short' ) );
+		if ( 'yes' === $short ) {
+			if ( ! update_post_meta( $product->id, $this->get_name( 'is_short' ), 'yes' ) ) {
+				add_post_meta( $product->id, $this->get_name( 'is_short' ), 'yes', true );
+			}
+		} else {
+			delete_post_meta( $product->id, $this->get_name( 'is_short' ) );
+		}
 	}
 
 }

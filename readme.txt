@@ -50,7 +50,7 @@ There are 3 ways to install this plugin:
 1. Search for `PLUGIN_TITLE`.
 1. Click to install.
 1. Activate the plugin.
-1. WooCommerce: Check the configuration by going to WPA > WooCommerce > Settings > Products > Omnibus Directive.
+1. WooCommerce: Check the configuration by going to WPA > WooCommerce > Settings > Omnibus.
 1. LearnPress: Check the configuration by going to WPA > LearnPress > Settings > Courses > Omnibus Directive Settings.
 
 = 2. The easy way =
@@ -60,14 +60,14 @@ There are 3 ways to install this plugin:
 1. Select the button `Upload Plugin`.
 1. Upload the .zip file you just downloaded.
 1. Activate the plugin.
-1. WooCommerce: Check the configuration by going to WPA > WooCommerce > Settings > Products > Omnibus Directive.
+1. WooCommerce: Check the configuration by going to WPA > WooCommerce > Settings > Omnibus.
 1. LearnPress: Check the configuration by going to WPA > LearnPress > Settings > Courses > Omnibus Directive Settings.
 
 = 3. The old and reliable way (FTP) =
 
 1. Upload the `omnibus` folder to the `/wp-content/plugins/` directory.
 1. Activate the plugin through the 'Plugins' menu in WordPress.
-1. WooCommerce: Check the configuration by going to WPA > WooCommerce > Settings > Products > Omnibus Directive.
+1. WooCommerce: Check the configuration by going to WPA > WooCommerce > Settings > Omnibus.
 1. LearnPress: Check the configuration by going to WPA > LearnPress > Settings > Courses > Omnibus Directive Settings.
 
 == Frequently Asked Questions ==
@@ -123,6 +123,7 @@ You can do it on [Support Threads](https://wordpress.org/support/plugin/omnibus/
 = 2.3.0 (2023-01-19) =
 
 * The configuration for WooCommerce has been heavily remodeled.
+* The plugin configuration has been moved from "WooCommerce/Settings/Products/Omnibus Directive" to "WooCommerce/Settings/Omnibus."
 * The `iworks_omnibus_message_template` filter has been added to allow changing the message template.
 * The short format for the admin products list page has been added.
 

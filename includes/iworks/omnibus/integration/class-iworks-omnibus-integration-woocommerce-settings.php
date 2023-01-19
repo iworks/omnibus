@@ -68,7 +68,7 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 				),
 			),
 			array(
-				'title'   => __( 'In the product', 'omnibus' ),
+				'title'   => __( 'Where on Single Product', 'omnibus' ),
 				'desc'    => __( 'Allows you to choose where the message is displayed. According to the directive, we recommend displaying it right after the price. Some places may not work depending on the theme you are using and how your site is built.', 'omnibus' ),
 				'id'      => $this->get_name( 'where' ),
 				'default' => 'woocommerce_get_price_html',
@@ -97,15 +97,15 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 				),
 			),
 			array(
-				'title'   => __( 'No previous price', 'omnibus' ),
-				'id'      => $this->get_name( 'missing' ),
-				'default' => 'current',
-				'type'    => 'radio',
-				'options' => array(
-					'current' => esc_html__( 'Display current price', 'omnibus' ),
-					'no'      => esc_html__( 'Do not display anything', 'omnibus' ),
+				'title'             => __( 'Number of days', 'omnibus' ),
+				'desc'              => __( 'This controls the number of days to show. According to the Omnibus Directive, minimum days is 30 after curent sale was started.', 'omnibus' ),
+				'id'                => $this->get_name( 'days' ),
+				'default'           => '30',
+				'type'              => 'number',
+				'css'               => 'width: 80px;',
+				'custom_attributes' => array(
+					'min' => 30,
 				),
-				'desc'    => esc_html__( 'What do you want to show when no data is available?', 'omnibus' ),
 			),
 			array(
 				'type' => 'sectionend',
@@ -209,13 +209,111 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 	}
 
 	/**
-	 * Get settings for the WooCommerce.com section.
+	 * Get settings for the messages section.
+	 *
+	 * @return array
+	 */
+	protected function get_settings_for_messages_section() {
+		$description = array();
+		/* translators: Do not translate {price}, it is the replacement placeholder ! */
+		$description[] = esc_html__( 'Use the {price} placeholder to display price.', 'omnibus' );
+		/* translators: Do not translate {timestamp}, it is the replacement placeholder ! */
+		$description[] = esc_html__( 'Use the {timestamp} placeholder to display timestamp.', 'omnibus' );
+		/* translators: Do not translate {days}, it is the replacement placeholder ! */
+		$description[] = esc_html__( 'Use the {days} placeholder to display days.', 'omnibus' );
+		/* translators: Do not translate {when}, it is the replacement placeholder ! */
+		$description[] = esc_html__( 'Use the {when} placeholder to display date.', 'omnibus' );
+		$settings      =
+			array(
+				array(
+					'title' => esc_html__( 'Messages Settings', 'omnibus' ),
+					'type'  => 'title',
+					'id'    => $this->get_name( 'messages' ),
+				),
+				array(
+					'title'    => __( 'No Previous Price', 'omnibus' ),
+					'id'       => $this->get_name( 'missing' ),
+					'default'  => 'current',
+					'type'     => 'radio',
+					'options'  => array(
+						'current' => esc_html__( 'Display current price', 'omnibus' ),
+						'inform'  => esc_html__( 'Inform about it', 'omnibus' ),
+						'no'      => esc_html__( 'Do not display anything', 'omnibus' ),
+					),
+					'desc_tip' => esc_html__( 'What do you want to show when no data is available?', 'omnibus' ),
+				),
+				array(
+					'title'    => __( 'Short Term Product', 'omnibus' ),
+					'id'       => $this->get_name( 'short_message' ),
+					'default'  => 'no',
+					'type'     => 'radio',
+					'options'  => array(
+						'inform' => esc_html__( 'Inform about it', 'omnibus' ),
+						'no'     => esc_html__( 'Do not display anything', 'omnibus' ),
+					),
+					'desc_tip' => esc_html__( 'What should I do for a product with a short term life?', 'omnibus' ),
+				),
+				array(
+					'type' => 'sectionend',
+					'id'   => $this->get_name( 'messages-end' ),
+				),
+				array(
+					'title' => esc_html__( 'Messages', 'omnibus' ),
+					'type'  => 'title',
+					'id'    => $this->get_name( 'messages-custom' ),
+					'desc'  => str_replace(
+						array( '{', '}' ),
+						array( '<code>{', '}</code>' ),
+						implode( '<br />', $description )
+					),
+				),
+				array(
+					'title'         => __( 'Custom', 'omnibus' ),
+					'checkboxgroup' => 'start',
+					'type'          => 'checkbox',
+					'default'       => 'no',
+					'id'            => $this->get_name( 'message_settings' ),
+					'desc'          => __( 'Allow to use custom messages', 'omnibus' ),
+					'class'         => 'iworks_omnibus_messages_settings',
+				),
+				array(
+					'title'   => __( 'Omnibus Message', 'omnibus' ),
+					'type'    => 'text',
+					'id'      => $this->get_name( 'message' ),
+					'default' => __( 'Previous lowest price: {price}.', 'omnibus' ),
+					'class'   => 'iworks_omnibus_messages_settings_field',
+					'desc'    => __( 'A message displaying the last lowest price before the promotion was introduced.', 'omnibus' ),
+				),
+				array(
+					'title'   => __( 'No Data Message', 'omnibus' ),
+					'type'    => 'text',
+					'id'      => $this->get_name( 'message_no_data' ),
+					'default' => __( 'The previous price is not available.', 'omnibus' ),
+					'class'   => 'iworks_omnibus_messages_settings_field',
+					'desc'    => __( 'A message informing about the lack of price data for the selected product.', 'omnibus' ),
+				),
+				array(
+					'title'   => __( 'Short Term Product Message', 'omnibus' ),
+					'type'    => 'text',
+					'id'      => $this->get_name( 'message_short' ),
+					'default' => __( 'This is short term product.', 'omnibus' ),
+					'class'   => 'iworks_omnibus_messages_settings_field',
+					'desc'    => __( 'A message informing that there is no need to inform about the price due to the short expiry date.', 'omnibus' ),
+				),
+				array(
+					'type' => 'sectionend',
+					'id'   => $this->get_name( 'messages-custom-end' ),
+				),
+			);
+		return apply_filters( 'iworks_omnibus_messages_settings', $settings );
+	}
+
+	/**
+	 * Get settings for the admin section.
 	 *
 	 * @return array
 	 */
 	protected function get_settings_for_admin_section() {
-		$tracking_info_text = sprintf( '<a href="%s" target="_blank">%s</a>', 'https://woocommerce.com/usage-tracking', esc_html__( 'WooCommerce.com Usage Tracking Documentation', 'omnibus' ) );
-
 		$settings =
 			array(
 				array(
@@ -237,7 +335,12 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 					'id'              => $this->get_name( 'admin_list_short' ),
 					'default'         => 'no',
 					'type'            => 'checkbox',
-					'desc'            => __( 'Show short message: "OD: $10"', 'omnibus' ),
+					'desc'            => sprintf(
+						__( 'Show short message: %2$sOD: $1$s%3$s', 'omnibus' ),
+						wc_price( 11.70 ),
+						'<code>',
+						'</code>'
+					),
 					'show_if_checked' => 'yes',
 					'checkboxgroup'   => 'end',
 				),

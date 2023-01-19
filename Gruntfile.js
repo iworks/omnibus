@@ -19,7 +19,11 @@ module.exports = function(grunt) {
     var buildyear = 1900 + new Date().getYear();
 
     var conf = {
-        js_files_concat: {},
+        js_files_concat: {
+            'assets/scripts/admin/woocommerce.js': [
+                'assets/scripts/src/admin/woocommerce.js',
+            ],
+        },
 
         css_files_compile: {},
 
@@ -52,7 +56,7 @@ module.exports = function(grunt) {
                 banner: '/*! <%= pkg.title %> - v<%= pkg.version %>\n' +
                     ' * <%= pkg.homepage %>\n' +
                     ' * Copyright (c) <%= grunt.template.today("yyyy") %>;' +
-                    ' * Licensed GPLv2+' +
+                    ' * Licensed <%= pkg.license %>' +
                     ' */\n'
             },
             scripts: {
@@ -63,8 +67,8 @@ module.exports = function(grunt) {
         jshint: {
             all: [
                 'Gruntfile.js',
-                'assets/js/src/**/*.js',
-                'assets/js/test/**/*.js'
+                'assets/scripts/src/**/*.js',
+                'assets/scripts/test/**/*.js'
             ],
             options: {
                 curly: true,
@@ -88,9 +92,9 @@ module.exports = function(grunt) {
             all: {
                 files: [{
                     expand: true,
-                    src: ['*.js', '!*.min.js', '!shared*'],
-                    cwd: 'assets/js/',
-                    dest: 'assets/js/',
+                    src: ['admin/*.js', '!**/*.min.js', '!shared*'],
+                    cwd: 'assets/scripts/',
+                    dest: 'assets/scripts/',
                     ext: '.min.js',
                     extDot: 'last'
                 }],
@@ -98,7 +102,7 @@ module.exports = function(grunt) {
                     banner: '/*! <%= pkg.title %> - v<%= pkg.version %>\n' +
                         ' * <%= pkg.homepage %>\n' +
                         ' * Copyright (c) <%= grunt.template.today("yyyy") %>;' +
-                        ' * Licensed GPLv2+' +
+                        ' * Licensed <%= pkg.license %>' +
                         ' */\n',
                     mangle: {
                         reserved: ['jQuery']
@@ -108,7 +112,7 @@ module.exports = function(grunt) {
         },
 
         test: {
-            files: ['assets/js/test/**/*.js']
+            files: ['assets/scripts/test/**/*.js']
         },
 
         phpunit: {
@@ -143,7 +147,7 @@ module.exports = function(grunt) {
                 banner: '/*! <%= pkg.title %> - v<%= pkg.version %>\n' +
                     ' * <%= pkg.homepage %>\n' +
                     ' * Copyright (c) <%= grunt.template.today("yyyy") %>;' +
-                    ' * Licensed GPLv2+' +
+                    ' * Licensed <%= pkg.license %>' +
                     ' */\n',
                 mergeIntoShorthands: false
             },
@@ -170,7 +174,7 @@ module.exports = function(grunt) {
                 }
             },
             scripts: {
-                files: ['assets/js/src/**/*.js', 'assets/js/vendor/**/*.js'],
+                files: ['assets/scripts/src//**/*.js'],
                 tasks: ['jshint', 'concat', 'uglify'],
                 options: {
                     debounceDelay: 500
