@@ -28,6 +28,9 @@ include_once dirname( dirname( __FILE__ ) ) . '/class-iworks-omnibus-integration
 class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration {
 
 	public function __construct() {
+
+		add_filter( 'woocommerce_get_settings_pages', array( $this, 'filter_woocommerce_get_settings_pages' ) );
+
 		/**
 		 * Show message
 		 *
@@ -38,6 +41,8 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 * own action
 		 */
 		add_action( 'iworks_omnibus_wc_lowest_price_message', array( $this, 'action_get_message' ) );
+		add_filter( 'iworks_omnibus_get_name', array( $this, 'get_name' ) );
+		add_filter( 'iworks_omnibus_message_template', array( $this, 'filter_iworks_omnibus_message_template_for_admin_list' ) );
 		/**
 		 * admin init
 		 *
@@ -950,4 +955,30 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		}
 		add_post_meta( $product->get_ID(), $this->meta_name, $data );
 	}
+
+	public function filter_woocommerce_get_settings_pages( $settings ) {
+		$settings[] = include __DIR__ . '/class-iworks-omnibus-integration-woocommerce-settings.php';
+		return $settings;
+	}
+
+	public function filter_iworks_omnibus_message_template_for_admin_list( $message ) {
+		if ( ! is_admin() ) {
+			return $message;
+		}
+		$screen = get_current_screen();
+		if ( empty( $screen ) ) {
+			return $message;
+		}
+		if ( ! is_a( $screen, 'WP_Screen' ) ) {
+			return $message;
+		}
+		if ( 'product' !== $screen->post_type ) {
+			return $message;
+		}
+		if ( 'no' === get_option( $this->get_name( 'admin_list_short' ), 'no' ) ) {
+			return $message;
+		}
+		return __( 'OP: {price}', 'omnibus' );
+	}
+
 }

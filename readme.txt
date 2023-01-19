@@ -120,6 +120,12 @@ You can do it on [Support Threads](https://wordpress.org/support/plugin/omnibus/
 
 == Changelog ==
 
+= 2.3.0 (2023-01-19) =
+
+* The configuration for WooCommerce has been heavily remodeled.
+* The `iworks_omnibus_message_template` filter has been added to allow changing the message template.
+* The short format for the admin products list page has been added.
+
 = 2.2.3 (2023-01-12) =
 
 * To avoid incorrect filter calls without a second parameter, the `woocommerce_duplicate_product_exclude_meta` filter function now has a default value for the second parameter.

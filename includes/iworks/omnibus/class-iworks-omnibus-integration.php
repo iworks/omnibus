@@ -187,6 +187,15 @@ abstract class iworks_omnibus_integration {
 				__( 'Previous lowest price was %2$s.', 'omnibus' )
 			);
 		}
+		/**
+		 * mesage template filter
+		 *
+		 * @since 2.3.0
+		 */
+		$message = apply_filters( 'iworks_omnibus_message_template', $message );
+		/**
+		 * price to show
+		 */
 		$price_to_show = $price_lowest['price'];
 		/**
 		 * WooCommerce: include tax
@@ -248,7 +257,7 @@ abstract class iworks_omnibus_integration {
 		return $message;
 	}
 
-	protected function get_name( $name = '' ) {
+	public function get_name( $name = '' ) {
 		if ( empty( $name ) ) {
 			return $this->meta_name;
 		}
