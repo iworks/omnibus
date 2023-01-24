@@ -29,6 +29,11 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 
 	public function __construct() {
 
+		/**
+		 * add Settings Section
+		 *
+		 * @since 2.3.0
+		 */
 		add_filter( 'woocommerce_get_settings_pages', array( $this, 'filter_woocommerce_get_settings_pages' ) );
 
 		/**
@@ -47,9 +52,11 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		/**
 		 * WooCommerce Review Meta Box
 		 *
-		 * @since 2.3.0
+		 * @since x.x.x
 		 */
-		add_action( 'add_meta_boxes', array( $this, 'action_add_meta_boxes_rating' ), 40 );
+		if ( false ) {
+			add_action( 'add_meta_boxes', array( $this, 'action_add_meta_boxes_rating' ), 40 );
+		}
 		/**
 		 * admin init
 		 *
@@ -375,6 +382,9 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		return $this->add_message( $price, $price_lowest, 'wc_price' );
 	}
 
+	/**
+	 * get lowest price
+	 */
 	private function get_lowest_price( $product ) {
 		/**
 		 * get price
@@ -504,6 +514,11 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		return $price_lowest;
 	}
 
+	/**
+	 * WooCommerce: price HTML input
+	 *
+	 * @since 1.0.0
+	 */
 	private function woocommerce_wp_text_input_price( $price_lowest, $configuration = array() ) {
 		woocommerce_wp_text_input(
 			wp_parse_args(
@@ -569,242 +584,11 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 					'</a>'
 				),
 			),
-			$this->settings_title(),
 			array(
-				'title'   => __( 'Display minimal price', 'omnibus' ),
-				'id'      => $this->get_name( 'on_sale' ),
-				'default' => 'yes',
-				'type'    => 'radio',
-				'options' => array(
-					'yes' => esc_html__( 'Only when the product is on sale (strongly advised)', 'omnibus' ),
-					'no'  => esc_html__( 'Always', 'omnibus' ),
-				),
-				'desc'    => esc_html__( 'European Union guidance requires displaying the minimal price if a product is on sale.', 'omnibus' ),
-			),
-			array(
-				'title'   => __( 'No previous price', 'omnibus' ),
-				'id'      => $this->get_name( 'missing' ),
-				'default' => 'current',
-				'type'    => 'radio',
-				'options' => array(
-					'current' => esc_html__( 'Display current price', 'omnibus' ),
-					'no'      => esc_html__( 'Do not display anything', 'omnibus' ),
-				),
-				'desc'    => esc_html__( 'What do you want to show when no data is available?', 'omnibus' ),
-			),
-			/**
-			 * Show on
-			 */
-			array(
-				'title'         => __( 'Show on', 'omnibus' ),
-				'desc'          => __( 'Product single', 'omnibus' ),
-				'id'            => $this->get_name( 'product' ),
-				'default'       => 'yes',
-				'type'          => 'checkbox',
-				'checkboxgroup' => 'start',
-				'desc_tip'      => __( 'Show or hide on a single product page.', 'omnibus' ),
-			),
-			array(
-				'desc'          => __( 'WooCommerce Shop', 'omnibus' ),
-				'id'            => $this->get_name( 'shop' ),
-				'default'       => 'no',
-				'type'          => 'checkbox',
-				'checkboxgroup' => '',
-				'desc_tip'      => sprintf(
-					__( 'Show or hide on the <a href="%s#woocommerce_shop_page_id" target="_blank">Shop Page</a>.', 'omnibus' ),
-					add_query_arg(
-						array(
-							'page' => 'wc-settings',
-							'tab'  => 'products',
-						),
-						admin_url( 'admin.php' )
-					)
-				),
-			),
-			array(
-				'desc'          => __( 'WooCommerce Cart', 'omnibus' ),
-				'id'            => $this->get_name( 'cart' ),
-				'default'       => 'no',
-				'type'          => 'checkbox',
-				'checkboxgroup' => '',
-				'desc_tip'      => sprintf(
-					__( 'Show or hide on the <a href="%s#woocommerce_cart_page_id" target="_blank">Cart Page</a>.', 'omnibus' ),
-					add_query_arg(
-						array(
-							'page' => 'wc-settings',
-							'tab'  => 'advanced',
-						),
-						admin_url( 'admin.php' )
-					)
-				),
-			),
-			array(
-				'desc'          => __( 'Any loop', 'omnibus' ),
-				'id'            => $this->get_name( 'loop' ),
-				'default'       => 'no',
-				'type'          => 'checkbox',
-				'checkboxgroup' => '',
-				'desc_tip'      => __( 'Show or hide on any product list.', 'omnibus' ),
-			),
-			array(
-				'desc'          => __( 'Taxonomy page', 'omnibus' ),
-				'id'            => $this->get_name( 'tax' ),
-				'default'       => 'no',
-				'type'          => 'checkbox',
-				'checkboxgroup' => '',
-				'desc_tip'      => __( 'Show or hide on any taxonomy (tags, categories, custom taxonomies).', 'omnibus' ),
-			),
-			array(
-				'desc'          => __( 'Related products list', 'omnibus' ),
-				'id'            => $this->get_name( 'related' ),
-				'default'       => 'no',
-				'type'          => 'checkbox',
-				'checkboxgroup' => 'end',
-				'desc_tip'      => __( 'Show or hide on the related products box.', 'omnibus' ),
-			),
-			array(
-				'title'    => __( 'Default', 'omnibus' ),
-				'id'       => $this->get_name( 'default' ),
-				'default'  => 'no',
-				'type'     => 'checkbox',
-				'desc'     => __( 'Display anywhere else', 'omnibus' ),
-				'desc_tip' => __( 'Display anywhere else that doesn\'t fit any of the above.', 'omnibus' ),
+				'type' => 'sectionend',
+				'id'   => $this->get_name( 'sectionend' ),
 			),
 		);
-		if ( 'no' === get_option( 'woocommerce_prices_include_tax', 'no' ) ) {
-			$settings[] = array(
-				'title'   => __( 'Include tax', 'omnibus' ),
-				'id'      => $this->get_name( 'include_tax' ),
-				'default' => 'yes',
-				'type'    => 'checkbox',
-				'desc'    => __( 'Display price with tax', 'omnibus' ),
-			);
-		}
-		$products = array(
-			array(
-				'desc' => __( 'Simple product', 'omnibus' ),
-				'id'   => $this->get_name( 'simple' ),
-			),
-			array(
-				'desc' => __( 'Variable product: global', 'omnibus' ),
-				'id'   => $this->get_name( 'variable' ),
-			),
-			array(
-				'desc' => __( 'Variable product: variation', 'omnibus' ),
-				'id'   => $this->get_name( 'variation' ),
-			),
-		);
-		/**
-		 * Tutor LMS (as relatedo to WooCommerce)
-		 *
-		 * @since 1.0.1
-		 */
-		if ( defined( 'TUTOR_VERSION' ) ) {
-			$products[] = array(
-				'desc' => __( 'Tutor course', 'omnibus' ),
-				'id'   => $this->get_name( 'tutor' ),
-			);
-		}
-		/**
-		 * YITH WooCommerce Product Bundles
-		 *
-		 * @since 1.1.0
-		 */
-		if ( defined( 'YITH_WCPB_VERSION' ) ) {
-			$products[] = array(
-				'desc' => __( 'YITH Bundle', 'omnibus' ),
-				'id'   => $this->get_name( 'yith_bundle' ),
-			);
-		}
-		/**
-		 * filter avaialble products list
-		 *
-		 * @since 1.1.0
-		 */
-		$products = apply_filters( 'iworks_omnibus_integration_woocommerce_settings', $products );
-		/**
-		 * add to Settings
-		 */
-		foreach ( $products as $index => $one ) {
-			if ( 0 === $index ) {
-				$one['title']         = __( 'Show for type', 'omnibus' );
-				$one['checkboxgroup'] = 'start';
-			}
-			$one = wp_parse_args(
-				$one,
-				array(
-					'default'       => 'yes',
-					'type'          => 'checkbox',
-					'checkboxgroup' => '',
-				)
-			);
-			if ( ( 1 + $index ) === count( $products ) ) {
-				$one['checkboxgroup'] = 'end';
-			}
-			$settings[] = $one;
-		}
-		/**
-		 * admin
-		 */
-		$settings[] = array(
-			'title'         => __( 'Show on admin on', 'omnibus' ),
-			'desc'          => __( 'Products list', 'omnibus' ),
-			'id'            => $this->get_name( 'admin_list' ),
-			'default'       => 'no',
-			'type'          => 'checkbox',
-			'checkboxgroup' => 'start',
-		);
-		$settings[] = array(
-			'desc'          => __( 'Product edit', 'omnibus' ),
-			'id'            => $this->get_name( 'admin_edit' ),
-			'default'       => 'yes',
-			'type'          => 'checkbox',
-			'checkboxgroup' => 'end',
-		);
-		$settings[] = $this->settings_days();
-		$settings[] = array(
-			'title'   => __( 'Where to display', 'omnibus' ),
-			'desc'    => __( 'Change if you have only single products.', 'omnibus' ),
-			'id'      => $this->get_name( 'where' ),
-			'default' => 'woocommerce_get_price_html',
-			'type'    => 'select',
-			'options' => array(
-				'woocommerce_get_price_html'               => esc_html__( 'After the price (recommended)', 'omnibus' ),
-				'do_not_show'                              => esc_html__( 'Do not show. I will handle it myself.', 'omnibus' ),
-				/** meta */
-				'woocommerce_product_meta_start'           => esc_html__( 'Before the product meta data', 'omnibus' ),
-				'woocommerce_product_meta_end'             => esc_html__( 'After the product meta data', 'omnibus' ),
-				/** product summary */
-				'woocommerce_before_single_product_summary' => esc_html__( 'Before the single product summary', 'omnibus' ),
-				'woocommerce_after_single_product_summary' => esc_html__( 'After the single product summary', 'omnibus' ),
-				/** cart form */
-				'woocommerce_before_add_to_cart_form'      => esc_html__( 'Before the add to cart form', 'omnibus' ),
-				/** cart button */
-				'woocommerce_before_add_to_cart_button'    => esc_html__( 'Before the add to cart button', 'omnibus' ),
-				'woocommerce_after_add_to_cart_button'     => esc_html__( 'After the add to cart button', 'omnibus' ),
-				/** cart quantity */
-				'woocommerce_before_add_to_cart_quantity'  => esc_html__( 'Before the add to cart quantity', 'omnibus' ),
-				'woocommerce_after_add_to_cart_quantity'   => esc_html__( 'After the add to cart quantity', 'omnibus' ),
-				// 'woocommerce_single_product_summary'        => esc_html__( 'Single product summary', 'omnibus' ),
-				/** content */
-				'the_content_start'                        => esc_html__( 'At the begining of the content', 'omnibus' ),
-				'the_content_end'                          => esc_html__( 'At the end of the content', 'omnibus' ),
-			),
-		);
-		$settings[] = array(
-			'type' => 'sectionend',
-			'id'   => $this->get_name( 'sectionend' ),
-		);
-		/**
-		 * messages
-		 */
-		$settings = array_merge( $settings, $this->settings_messages() );
-		/**
-		 * Reviews
-		 *
-		 * @since 2.3.0
-		 */
-		// $settings = array_merge( $settings, $this->settings_review() );
 		return $settings;
 	}
 
@@ -1061,6 +845,11 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		return __( 'OD: {price}', 'omnibus' );
 	}
 
+	/**
+	 * change & replace message
+	 *
+	 * @since 2.3.0
+	 */
 	public function filter_iworks_omnibus_message_template_for_product( $template, $price, $price_lowest ) {
 		if ( is_admin() ) {
 			return $template;
@@ -1130,6 +919,11 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		);
 	}
 
+	/**
+	 * Save short term product
+	 *
+	 * @since 2.3.0
+	 */
 	public function action_woocommerce_save_maybe_save_short( $product ) {
 		$id = $product->get_id();
 		/**
@@ -1162,7 +956,6 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		} else {
 			delete_post_meta( $id, $this->get_name( 'is_short' ) );
 		}
-
 	}
 
 	/**
@@ -1193,9 +986,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 * @param WP_Comment $comment The WP comment object.
 	 */
 	public function meta_box_omnibus_html( $comment ) {
-		d( get_comment_meta( $comment->comment_ID ) );
 		$product = get_product( $comment->comment_post_ID );
-		d( $product );
 	}
 
 }
