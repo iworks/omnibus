@@ -139,6 +139,7 @@ add_filter( 'iworks_omnibus_add_price_log_skip', '__return_false' );
 * The `iworks_omnibus_add_price_log_skip` filter has been added to allow skip logging of prices.
 * The short format for the admin products list page has been added.
 * An issue with the shortcode ignoring configuration settings has been fixed. Props for [marktylczynski](https://wordpress.org/support/users/marktylczynski/).
+* The integration with the "Tutor LMS" plugin has been improved.
 
 = 2.2.3 (2023-01-12) =
 

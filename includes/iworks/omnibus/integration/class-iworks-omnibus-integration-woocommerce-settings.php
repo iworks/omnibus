@@ -167,10 +167,17 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 			 * @since 1.0.1
 			 */
 			if ( defined( 'TUTOR_VERSION' ) ) {
-				$products[] = array(
-					'desc' => __( 'Tutor course', 'omnibus' ),
-					'id'   => $this->get_name( 'tutor' ),
-				);
+				$tutor_option = get_option( 'tutor_option' );
+				if (
+					is_array( $tutor_option )
+					&& isset( $tutor_option['monetize_by'] )
+					&& 'wc' === $tutor_option['monetize_by']
+				) {
+					$products[] = array(
+						'desc' => __( 'Tutor course', 'omnibus' ),
+						'id'   => $this->get_name( 'tutor' ),
+					);
+				}
 			}
 			/**
 			 * YITH WooCommerce Product Bundles
