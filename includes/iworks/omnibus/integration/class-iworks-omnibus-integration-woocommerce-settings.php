@@ -28,6 +28,19 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 
 		parent::__construct();
 		$this->notices();
+
+		add_action( 'woocommerce_admin_field_omnibus_info', array( $this, 'omnibus_info' ) );
+	}
+
+	public function omnibus_info( $value ) {
+		$text = str_replace(
+			array( '{', '}' ),
+			array( '<code>{', '}</code>' ),
+			implode( PHP_EOL, $value['info'] )
+		);
+		echo '<tr><td colspan="2" class="' . esc_attr( $value['class'] ) . '">';
+		echo wp_kses_post( wpautop( wptexturize( $text ) ) );
+		echo '</td></tr>';
 	}
 
 	/**
@@ -37,10 +50,11 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 	 */
 	protected function get_own_sections() {
 		return array(
-			''         => __( 'Display', 'omnibus' ),
+			''         => __( 'Display Price', 'omnibus' ),
+			'where'    => __( 'Where on site', 'omnibus' ),
 			'messages' => __( 'Messages', 'omnibus' ),
-			'admin'    => __( 'Admin', 'omnibus' ),
-			'comments' => __( 'Comments', 'omnibus' ),
+			'admin'    => __( 'Admin Dashboard', 'omnibus' ),
+			// 'comments' => __( 'Comments', 'omnibus' ),
 		);
 	}
 
@@ -97,20 +111,119 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 				),
 			),
 			array(
-				'title'             => __( 'Number of days', 'omnibus' ),
-				'desc'              => __( 'This controls the number of days to show. According to the Omnibus Directive, minimum days is 30 after curent sale was started.', 'omnibus' ),
-				'id'                => $this->get_name( 'days' ),
-				'default'           => '30',
-				'type'              => 'number',
-				'css'               => 'width: 80px;',
-				'custom_attributes' => array(
-					'min' => 30,
-				),
-			),
-			array(
 				'type' => 'sectionend',
 				'id'   => $this->get_name( 'sectionend' ),
 			),
+		);
+		/**
+		 * WooCommerce Tax
+		 */
+		if (
+			'yes' === get_option( 'woocommerce_calc_taxes', 'no' )
+			&& 'no' === get_option( 'woocommerce_prices_include_tax', 'no' )
+		) {
+			$settings[] = array(
+				'title' => __( 'Tax', 'omnibus' ),
+				'type'  => 'title',
+				'id'    => $this->get_name( 'tax' ),
+			);
+			$settings[] = array(
+				'title'   => __( 'Include tax', 'omnibus' ),
+				'id'      => $this->get_name( 'include_tax' ),
+				'default' => 'yes',
+				'type'    => 'checkbox',
+				'desc'    => __( 'Display price with tax', 'omnibus' ),
+			);
+			$settings[] = array(
+				'type' => 'sectionend',
+				'id'   => $this->get_name( 'tax-sectionend' ),
+			);
+		}
+		/**
+		 * Products
+		 */
+			$settings[] = array(
+				'title' => __( 'Type of Product', 'omnibus' ),
+				'type'  => 'title',
+				'id'    => $this->get_name( 'types' ),
+			);
+			$products   = array(
+				array(
+					'desc' => __( 'Simple product', 'omnibus' ),
+					'id'   => $this->get_name( 'simple' ),
+				),
+				array(
+					'desc' => __( 'Variable product: global', 'omnibus' ),
+					'id'   => $this->get_name( 'variable' ),
+				),
+				array(
+					'desc' => __( 'Variable product: variation', 'omnibus' ),
+					'id'   => $this->get_name( 'variation' ),
+				),
+			);
+			/**
+			 * Tutor LMS (as relatedo to WooCommerce)
+			 *
+			 * @since 1.0.1
+			 */
+			if ( defined( 'TUTOR_VERSION' ) ) {
+				$products[] = array(
+					'desc' => __( 'Tutor course', 'omnibus' ),
+					'id'   => $this->get_name( 'tutor' ),
+				);
+			}
+			/**
+			 * YITH WooCommerce Product Bundles
+			 *
+			 * @since 1.1.0
+			 */
+			if ( defined( 'YITH_WCPB_VERSION' ) ) {
+				$products[] = array(
+					'desc' => __( 'YITH Bundle', 'omnibus' ),
+					'id'   => $this->get_name( 'yith_bundle' ),
+				);
+			}
+			/**
+			 * filter avaialble products list
+			 *
+			 * @since 1.1.0
+			 */
+			$products = apply_filters( 'iworks_omnibus_integration_woocommerce_settings', $products );
+			/**
+			 * add to Settings
+			 */
+			foreach ( $products as $index => $one ) {
+				if ( 0 === $index ) {
+					$one['title']         = __( 'Show for type', 'omnibus' );
+					$one['checkboxgroup'] = 'start';
+				}
+				$one = wp_parse_args(
+					$one,
+					array(
+						'default'       => 'yes',
+						'type'          => 'checkbox',
+						'checkboxgroup' => '',
+					)
+				);
+				if ( ( 1 + $index ) === count( $products ) ) {
+					$one['checkboxgroup'] = 'end';
+				}
+				$settings[] = $one;
+			}
+			$settings[] = array(
+				'type' => 'sectionend',
+				'id'   => $this->get_name( 'types-sectionend' ),
+			);
+			return apply_filters( 'iworks_omnibus_settings', $settings );
+	}
+
+	/**
+	 * Get settings for the messages section.
+	 *
+	 * @return array
+	 */
+	protected function get_settings_for_where_section() {
+		$settings = array(
 			/**
 			 * Show on
 			 */
@@ -169,14 +282,14 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 				'desc'    => __( 'Show or hide on any product list.', 'omnibus' ),
 			),
 			array(
-				'title'   => __( 'Taxonomy page', 'omnibus' ),
+				'title'   => __( 'Taxonomy Page', 'omnibus' ),
 				'id'      => $this->get_name( 'tax' ),
 				'default' => 'no',
 				'type'    => 'checkbox',
 				'desc'    => __( 'Show or hide on any taxonomy (tags, categories, custom taxonomies).', 'omnibus' ),
 			),
 			array(
-				'title'    => __( 'Related products list', 'omnibus' ),
+				'title'    => __( 'Related Products List', 'omnibus' ),
 				'id'       => $this->get_name( 'related' ),
 				'default'  => 'no',
 				'type'     => 'checkbox',
@@ -184,16 +297,7 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 				'desc_tip' => __( 'This setting is only for WooCommerce related products box. It will not work if you use something else, such as a page builder related products.', 'omnibus' ),
 			),
 			array(
-				'type' => 'sectionend',
-				'id'   => $this->get_name( 'show-on-end' ),
-			),
-			array(
-				'title' => __( 'Fallback', 'omnibus' ),
-				'type'  => 'title',
-				'id'    => $this->get_name( 'show-on' ),
-			),
-			array(
-				'title'    => __( 'Default', 'omnibus' ),
+				'title'    => __( 'Everywhere Else', 'omnibus' ),
 				'id'       => $this->get_name( 'default' ),
 				'default'  => 'no',
 				'type'     => 'checkbox',
@@ -205,7 +309,7 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 				'id'   => $this->get_name( 'show-on-end' ),
 			),
 		);
-		return apply_filters( 'iworks_omnibus_settings', $settings );
+		return apply_filters( 'iworks_omnibus_where_settings', $settings );
 	}
 
 	/**
@@ -261,20 +365,19 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 					'title' => esc_html__( 'Messages', 'omnibus' ),
 					'type'  => 'title',
 					'id'    => $this->get_name( 'messages-custom' ),
-					'desc'  => str_replace(
-						array( '{', '}' ),
-						array( '<code>{', '}</code>' ),
-						implode( '<br />', $description )
-					),
 				),
 				array(
-					'title'         => __( 'Custom', 'omnibus' ),
-					'checkboxgroup' => 'start',
-					'type'          => 'checkbox',
-					'default'       => 'no',
-					'id'            => $this->get_name( 'message_settings' ),
-					'desc'          => __( 'Allow to use custom messages', 'omnibus' ),
-					'class'         => 'iworks_omnibus_messages_settings',
+					'title'   => __( 'Custom', 'omnibus' ),
+					'type'    => 'checkbox',
+					'default' => 'no',
+					'id'      => $this->get_name( 'message_settings' ),
+					'desc'    => __( 'Allow to use custom messages', 'omnibus' ),
+					'class'   => 'iworks_omnibus_messages_settings',
+				),
+				array(
+					'type'  => 'omnibus_info',
+					'info'  => $description,
+					'class' => 'iworks_omnibus_messages_settings_field',
 				),
 				array(
 					'title'   => __( 'Omnibus Message', 'omnibus' ),
@@ -371,6 +474,26 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 				array(
 					'type' => 'sectionend',
 					'id'   => $this->get_name( 'admin-edit-end' ),
+				),
+				array(
+					'title' => esc_html__( 'Other', 'omnibus' ),
+					'type'  => 'title',
+					'id'    => $this->get_name( 'admin-other' ),
+				),
+				array(
+					'title'             => __( 'Number of days', 'omnibus' ),
+					'desc'              => __( 'This controls the number of days to show. According to the Omnibus Directive, minimum days is 30 after curent sale was started.', 'omnibus' ),
+					'id'                => $this->get_name( 'days' ),
+					'default'           => '30',
+					'type'              => 'number',
+					'css'               => 'width: 80px;',
+					'custom_attributes' => array(
+						'min' => 30,
+					),
+				),
+				array(
+					'type' => 'sectionend',
+					'id'   => $this->get_name( 'admin-other-end' ),
 				),
 			);
 		return apply_filters( 'iworks_omnibus_admin_settings', $settings );

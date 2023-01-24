@@ -45,6 +45,12 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		add_filter( 'iworks_omnibus_message_template', array( $this, 'filter_iworks_omnibus_message_template_for_admin_list' ) );
 		add_filter( 'iworks_omnibus_message_template', array( $this, 'filter_iworks_omnibus_message_template_for_product' ), 10, 3 );
 		/**
+		 * WooCommerce Review Meta Box
+		 *
+		 * @since 2.3.0
+		 */
+		add_action( 'add_meta_boxes', array( $this, 'action_add_meta_boxes_rating' ), 40 );
+		/**
 		 * admin init
 		 *
 		 * @since 2.1.0
@@ -132,6 +138,27 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		add_filter( 'plugin_action_links', array( $this, 'filter_add_link_omnibus_configuration' ), PHP_INT_MAX, 4 );
 		add_action( 'admin_enqueue_scripts', array( $this, 'action_admin_enqueue_scripts_register' ) );
 		add_action( 'load-woocommerce_page_wc-settings', array( $this, 'enqueue_scripts' ) );
+		add_action( 'admin_head', array( $this, 'action_admin_head' ) );
+	}
+
+	public function action_admin_head() {
+		?>
+<style type="text/css" media="screen" id="iworks_omnibus">
+.iworks_omnibus_field_checkbox {
+	display: grid;
+	grid-template-columns: 2em auto;
+	grid-template-areas: "checkbox label" "description description";
+	align-items: center;
+	clear: both;
+}
+.iworks_omnibus_field_checkbox .checkbox {
+	grid-area: checkbox;
+}
+.iworks_omnibus_field_checkbox .description {
+	grid-area: description;
+}
+</style>
+		<?php
 	}
 
 	public function enqueue_scripts() {
@@ -194,8 +221,8 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			return;
 		}
 		$price_lowest = $this->woocommerce_get_lowest_price_in_history( $post_id );
-		echo '</div>';
-		echo '<div>';
+		// echo '</div>';
+		// echo '<div>';
 		$this->print_header( 'form-row form-row-full' );
 		$configuration = array(
 			'wrapper_class' => 'form-row form-row-first',
@@ -205,6 +232,12 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			'wrapper_class' => 'form-row form-row-last',
 		);
 		$this->woocommerce_wp_text_input_date( $price_lowest, $configuration );
+		// echo '</div>';
+		// echo '<div>';
+		$configuration = array(
+			'wrapper_class' => 'form-row form-row-full',
+		);
+		$this->woocommerce_wp_checkbox_short( $post_id, $configuration );
 	}
 
 	/**
@@ -847,6 +880,9 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		if ( empty( $atts['id'] ) ) {
 			return;
 		}
+		if ( ! $this->should_it_show_up( $atts['id'] ) ) {
+			return;
+		}
 		return $this->run( 'return', $atts['id'] );
 	}
 
@@ -1073,20 +1109,21 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		return $template;
 	}
 
-	public function woocommerce_wp_checkbox_short( $post_id ) {
+	public function woocommerce_wp_checkbox_short( $post_id, $configuration = array() ) {
 		if ( 'no' === get_option( $this->get_name( 'admin_short' ), 'no' ) ) {
 			return;
 		}
 		woocommerce_wp_checkbox(
 			wp_parse_args(
 				array(
-					'id'          => $this->get_name( 'is_short' ),
-					'value'       => get_post_meta( $post_id, $this->get_name( 'is_short' ), true ),
-					'label'       => __( 'Hide Omnibus', 'omnibus' ),
-					'description' => sprintf(
+					'id'            => $this->get_name( 'is_short' ) . '-' . $post_id,
+					'value'         => get_post_meta( $post_id, $this->get_name( 'is_short' ), true ),
+					'label'         => __( 'Hide Omnibus', 'omnibus' ),
+					'description'   => sprintf(
 						__( 'This is a short-term product, keep the message hidden. ', 'omnibus' ),
 						$this->get_days()
 					),
+					'wrapper_class' => 'iworks_omnibus_field_checkbox',
 				),
 				$configuration
 			)
@@ -1094,14 +1131,71 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	}
 
 	public function action_woocommerce_save_maybe_save_short( $product ) {
+		$id = $product->get_id();
+		/**
+		 * variation
+		 */
+		if ( $product->is_type( 'variation' ) ) {
+			$name  = sprintf(
+				'%s-%d',
+				$this->get_name( 'is_short' ),
+				$id
+			);
+			$short = filter_input( INPUT_POST, $name );
+			if ( 'yes' === $short ) {
+				if ( ! update_post_meta( $id, $this->get_name( 'is_short' ), 'yes' ) ) {
+					add_post_meta( $id, $this->get_name( 'is_short' ), 'yes', true );
+				}
+			} else {
+				delete_post_meta( $id, $this->get_name( 'is_short' ) );
+			}
+			return;
+		}
+		/**
+		 * any other
+		 */
 		$short = filter_input( INPUT_POST, $this->get_name( 'is_short' ) );
 		if ( 'yes' === $short ) {
-			if ( ! update_post_meta( $product->id, $this->get_name( 'is_short' ), 'yes' ) ) {
-				add_post_meta( $product->id, $this->get_name( 'is_short' ), 'yes', true );
+			if ( ! update_post_meta( $id, $this->get_name( 'is_short' ), 'yes' ) ) {
+				add_post_meta( $id, $this->get_name( 'is_short' ), 'yes', true );
 			}
 		} else {
-			delete_post_meta( $product->id, $this->get_name( 'is_short' ) );
+			delete_post_meta( $id, $this->get_name( 'is_short' ) );
 		}
+
+	}
+
+	/**
+	 * Add Meta boxx for WC Review
+	 *
+	 * @since 2.3.0
+	 */
+	public function action_add_meta_boxes_rating() {
+		$screen    = get_current_screen();
+		$screen_id = $screen ? $screen->id : '';
+		if ( 'comment' === $screen_id && isset( $_GET['c'] ) && metadata_exists( 'comment', wc_clean( wp_unslash( $_GET['c'] ) ), 'rating' ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			add_meta_box(
+				'omnibus',
+				__( 'Omnibus', 'woocommerce' ),
+				array( $this, 'meta_box_omnibus_html' ),
+				'comment',
+				'normal',
+				'high'
+			);
+		}
+	}
+
+	/**
+	 * Render Meta Box content.
+	 *
+	 * @since 2.3.0
+	 *
+	 * @param WP_Comment $comment The WP comment object.
+	 */
+	public function meta_box_omnibus_html( $comment ) {
+		d( get_comment_meta( $comment->comment_ID ) );
+		$product = get_product( $comment->comment_post_ID );
+		d( $product );
 	}
 
 }

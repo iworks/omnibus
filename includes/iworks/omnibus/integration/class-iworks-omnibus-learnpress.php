@@ -36,6 +36,12 @@ class iworks_omnibus_integration_learnpress extends iworks_omnibus_integration {
 		 * @since 2.1.0
 		 */
 		add_action( 'admin_init', array( $this, 'action_admin_init' ) );
+		/**
+		 * maybe save initial data
+		 *
+		 * @since 2.3.0
+		 */
+		add_action( 'shutdown', array( $this, 'action_shutdown_maybe_save_price' ) );
 	}
 
 	/**
@@ -254,7 +260,7 @@ class iworks_omnibus_integration_learnpress extends iworks_omnibus_integration {
 		return $this->_get_lowest_price_in_history( $course->get_price(), $post_id );
 	}
 
-	protected function get_name( $name = '', $add_prefix = '' ) {
+	public function get_name( $name = '', $add_prefix = '' ) {
 		if ( empty( $name ) ) {
 			return parent::get_name( 'lp' );
 		}
@@ -265,7 +271,6 @@ class iworks_omnibus_integration_learnpress extends iworks_omnibus_integration {
 	 * helper to decide show it or no
 	 */
 	private function should_it_show_up( $post_id ) {
-
 		if ( 'yes' === get_option( $this->get_name( 'on_sale' ), 'yes' ) ) {
 			$course = learn_press_get_course( $post_id );
 			if ( ! $course->has_sale_price() ) {
@@ -307,6 +312,31 @@ class iworks_omnibus_integration_learnpress extends iworks_omnibus_integration {
 		 */
 		$show = 'yes' === get_option( $this->get_name( 'default' ), 'no' );
 		return apply_filters( 'iworks_omnibus_show', $show );
+	}
+
+	/**
+	 * maybe save product price
+	 */
+	public function action_shutdown_maybe_save_price() {
+		if ( ! is_singular( 'lp_course' ) ) {
+			return;
+		}
+		if ( ! empty( get_post_meta( get_the_ID(), $this->get_name() ) ) ) {
+			return;
+		}
+		$course = learn_press_get_course( get_the_ID() );
+		if ( ! is_a( $course, 'LP_Course' ) ) {
+			return;
+		}
+		$data = array(
+			'price'     => $course->get_price(),
+			'timestamp' => get_the_modified_date( 'U' ),
+			'type'      => 'autosaved',
+		);
+		if ( empty( $data['price'] ) ) {
+			return;
+		}
+		add_post_meta( $course->get_ID(), $this->meta_name, $data );
 	}
 }
 

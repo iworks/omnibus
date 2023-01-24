@@ -46,6 +46,14 @@ abstract class iworks_omnibus_integration {
 	 */
 	private function add_price_log( $post_id, $price, $update_last_drop ) {
 		/**
+		 * allow to skip price log
+		 *
+		 * @since 2.3.0
+		 */
+		if ( apply_filters( 'iworks_omnibus_add_price_log_skip', false, $post_id, $price, $update_last_drop ) ) {
+			return;
+		}
+		/**
 		 * save only for published posts
 		 *
 		 * @since 2.0.0

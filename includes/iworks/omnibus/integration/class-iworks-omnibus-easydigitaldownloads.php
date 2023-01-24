@@ -53,6 +53,7 @@ class iworks_omnibus_integration_easydigitaldownloads extends iworks_omnibus_int
 		$value[ $this->get_name['admin_edit'] ] = 1;
 		return $value;
 	}
+
 	private function get_setting( $setting_name ) {
 		$settings = get_option( 'edd_settings' );
 		$name     = $this->get_name( $setting_name );
@@ -196,7 +197,7 @@ class iworks_omnibus_integration_easydigitaldownloads extends iworks_omnibus_int
 		echo $message;
 	}
 
-	protected function get_name( $name = '' ) {
+	public function get_name( $name = '' ) {
 		if ( empty( $name ) ) {
 			return parent::get_name( 'edd' );
 		}

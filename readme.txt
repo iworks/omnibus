@@ -106,6 +106,17 @@ do_action( 'iworks_omnibus_wc_lowest_price_message', $product_ID );
 
 You can do it on [Support Threads](https://wordpress.org/support/plugin/omnibus/#new-topic-0), but please add your ticket to [Github Issues](https://github.com/iworks/omnibus/issues).
 
+
+= How can I avoid saving the price log? =
+
+When you want to skip saving a price during the insert or update product, you can use `iworks_omnibus_add_price_log_skip` filter to avoid price logging.
+
+`
+<?php
+add_filter( 'iworks_omnibus_add_price_log_skip', '__return_false' );
+?>
+`
+
 == Screenshots ==
 
 1. A simple WooCommerce product on the front end.
@@ -125,7 +136,9 @@ You can do it on [Support Threads](https://wordpress.org/support/plugin/omnibus/
 * The configuration for WooCommerce has been heavily remodeled.
 * The plugin configuration has been moved from "WooCommerce/Settings/Products/Omnibus Directive" to "WooCommerce/Settings/Omnibus."
 * The `iworks_omnibus_message_template` filter has been added to allow changing the message template.
+* The `iworks_omnibus_add_price_log_skip` filter has been added to allow skip logging of prices.
 * The short format for the admin products list page has been added.
+* An issue with the shortcode ignoring configuration settings has been fixed. Props for [marktylczynski](https://wordpress.org/support/users/marktylczynski/).
 
 = 2.2.3 (2023-01-12) =
 
