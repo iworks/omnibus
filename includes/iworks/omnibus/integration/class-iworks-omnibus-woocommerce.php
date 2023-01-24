@@ -909,7 +909,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 					'value'         => get_post_meta( $post_id, $this->get_name( 'is_short' ), true ),
 					'label'         => __( 'Hide Omnibus', 'omnibus' ),
 					'description'   => sprintf(
-						__( 'This is a short-term product, keep the message hidden. ', 'omnibus' ),
+						__( 'This is a short-term product, keep the message hidden.', 'omnibus' ),
 						$this->get_days()
 					),
 					'wrapper_class' => 'iworks_omnibus_field_checkbox',

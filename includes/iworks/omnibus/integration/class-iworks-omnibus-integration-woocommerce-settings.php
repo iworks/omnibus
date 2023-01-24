@@ -245,7 +245,7 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 				'id'      => $this->get_name( 'product' ),
 				'default' => 'yes',
 				'type'    => 'checkbox',
-				'desc'    => __( 'Show or hide on a single product page.', 'omnibus' ),
+				'desc'    => __( 'Show a single product page.', 'omnibus' ),
 			),
 			array(
 				'title'    => __( 'Shop', 'omnibus' ),
@@ -253,7 +253,7 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 				'default'  => 'no',
 				'type'     => 'checkbox',
 				'desc'     => sprintf(
-					__( 'Show or hide on the <a href="%s#woocommerce_shop_page_id" target="_blank">Shop Page</a>.', 'omnibus' ),
+					__( 'Show on the <a href="%s#woocommerce_shop_page_id" target="_blank">Shop Page</a>.', 'omnibus' ),
 					add_query_arg(
 						array(
 							'page' => 'wc-settings',
@@ -270,7 +270,7 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 				'default'  => 'no',
 				'type'     => 'checkbox',
 				'desc'     => sprintf(
-					__( 'Show or hide on the <a href="%s#woocommerce_cart_page_id" target="_blank">Cart Page</a>.', 'omnibus' ),
+					__( 'Show on the <a href="%s#woocommerce_cart_page_id" target="_blank">Cart Page</a>.', 'omnibus' ),
 					add_query_arg(
 						array(
 							'page' => 'wc-settings',
@@ -286,21 +286,21 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 				'id'      => $this->get_name( 'loop' ),
 				'default' => 'no',
 				'type'    => 'checkbox',
-				'desc'    => __( 'Show or hide on any product list.', 'omnibus' ),
+				'desc'    => __( 'Show on any product list.', 'omnibus' ),
 			),
 			array(
 				'title'   => __( 'Taxonomy Page', 'omnibus' ),
 				'id'      => $this->get_name( 'tax' ),
 				'default' => 'no',
 				'type'    => 'checkbox',
-				'desc'    => __( 'Show or hide on any taxonomy (tags, categories, custom taxonomies).', 'omnibus' ),
+				'desc'    => __( 'Show on any taxonomy (tags, categories, custom taxonomies).', 'omnibus' ),
 			),
 			array(
 				'title'    => __( 'Related Products List', 'omnibus' ),
 				'id'       => $this->get_name( 'related' ),
 				'default'  => 'no',
 				'type'     => 'checkbox',
-				'desc'     => __( 'Show or hide on the related products box.', 'omnibus' ),
+				'desc'     => __( 'Show on the related products box.', 'omnibus' ),
 				'desc_tip' => __( 'This setting is only for WooCommerce related products box. It will not work if you use something else, such as a page builder related products.', 'omnibus' ),
 			),
 			array(
@@ -432,7 +432,7 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 					'id'    => $this->get_name( 'admin-list' ),
 				),
 				array(
-					'title'           => __( 'Show', 'omnibus' ),
+					'title'           => __( 'Admin Dashboard List', 'omnibus' ),
 					'id'              => $this->get_name( 'admin_list' ),
 					'default'         => 'no',
 					'type'            => 'checkbox',
@@ -441,7 +441,6 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 					'checkboxgroup'   => 'start',
 				),
 				array(
-					'title'           => __( 'Show', 'omnibus' ),
 					'id'              => $this->get_name( 'admin_list_short' ),
 					'default'         => 'no',
 					'type'            => 'checkbox',
@@ -464,14 +463,14 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 					'id'    => $this->get_name( 'admin-edit' ),
 				),
 				array(
-					'title'   => __( 'Show', 'omnibus' ),
+					'title'   => __( 'Admin Edit Screen', 'omnibus' ),
 					'id'      => $this->get_name( 'admin_edit' ),
 					'default' => 'yes',
 					'type'    => 'checkbox',
 					'desc'    => __( 'Show on product edit screen', 'omnibus' ),
 				),
 				array(
-					'desc'     => __( 'Show or hide checkbox to allow turn off Omnibus message', 'omnibus' ),
+					'desc'     => __( 'Show checkbox to allow turn off Omnibus message', 'omnibus' ),
 					'desc_tip' => __( 'You can not display the message for Goods which are liable to deteriorate or expire rapidly.', 'omnibus' ),
 					'id'       => $this->get_name( 'admin_short' ),
 					'default'  => 'yes',
@@ -488,7 +487,7 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 					'id'    => $this->get_name( 'admin-other' ),
 				),
 				array(
-					'title'             => __( 'Number of days', 'omnibus' ),
+					'title'             => __( 'Number Of Days', 'omnibus' ),
 					'desc'              => __( 'This controls the number of days to show. According to the Omnibus Directive, minimum days is 30 after curent sale was started.', 'omnibus' ),
 					'id'                => $this->get_name( 'days' ),
 					'default'           => '30',
@@ -506,48 +505,6 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 		return apply_filters( 'iworks_omnibus_admin_settings', $settings );
 	}
 
-	/**
-	 * Get settings for the legacy API section.
-	 *
-	 * @return array
-	 */
-	protected function get_settings_for_legacy_api_section() {
-		$settings =
-			array(
-				array(
-					'title' => '',
-					'type'  => 'title',
-					'desc'  => '',
-					'id'    => 'legacy_api_options',
-				),
-				array(
-					'title'   => __( 'Legacy API', 'omnibus' ),
-					'desc'    => __( 'Enable the legacy REST API', 'omnibus' ),
-					'id'      => 'woocommerce_api_enabled',
-					'type'    => 'checkbox',
-					'default' => 'no',
-				),
-				array(
-					'type' => 'sectionend',
-					'id'   => 'legacy_api_options',
-				),
-			);
-
-		return apply_filters( 'woocommerce_settings_rest_api', $settings );
-	}
-
-	/**
-	 * Form method.
-	 *
-	 * @deprecated 3.4.4
-	 *
-	 * @param  string $method Method name.
-	 *
-	 * @return string
-	 */
-	public function form_method( $method ) {
-		return 'post';
-	}
 
 	/**
 	 * Notices.
@@ -561,21 +518,6 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 			WC_Admin_API_Keys::notices();
 		}
 		// phpcs:enable
-	}
-
-	/**
-	 * Output the settings.
-	 */
-	public function output() {
-		global $current_section;
-
-		if ( 'webhooks' === $current_section ) {
-			WC_Admin_Webhooks::page_output();
-		} elseif ( 'keys' === $current_section ) {
-			WC_Admin_API_Keys::page_output();
-		} else {
-			parent::output();
-		}
 	}
 
 	/**
@@ -603,14 +545,17 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 					$_POST['woocommerce_myaccount_page_id'] = '';
 				}
 			}
-
 			$this->save_settings_for_current_section();
 			$this->do_update_options_action();
 		}
 		// phpcs:enable
 	}
 
-
+	/**
+	 * get name
+	 *
+	 * @since 2.3.0
+	 */
 	private function get_name( $name = '' ) {
 		$this->meta_name = apply_filters( 'iworks_omnibus_get_name', '' );
 		if ( empty( $name ) ) {
