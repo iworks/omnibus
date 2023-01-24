@@ -131,7 +131,7 @@ add_filter( 'iworks_omnibus_add_price_log_skip', '__return_false' );
 
 == Changelog ==
 
-= 2.3.0 (2023-01-19) =
+= 2.3.0 (2023-01-24) =
 
 * The configuration for WooCommerce has been heavily remodeled.
 * The plugin configuration has been moved from "WooCommerce/Settings/Products/Omnibus Directive" to "WooCommerce/Settings/Omnibus."
