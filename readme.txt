@@ -131,6 +131,11 @@ add_filter( 'iworks_omnibus_add_price_log_skip', '__return_false' );
 
 == Changelog ==
 
+= 2.3.1 (2023-01-25) =
+
+* An issue with the inform message when taxes are enabled has been fixed. Props for [Niko Vittaniemi](https://wordpress.org/support/users/nikov/).
+* The `_iwo_price_last_change` custom field has been added.
+
 = 2.3.0 (2023-01-24) =
 
 * The configuration for WooCommerce has been heavily remodeled.

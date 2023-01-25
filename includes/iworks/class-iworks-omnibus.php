@@ -58,7 +58,7 @@ class iworks_omnibus {
 		 * @since 1.0.0
 		 */
 		if ( defined( 'WC_PLUGIN_FILE' ) ) {
-			include_once $dir . '/integration/class-iworks-omnibus-woocommerce.php';
+			include_once $dir . '/integration/class-iworks-omnibus-integration-woocommerce.php';
 			$this->objects['woocommerce'] = new iworks_omnibus_integration_woocommerce();
 		}
 		/**

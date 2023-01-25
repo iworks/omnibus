@@ -33,6 +33,13 @@ abstract class iworks_omnibus_integration {
 	protected $meta_name = '_iwo_price_lowest';
 
 	/**
+	 * meta field name last change
+	 *
+	 * @since 1.0.0
+	 */
+	protected $meta_name_last_change = '_iwo_price_last_change';
+
+	/**
 	 * last price drop timestamp
 	 *
 	 * @since 2.0.0
@@ -99,7 +106,7 @@ abstract class iworks_omnibus_integration {
 		}
 		if (
 			is_array( $price_last )
-			&& $price !== $price_last['price']
+			&& floatval( $price ) !== floatval( $price_last['price'] )
 		) {
 			$this->add_price_log( $post_id, $price, floatval( $price ) !== floatval( $price_last['price'] ) );
 		}

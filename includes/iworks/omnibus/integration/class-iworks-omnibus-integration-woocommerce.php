@@ -78,6 +78,12 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		add_action( 'woocommerce_after_product_object_save', array( $this, 'action_woocommerce_save_price_history' ), 10, 1 );
 		add_action( 'woocommerce_product_options_pricing', array( $this, 'action_woocommerce_product_options_pricing' ) );
 		add_action( 'woocommerce_variation_options_pricing', array( $this, 'action_woocommerce_variation_options_pricing' ), 10, 3 );
+		add_action( 'save_post_product', array( $this, 'action_save_post_product' ), 10, 3 );
+		/**
+		 * Settings
+		 *
+		 * @depreacated since 2.3.0
+		 */
 		add_filter( 'woocommerce_get_sections_products', array( $this, 'filter_woocommerce_get_sections_products' ), 999 );
 		add_filter( 'woocommerce_get_settings_products', array( $this, 'filter_woocommerce_get_settings_for_section' ), 10, 2 );
 		/**
@@ -134,6 +140,51 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 * @since 1.1.0
 		 */
 		add_action( 'yith_wcpb_after_product_bundle_options_tab', array( $this, 'action_woocommerce_product_options_pricing' ) );
+	}
+
+	/**
+	 * Save Product
+	 *
+	 * @since 2.4.0
+	 *
+	 * @param int     $post_ID Post ID.
+	 * @param WP_Post $post    Post object.
+	 * @param bool    $update  Whether this is an existing post being updated.
+	 *
+	 */
+	public function action_save_post_product( $post_id, $post, $update ) {
+		if ( 'product' !== get_post_type( $post ) ) {
+			return;
+		}
+		if ( 'publish' !== get_post_status( $post ) ) {
+			return;
+		}
+		/**
+		 * save last change
+		 */
+		$product = wc_get_product( $post );
+		$current = array(
+			'price'      => $product->get_regular_price(),
+			'price_sale' => $product->get_sale_price(),
+			'timestamp'  => time(),
+		);
+		$last    = get_post_meta( $post_id, $this->meta_name_last_change, true );
+		/**
+		 * add at the very first time
+		 */
+		if ( empty( $last ) ) {
+			add_post_meta( $post_id, $this->meta_name_last_change, $current, true );
+			return;
+		}
+		/**
+		 * update if it is neeeded
+		 */
+		if (
+			floatval( $last['price'] ) !== floatval( $current['price'] )
+			|| floatval( $last['price_sale'] ) !== floatval( $current['price_sale'] )
+		) {
+			update_post_meta( $post_id, $this->meta_name_last_change, $current );
+		}
 	}
 
 	/**
@@ -885,7 +936,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			switch ( get_option( $this->get_name( 'missing' ), 'current' ) ) {
 				case 'no':
 					return '';
-				case 'custom':
+				case 'inform':
 					if ( 'yes' == get_option( $this->get_name( 'message_settings' ), 'no' ) ) {
 						$v = get_option( $this->get_name( 'message_no_data' ), false );
 						if ( ! empty( $v ) ) {
