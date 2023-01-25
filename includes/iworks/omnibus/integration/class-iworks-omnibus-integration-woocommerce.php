@@ -145,7 +145,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	/**
 	 * Save Product
 	 *
-	 * @since 2.4.0
+	 * @since 2.3.1
 	 *
 	 * @param int     $post_ID Post ID.
 	 * @param WP_Post $post    Post object.
