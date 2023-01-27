@@ -43,6 +43,12 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 */
 		add_shortcode( 'omnibus_price_message', array( $this, 'shortcode' ) );
 		/**
+		 * get lowest price
+		 *
+		 * @since 2.3.2
+		 */
+		add_filter( 'iworks_omnibus_wc_get_lowest_price', array( $this, 'filter_wc_get_lowest_price' ), 10, 2 );
+		/**
 		 * own action
 		 */
 		add_action( 'iworks_omnibus_wc_lowest_price_message', array( $this, 'action_get_message' ) );
@@ -197,6 +203,10 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		add_action( 'admin_enqueue_scripts', array( $this, 'action_admin_enqueue_scripts_register' ) );
 		add_action( 'load-woocommerce_page_wc-settings', array( $this, 'enqueue_scripts' ) );
 		add_action( 'admin_head', array( $this, 'action_admin_head' ) );
+		/**
+		 * add extra data to price log
+		 */
+		add_filter( 'iworks_omnibus_add_price_log_data', array( $this, 'filter_add_price_log_data' ), 10, 2 );
 	}
 
 	public function action_admin_head() {
@@ -647,8 +657,13 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 * run helper
 	 *
 	 * @since 1.1.0
+	 * @since 2.3.2 Param $message has been added.
+	 *
+	 * @param string $context Content: view or return.
+	 * @param integer $post_id Product ID.
+	 * @param string $message Message template.
 	 */
-	public function run( $context = 'view', $post_id = null ) {
+	public function run( $context = 'view', $post_id = null, $message = null ) {
 		if ( empty( $post_id ) ) {
 			$post_id = get_the_ID();
 		}
@@ -660,7 +675,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		if ( empty( $price_lowest ) ) {
 			return;
 		}
-		$message = $this->add_message( '', $price_lowest, 'wc_price' );
+		$message = $this->add_message( '', $price_lowest, 'wc_price', $message );
 		if ( 'return' === $context ) {
 			return $message;
 		}
@@ -705,7 +720,11 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 */
 	public function shortcode( $atts ) {
 		$atts = shortcode_atts(
-			array( 'id' => null ),
+			array(
+				'id'         => null,
+				'strip_tags' => 'no',
+				'template'   => null,
+			),
 			$atts,
 			'iworks_omnibus_wc_lowest_price_message'
 		);
@@ -718,7 +737,19 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		if ( ! $this->should_it_show_up( $atts['id'] ) ) {
 			return;
 		}
-		return $this->run( 'return', $atts['id'] );
+		$content = $this->run( 'return', $atts['id'], $atts['template'] );
+		/**
+		 * strip html
+		 *
+		 * @since 2.3.2
+		 */
+		if ( $this->is_on( $atts['strip_tags'] ) ) {
+			$content = strip_tags( $content );
+		}
+		/**
+		 * return
+		 */
+		return $content;
 	}
 
 	/**
@@ -1038,6 +1069,42 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 */
 	public function meta_box_omnibus_html( $comment ) {
 		$product = get_product( $comment->comment_post_ID );
+	}
+
+	/**
+	 * get WooCommerce product lowest price
+	 *
+	 * @sinc 2.3.2
+	 *
+	 */
+	public function filter_wc_get_lowest_price( $price = array(), $product_id = null ) {
+		if ( empty( $product_id ) ) {
+			$product_id = get_the_ID();
+		}
+		$product = get_product( $product_id );
+		if ( empty( $product ) ) {
+			return $price;
+		}
+		return $this->get_lowest_price( $product );
+	}
+
+	/**
+	 * add extra data to price log
+	 *
+	 * @since 2.3.2
+	 *
+	 */
+	public function filter_add_price_log_data( $data, $product_id ) {
+		$product = get_product( $product_id );
+		if ( empty( $product ) ) {
+			return $data;
+		}
+		if ( ! is_array( $data ) ) {
+			$data = array();
+		}
+		$data['price_regular'] = $product->get_regular_price();
+		$data['price_sale']    = $product->get_sale_price();
+		return $data;
 	}
 
 }

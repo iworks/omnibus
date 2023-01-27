@@ -81,6 +81,15 @@ abstract class iworks_omnibus_integration {
 			'price'     => $price,
 			'timestamp' => $now,
 		);
+		/**
+		 * filter data
+		 *
+		 * @since 2.3.2
+		 */
+		$data = apply_filters( 'iworks_omnibus_add_price_log_data', $data, $post_id );
+		/**
+		 * add
+		 */
 		add_post_meta( $post_id, $this->meta_name, $data );
 		/**
 		 * update last price drop timestamp
@@ -184,8 +193,14 @@ abstract class iworks_omnibus_integration {
 	 * Add Omnibus message to price.
 	 *
 	 * @since 1.0.0
+	 * @since 2.3.2 param $message has been added.
+	 *
+	 * @param $price
+	 * @param $price_lowest
+	 * @param callback $format_price_callback Price format callback function.
+	 * @param string $message Message template.
 	 */
-	protected function add_message( $price, $price_lowest, $format_price_callback = null ) {
+	protected function add_message( $price, $price_lowest, $format_price_callback = null, $message = null ) {
 		if ( ! is_array( $price_lowest ) ) {
 			return $price;
 		}
@@ -195,15 +210,20 @@ abstract class iworks_omnibus_integration {
 		if ( empty( $price_lowest['price'] ) ) {
 			return $price;
 		}
-		$message = __( 'Previous lowest price was %2$s.', 'omnibus' );
-		if (
-			'custom' === get_option( $this->get_name( 'message_settings' ), 'no' )
-			|| 'yes' === get_option( $this->get_name( 'message_settings' ), 'no' )
-		) {
-			$message = get_option(
-				$this->get_name( 'message' ),
-				__( 'Previous lowest price was %2$s.', 'omnibus' )
-			);
+		/**
+		 * Set message template if ir is needed
+		 */
+		if ( empty( $message ) ) {
+			$message = __( 'Previous lowest price was %2$s.', 'omnibus' );
+			if (
+				'custom' === get_option( $this->get_name( 'message_settings' ), 'no' )
+				|| 'yes' === get_option( $this->get_name( 'message_settings' ), 'no' )
+			) {
+				$message = get_option(
+					$this->get_name( 'message' ),
+					__( 'Previous lowest price was %2$s.', 'omnibus' )
+				);
+			}
 		}
 		/**
 		 * mesage template filter
@@ -391,11 +411,40 @@ abstract class iworks_omnibus_integration {
 		);
 	}
 
+	/**
+	 * sort log by price
+	 */
 	private function sort_meta_by_price( $a, $b ) {
 		if ( floatval( $a['price'] ) === floatval( $b['price'] ) ) {
 			return 0;
 		}
 		return  floatval( $a['price'] ) > floatval( $b['price'] ) ? 1 : -1;
+	}
+
+	/**
+	 * check is turn on for different cases
+	 *
+	 * @since 2.3.2
+	 */
+	protected function is_on( $value ) {
+		if ( empty( $value ) ) {
+			return false;
+		}
+		if ( is_bool( $value ) ) {
+			return $value;
+		}
+		if ( is_numeric( $value ) ) {
+			return 0 < $value;
+		}
+		if ( is_string( $value ) ) {
+			switch ( $value ) {
+				case 'yes':
+				case '1':
+				case 'on':
+					return true;
+			}
+		}
+		return false;
 	}
 }
 

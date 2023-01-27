@@ -117,6 +117,37 @@ add_filter( 'iworks_omnibus_add_price_log_skip', '__return_false' );
 ?>
 `
 
+= How can I get lowest price log data? =
+
+You should use `iworks_omnibus_wc_get_lowest_price` filter to get array.
+
+On single product page, without product ID:
+`
+<?php
+$lowest_price_log = apply_filter( 'iworks_omnibus_wc_get_lowest_price', array() );
+?>
+`
+Anywhere with the product ID:
+`
+<?php
+$lowest_price_log = apply_filter( 'iworks_omnibus_wc_get_lowest_price', array(), $product_ID );
+?>
+`
+
+= How can I strip HTML from a shortcode message? =
+
+Please set the "strip_tags" parameter to "yes":
+`
+[omnibus_price_message strip_tags="yes"]
+`
+
+= How can I use my own template in the shortcode message? =
+
+Please add `template` param with needed format:
+`
+[omnibus_price_message template="This is price: {price}!"]
+`
+
 == Screenshots ==
 
 1. A simple WooCommerce product on the front end.
@@ -130,6 +161,13 @@ add_filter( 'iworks_omnibus_add_price_log_skip', '__return_false' );
 1. The WooCommerce configuration.
 
 == Changelog ==
+
+= 2.3.2 (2023-01-xx) =
+
+* The `iworks_omnibus_add_price_log_data` filter has been added to allow for the modification of logged data.
+* The `iworks_omnibus_wc_get_lowest_price` filter has been added to allow getting the lowest price log entry.
+* The `strip_tags` param has been added to the `omnibus_price_message` to allow stripe HTML tags.
+* The `template` param has been added to the `omnibus_price_message` to allow users to use their own message template.
 
 = 2.3.1 (2023-01-25) =
 
