@@ -1,4 +1,4 @@
-/*! Omnibus — show the lowest price - v2.3.1
+/*! Omnibus — show the lowest price - v2.3.2
  * http://iworks.pl/
  * Copyright (c) 2023; * Licensed GPL-3.0 */
 (function($) {

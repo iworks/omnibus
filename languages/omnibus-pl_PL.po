@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Plugins - PLUGIN_NAME (PLUGIN_VERSION)\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/omnibus\n"
-"POT-Creation-Date: 2023-01-25 07:20:53+00:00\n"
+"POT-Creation-Date: 2023-01-27 09:53:52+00:00\n"
 "PO-Revision-Date: 2023-01-24 13:44+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -29,26 +29,26 @@ msgstr ""
 msgid "Settings"
 msgstr "Ustawienia"
 
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:198
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:205
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:217
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:224
 msgid "Previous lowest price was %2$s."
 msgstr "Poprzednia najniższa cena: %2$s."
 
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:315
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:496
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:335
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:506
 msgid "Omnibus Directive"
 msgstr "Dyrektywa Omnibus"
 
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:321
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:341
 msgid "Omnibus Directive Settings"
 msgstr "Dyrektywa Omnibus: ustawienia"
 
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:329
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:349
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-easydigitaldownloads.php:143
 msgid "Number of days"
 msgstr "Liczba dni"
 
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:330
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:350
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:491
 msgid ""
 "This controls the number of days to show. According to the Omnibus "
@@ -57,25 +57,25 @@ msgstr ""
 "Kontroluje liczbę dni do wyświetlenia. Zgodnie z Dyrektywą Omnibus minimalna "
 "liczba dni to 30 przed rozpoczęciem promocji."
 
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:344
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:364
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:55
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:372
 msgid "Messages"
 msgstr "Wiadomości"
 
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:357
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:377
 msgid "Price Message"
 msgstr "Komunikat dotyczący ceny"
 
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:363
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:383
 msgid "Default messages (recommended)."
 msgstr "Domyślny komunikat (zalecane)."
 
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:364
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:384
 msgid "Custom messages."
 msgstr "Własne wiadomości."
 
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:366
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:386
 msgid ""
 "Custom messages will be used only when you choose \"Custom messages.\" "
 "option."
@@ -84,57 +84,57 @@ msgstr ""
 "wiadomości”."
 
 #. translators: Do not translate {price}, it is the replacement placeholder !
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:373
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:393
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:330
 msgid "Use the {price} placeholder to display price."
 msgstr "Użyj symbolu zastępczego {price}, aby wyświetlić cenę."
 
 #. translators: Do not translate {timestamp}, it is the replacement placeholder
 #. !
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:375
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:395
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:332
 msgid "Use the {timestamp} placeholder to display timestamp."
 msgstr "Użyj symbolu zastępczego {timestamp}, aby wyświetlić znacznik czasu."
 
 #. translators: Do not translate {days}, it is the replacement placeholder !
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:377
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:397
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:334
 msgid "Use the {days} placeholder to display days."
 msgstr "Użyj symbolu zastępczego {days}, aby wyświetlić dni."
 
 #. translators: Do not translate {when}, it is the replacement placeholder !
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:379
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:399
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:336
 msgid "Use the {when} placeholder to display date."
 msgstr "Użyj symbolu zastępczego {when}, aby wyświetlić datę."
 
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:383
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:403
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:393
 msgid "Previous lowest price: {price}."
 msgstr "Poprzednia najniższa cena: {price}."
 
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:385
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:405
 msgid "%1$d - number of days<br>%2$s - the lowest price."
 msgstr "%1$d - liczba dni<br>%2$s - najniższa cena."
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-easydigitaldownloads.php:99
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:581
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:591
 msgid "Price"
 msgstr "Cena"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-easydigitaldownloads.php:102
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:584
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:594
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-learnpress.php:206
 msgid "The lowest price in %d days."
 msgstr "Najniższa cena w ciągu ostatnich %d dni."
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-easydigitaldownloads.php:106
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:606
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:616
 msgid "Date"
 msgstr "Data"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-easydigitaldownloads.php:109
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:609
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:619
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-learnpress.php:220
 msgid "The date when lowest price in %d days occurred."
 msgstr "Data wystąpienia najniższej ceny w ciągu ostatnich %d dni."
@@ -476,7 +476,7 @@ msgid "No Data Message"
 msgstr "Brak danych potrzebnych w wiadomości"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:401
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:946
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:977
 msgid "The previous price is not available."
 msgstr "Poprzednia cena nie jest dostępna."
 
@@ -490,7 +490,7 @@ msgid "Short Term Product Message"
 msgstr "Wiadomość dotycząca produktu o krótkim terminie ważności"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:409
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:923
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:954
 msgid "This is short term product."
 msgstr "Produkt o krótkim terminie ważności."
 
@@ -554,32 +554,32 @@ msgstr "Inne"
 msgid "Number Of Days"
 msgstr "Liczba dni"
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:579
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:604
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:589
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:614
 msgid "no data"
 msgstr "brak danych"
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:629
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:639
 msgid "Settings has been moved"
 msgstr "Ustawienia zostały przeniesione"
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:633
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:643
 msgid "Please visit new %1$ssettings page%2$s."
 msgstr "Proszę przejść na nową %1$sstronę ustawień%2$s."
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:840
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:871
 msgid "Reviews"
 msgstr "Opinie"
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:896
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:927
 msgid "OD: {price}"
 msgstr "OD: {price}"
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:961
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:992
 msgid "Hide Omnibus"
 msgstr "Ukryj Omnibus"
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:963
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:994
 msgid "This is a short-term product, keep the message hidden."
 msgstr "Produkt krótkoterminowy, ukryj wiadomość."
 

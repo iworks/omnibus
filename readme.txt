@@ -162,7 +162,7 @@ Please add `template` param with needed format:
 
 == Changelog ==
 
-= 2.3.2 (2023-01-xx) =
+= 2.3.2 (2023-01-27) =
 
 * The `iworks_omnibus_add_price_log_data` filter has been added to allow for the modification of logged data.
 * The `iworks_omnibus_wc_get_lowest_price` filter has been added to allow getting the lowest price log entry.
