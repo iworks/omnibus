@@ -148,6 +148,23 @@ Please add `template` param with needed format:
 [omnibus_price_message template="This is price: {price}!"]
 `
 
+= How can I remove all this plugin related data? =
+
+To remove all data saved by this plugin, you should use the SQL command.
+
+Warning: This operation can be undone.
+
+Please be sure you have the database backup before you try to use the command below:
+
+`
+delete from {$wpdb->postmeta} where meta_key in (
+    '_iwo_price_lowest_is_short',
+    '_iwo_last_price_drop_timestamp',
+    '_iwo_price_last_change',
+    '_iwo_price_lowest'
+);
+`
+
 == Screenshots ==
 
 1. A simple WooCommerce product on the front end.
