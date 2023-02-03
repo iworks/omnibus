@@ -179,6 +179,10 @@ delete from {$wpdb->postmeta} where meta_key in (
 
 == Changelog ==
 
+= 2.3.3 (2023-02-03) =
+
+* The fatal error on option page has been fixed. Props for [nekodo88](https://wordpress.org/support/users/nekodo88/).
+
 = 2.3.2 (2023-01-27) =
 
 * The `iworks_omnibus_add_price_log_data` filter has been added to allow for the modification of logged data.

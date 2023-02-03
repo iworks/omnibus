@@ -25,10 +25,7 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 	public function __construct() {
 		$this->id    = 'omnibus';
 		$this->label = __( 'Omnibus', 'omnibus' );
-
 		parent::__construct();
-		$this->notices();
-
 		add_action( 'woocommerce_admin_field_omnibus_info', array( $this, 'omnibus_info' ) );
 	}
 
@@ -503,52 +500,6 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 				),
 			);
 		return apply_filters( 'iworks_omnibus_admin_settings', $settings );
-	}
-
-
-	/**
-	 * Notices.
-	 */
-	private function notices() {
-		// phpcs:disable WordPress.Security.NonceVerification.Recommended
-		if ( isset( $_GET['section'] ) && 'webhooks' === $_GET['section'] ) {
-			WC_Admin_Webhooks::notices();
-		}
-		if ( isset( $_GET['section'] ) && 'keys' === $_GET['section'] ) {
-			WC_Admin_API_Keys::notices();
-		}
-		// phpcs:enable
-	}
-
-	/**
-	 * Save settings.
-	 */
-	public function save() {
-		// phpcs:disable WordPress.Security.NonceVerification.Missing
-		global $current_section;
-
-		if ( apply_filters( 'woocommerce_rest_api_valid_to_save', ! in_array( $current_section, array( 'keys', 'webhooks' ), true ) ) ) {
-			// Prevent the T&Cs and checkout page from being set to the same page.
-			if ( isset( $_POST['woocommerce_terms_page_id'], $_POST['woocommerce_checkout_page_id'] ) && $_POST['woocommerce_terms_page_id'] === $_POST['woocommerce_checkout_page_id'] ) {
-				$_POST['woocommerce_terms_page_id'] = '';
-			}
-
-			// Prevent the Cart, checkout and my account page from being set to the same page.
-			if ( isset( $_POST['woocommerce_cart_page_id'], $_POST['woocommerce_checkout_page_id'], $_POST['woocommerce_myaccount_page_id'] ) ) {
-				if ( $_POST['woocommerce_cart_page_id'] === $_POST['woocommerce_checkout_page_id'] ) {
-					$_POST['woocommerce_checkout_page_id'] = '';
-				}
-				if ( $_POST['woocommerce_cart_page_id'] === $_POST['woocommerce_myaccount_page_id'] ) {
-					$_POST['woocommerce_myaccount_page_id'] = '';
-				}
-				if ( $_POST['woocommerce_checkout_page_id'] === $_POST['woocommerce_myaccount_page_id'] ) {
-					$_POST['woocommerce_myaccount_page_id'] = '';
-				}
-			}
-			$this->save_settings_for_current_section();
-			$this->do_update_options_action();
-		}
-		// phpcs:enable
 	}
 
 	/**
