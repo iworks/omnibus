@@ -165,6 +165,10 @@ delete from {$wpdb->postmeta} where meta_key in (
 );
 `
 
+= What is the minimum WooCommerce version required? =
+
+The minimum WooCommerce version required is 5.5.0.
+
 == Screenshots ==
 
 1. A simple WooCommerce product on the front end.

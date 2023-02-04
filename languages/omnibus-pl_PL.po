@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Plugins - PLUGIN_NAME (PLUGIN_VERSION)\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/omnibus\n"
-"POT-Creation-Date: 2023-02-03 12:59:00+00:00\n"
-"PO-Revision-Date: 2023-01-24 13:44+0100\n"
+"POT-Creation-Date: 2023-02-04 10:26:53+00:00\n"
+"PO-Revision-Date: 2023-02-04 11:29+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -16,7 +16,21 @@ msgstr ""
 "&& (n % 100 < 12 || n % 100 > 14)) ? 1 : 2);\n"
 "X-Generator: Poedit 3.1.1\n"
 
-#: includes/iworks/class-iworks-omnibus.php:97
+#: assets/templates/woocommerce-version.php:7
+msgid "Omnibus: installed version of WooCommerce is too low!"
+msgstr "Omnibus: zainstalowana wersja WooCommerce jest za niska!"
+
+#: assets/templates/woocommerce-version.php:9
+msgid ""
+"The WooCommerce version you are using (%1$s) is too low, and our plugin "
+"cannot work with it. Please update WooCommerce to at least version %2$s for "
+"the Omnibus plugin to work properly."
+msgstr ""
+"Używana wersja WooCommerce (%s) jest zbyt niska i naszawtyczka nie potrafi z "
+"nią współpracować. Proszę zaktualizować WooCommerce przynjamniej do wersji "
+"%s w celu praidłowego działania wtyczki Omnibus."
+
+#: includes/iworks/class-iworks-omnibus.php:119
 msgid ""
 "If you like <strong>Omnibus</strong> please leave us a %1$s&#9733;&#9733;"
 "&#9733;&#9733;&#9733;%2$s rating. A huge thanks in advance!"
@@ -24,7 +38,7 @@ msgstr ""
 "Jeżeli lubisz wtyczkę <strong>Omnibus</strong>, proszę daj jej ocenę "
 "%1$s&#9733;&#9733;&#9733;&#9733;&#9733;%2$s. Z góry bardzo dziękuję!"
 
-#: includes/iworks/class-iworks-omnibus.php:138
+#: includes/iworks/class-iworks-omnibus.php:160
 #: includes/iworks/rate/rate.php:124
 msgid "Settings"
 msgstr "Ustawienia"
