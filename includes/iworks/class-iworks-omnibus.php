@@ -26,17 +26,20 @@ if ( class_exists( 'iworks_omnibus' ) ) {
 class iworks_omnibus {
 
 	private $objects = array();
+	private $root;
 
 	public function __construct() {
+		/**
+		 * set plugin root
+		 *
+		 * @since 2.3.4
+		 */
+		$this->root = dirname( dirname( dirname( __FILE__ ) ) );
+		/**
+		 * plugins screen
+		 */
 		add_action( 'plugins_loaded', array( $this, 'action_plugins_loaded' ) );
 		add_filter( 'plugin_row_meta', array( $this, 'plugin_row_meta' ), 10, 4 );
-		/**
-		 * Add Settings link on the Plugins list
-		 *
-		 * @since 1.0.2
-		 */
-		$plugin_file = basename( dirname( dirname( dirname( __FILE__ ) ) ) ) . '/omnibus.php';
-		add_filter( 'plugin_action_links_' . $plugin_file, array( $this, 'add_settings_link' ), 90, 4 );
 		/**
 		 * iWorks Rate Class
 		 *
@@ -57,9 +60,28 @@ class iworks_omnibus {
 		 *
 		 * @since 1.0.0
 		 */
-		if ( defined( 'WC_PLUGIN_FILE' ) ) {
-			include_once $dir . '/integration/class-iworks-omnibus-integration-woocommerce.php';
-			$this->objects['woocommerce'] = new iworks_omnibus_integration_woocommerce();
+		if (
+			defined( 'WC_PLUGIN_FILE' )
+			&& defined( 'WC_VERSION' )
+		) {
+			/**
+			 * Check minimal WooCommerce version to run.
+			 *
+			 * @since 2.3.4
+			 *
+			 */
+			if ( version_compare( WC_VERSION, '5.5', '<' ) ) {
+				add_action( 'admin_notices', array( $this, 'action_admin_notices_show_woocommerce_version' ) );
+			} else {
+				/**
+				 * Add Settings link on the Plugins list
+				 *
+				 * @since 1.0.2
+				 */
+				add_filter( 'plugin_action_links_' . basename( $this->root ) . '/omnibus.php', array( $this, 'add_settings_link' ), 90, 4 );
+				include_once $dir . '/integration/class-iworks-omnibus-integration-woocommerce.php';
+				$this->objects['woocommerce'] = new iworks_omnibus_integration_woocommerce();
+			}
 		}
 		/**
 		 * LearnPress
@@ -140,4 +162,32 @@ class iworks_omnibus {
 		return $actions;
 	}
 
+	/**
+	 * get template
+	 *
+	 * @since 2.3.4
+	 */
+	private function get_file( $file, $group = '' ) {
+		return sprintf(
+			'%s/assets/templates/%s%s.php',
+			$this->root,
+			'' === $group ? '' : $group . '/',
+			sanitize_title( $file )
+		);
+	}
+
+	/**
+	 * Show minimal WooCommerce version to run.
+	 *
+	 * @since 2.3.4
+	 *
+	 */
+	public function action_admin_notices_show_woocommerce_version() {
+		$file = $this->get_file( 'woocommerce-version' );
+		$args = array(
+			'version-current' => WC_VERSION,
+			'version-minimal' => '5.5.0',
+		);
+		load_template( $file, true, $args );
+	}
 }
