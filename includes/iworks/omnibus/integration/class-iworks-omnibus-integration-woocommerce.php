@@ -243,7 +243,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			$this->get_name( __CLASS__ ),
 			plugins_url( 'assets/scripts/admin/woocommerce.min.js', dirname( dirname( dirname( __DIR__ ) ) ) ),
 			array( 'jquery' ),
-			'PLUGIN_VERSION',
+			'PLUGIN_VERSION'
 		);
 	}
 

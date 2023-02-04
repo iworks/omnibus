@@ -186,6 +186,7 @@ The minimum WooCommerce version required is 5.5.0.
 = 2.3.5 (2023-xx-xx) =
 
 * The settings link on the plugins screen has been changed.
+* The critical error for old PHP has been fixed. Props for [mlodyno](https://github.com/mlodyno). [Issue #2](https://github.com/iworks/omnibus/issues/2).
 
 = 2.3.4 (2023-02-04) =
 
