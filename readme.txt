@@ -183,6 +183,10 @@ The minimum WooCommerce version required is 5.5.0.
 
 == Changelog ==
 
+= 2.3.5 (2023-xx-xx) =
+
+* The settings link on the plugins screen has been changed.
+
 = 2.3.4 (2023-02-04) =
 
 * Checking for the WooCommerce version has been added. The minimum WooCommerce version required is 5.5.0.

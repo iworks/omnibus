@@ -151,9 +151,8 @@ class iworks_omnibus {
 			'<a href="%s">%s</a>',
 			add_query_arg(
 				array(
-					'page'    => 'wc-settings',
-					'tab'     => 'products',
-					'section' => '_iwo_price_lowest',
+					'page' => 'wc-settings',
+					'tab'  => 'omnibus',
 				),
 				admin_url( 'admin.php' )
 			),
