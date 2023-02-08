@@ -124,13 +124,13 @@ You should use `iworks_omnibus_wc_get_lowest_price` filter to get array.
 On single product page, without product ID:
 `
 <?php
-$lowest_price_log = apply_filter( 'iworks_omnibus_wc_get_lowest_price', array() );
+$lowest_price_log = apply_filters( 'iworks_omnibus_wc_get_lowest_price', array() );
 ?>
 `
 Anywhere with the product ID:
 `
 <?php
-$lowest_price_log = apply_filter( 'iworks_omnibus_wc_get_lowest_price', array(), $product_ID );
+$lowest_price_log = apply_filters( 'iworks_omnibus_wc_get_lowest_price', array(), $product_ID );
 ?>
 `
 
