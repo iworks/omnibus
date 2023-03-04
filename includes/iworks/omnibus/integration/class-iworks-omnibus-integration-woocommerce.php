@@ -1065,7 +1065,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 * @param WP_Comment $comment The WP comment object.
 	 */
 	public function meta_box_omnibus_html( $comment ) {
-		$product = get_product( $comment->comment_post_ID );
+		$product = wc_get_product( $comment->comment_post_ID );
 	}
 
 	/**
@@ -1078,7 +1078,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		if ( empty( $product_id ) ) {
 			$product_id = get_the_ID();
 		}
-		$product = get_product( $product_id );
+		$product = wc_get_product( $product_id );
 		if ( empty( $product ) ) {
 			return $price;
 		}
@@ -1092,7 +1092,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 *
 	 */
 	public function filter_add_price_log_data( $data, $product_id ) {
-		$product = get_product( $product_id );
+		$product = wc_get_product( $product_id );
 		if ( empty( $product ) ) {
 			return $data;
 		}
