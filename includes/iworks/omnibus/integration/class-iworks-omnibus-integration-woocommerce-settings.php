@@ -51,7 +51,7 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 			'where'    => __( 'Where on site', 'omnibus' ),
 			'messages' => __( 'Messages', 'omnibus' ),
 			'admin'    => __( 'Admin Dashboard', 'omnibus' ),
-			// 'comments' => __( 'Comments', 'omnibus' ),
+			'debug'    => __( 'Debug', 'omnibus' ),
 		);
 	}
 
@@ -409,10 +409,10 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 				),
 				array(
 					'type' => 'sectionend',
-					'id'   => $this->get_name( 'messages-custom-end' ),
+					'id'   => $this->get_name( 'where-custom-end' ),
 				),
 			);
-		return apply_filters( 'iworks_omnibus_messages_settings', $settings );
+		return apply_filters( 'iworks_omnibus_where_settings', $settings );
 	}
 
 	/**
@@ -521,6 +521,36 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 		);
 	}
 
+	/**
+	 * Get settings for the debug section.
+	 *
+	 * @since 2.4.0
+	 *
+	 * @return array
+	 */
+	protected function get_settings_for_debug_section() {
+		$settings = array(
+			array(
+				'title' => esc_html__( 'Debug', 'omnibus' ),
+				'type'  => 'title',
+			),
+			array(
+				'title' => __( 'Settings', 'omnibus' ),
+				'type'  => 'textarea',
+				'desc'  => __( 'Please copy this field to support question', 'omnibus' ),
+			),
+			array(
+				'title' => __( 'Product', 'omnibus' ),
+				'id'    => $this->get_name( 'product_debug' ),
+				'type'  => 'checkbox',
+				'desc'  => __( 'Display debug information in product content', 'omnibus' ),
+			),
+			array(
+				'type' => 'sectionend',
+			),
+		);
+		return apply_filters( 'iworks_omnibus_debug_settings', $settings );
+	}
 }
 
 return new iworks_omnibus_integration_woocommerce_settings();

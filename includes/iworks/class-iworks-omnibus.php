@@ -102,6 +102,15 @@ class iworks_omnibus {
 			$this->objects['easydigitaldownloads'] = new iworks_omnibus_integration_easydigitaldownloads();
 		}
 		/**
+		 * Debug Bar
+		 *
+		 * @since 2.4.0
+		 */
+		if ( isset( $GLOBALS['debug_bar'] ) ) {
+			include_once $dir . '/integration/class-iworks-omnibus-integration-debug-bar.php';
+			$this->objects['debug-bar'] = new iworks_omnibus_integration_debug_bar();
+		}
+		/**
 		 * Omnibus loaded action
 		 *
 		 * @since 2.1.4
