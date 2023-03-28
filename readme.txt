@@ -189,6 +189,7 @@ The minimum WooCommerce version required is 5.5.0.
 * The critical error for old PHP has been fixed. Props for [mlodyno](https://github.com/mlodyno). [Issue #2](https://github.com/iworks/omnibus/issues/2).
 * Unnecessary use of the function `sprintf()` has been fixed. Props for (Aleksander Mirecki)[https://geekroom.pl/].
 * The deprecated `get_product` function has been updated with the `wc_get_product` function. Props for (kanlukasz([https://github.com/kanlukasz].
+* The user ID has been added in to price log.
 
 = 2.3.4 (2023-02-04) =
 

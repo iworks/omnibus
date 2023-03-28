@@ -80,6 +80,7 @@ abstract class iworks_omnibus_integration {
 		$data = array(
 			'price'     => $price,
 			'timestamp' => $now,
+			'user_id'   => get_current_user_id(),
 		);
 		/**
 		 * filter data
