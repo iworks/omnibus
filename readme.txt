@@ -190,6 +190,7 @@ The minimum WooCommerce version required is 5.5.0.
 * Unnecessary use of the function `sprintf()` has been fixed. Props for (Aleksander Mirecki)[https://geekroom.pl/].
 * The deprecated `get_product` function has been updated with the `wc_get_product` function. Props for (kanlukasz([https://github.com/kanlukasz].
 * The user ID has been added in to price log.
+* The iWorks Rate class has ben updated to 2.1.2.
 
 = 2.3.4 (2023-02-04) =
 
