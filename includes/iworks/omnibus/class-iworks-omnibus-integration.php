@@ -403,7 +403,6 @@ abstract class iworks_omnibus_integration {
 			'id'            => $this->get_name( 'message' ),
 			'default'       => __( 'Previous lowest price: {price}.', 'omnibus' ),
 			'checkboxgroup' => 'end',
-			'desc'          => __( '%1$d - number of days<br>%2$s - the lowest price.', 'omnibus' ),
 			'desc'          => str_replace(
 				array( '{', '}' ),
 				array( '<code>{', '}</code>' ),
