@@ -47,6 +47,13 @@ abstract class iworks_omnibus_integration {
 	protected $last_price_drop_timestamp = '_iwo_last_price_drop_timestamp';
 
 	/**
+	 * just a price log
+	 *
+	 * @since 2.3.5
+	 */
+	protected $meta_price_log_name = '_iwo_price_log';
+
+	/**
 	 * Add price log
 	 *
 	 * @since 1.0.0
@@ -445,6 +452,21 @@ abstract class iworks_omnibus_integration {
 			}
 		}
 		return false;
+	}
+
+	protected function price_log( $post_id, $data ) {
+		if ( ! is_array( $data ) ) {
+			return;
+		}
+		if ( 'publish' !== get_post_status( $post_id ) ) {
+			return;
+		}
+		$data['timestamp'] = time();
+		add_post_meta(
+			$post_id,
+			$this->meta_price_log_name,
+			$data
+		);
 	}
 }
 

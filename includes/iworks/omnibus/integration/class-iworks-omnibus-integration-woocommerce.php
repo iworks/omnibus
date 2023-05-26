@@ -190,6 +190,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			|| floatval( $last['price_sale'] ) !== floatval( $current['price_sale'] )
 		) {
 			update_post_meta( $post_id, $this->meta_name_last_change, $current );
+			$this->price_log( $post_id, $current );
 		}
 	}
 
@@ -253,8 +254,8 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 * @since 1.0.0
 	 */
 	public function action_woocommerce_save_price_history( $product ) {
-		$price = $this->get_price( $product );
-		if ( empty( $price ) ) {
+		$price = $this->get_price( $product, 'save_price_history' );
+		if ( empty( $price ) && '0' !== $price ) {
 			return;
 		}
 		$post_id = $product->get_id();
@@ -355,7 +356,10 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 */
 		if ( 'yes' === get_option( $this->get_name( 'on_sale' ), 'yes' ) ) {
 			$product = wc_get_product( $post_id );
-			if ( ! $product->is_on_sale() ) {
+			if (
+				! is_object( $product )
+				|| ! $product->is_on_sale()
+			) {
 				return apply_filters( 'iworks_omnibus_show', false );
 			}
 		}
@@ -776,7 +780,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		}
 		$price = $product->get_sale_price();
 		if ( empty( $price ) ) {
-			$price = $product->get_price();
+			$price = $product->get_regular_price();
 		}
 		return $price;
 	}
