@@ -183,16 +183,17 @@ The minimum WooCommerce version required is 5.5.0.
 
 == Changelog ==
 
-= 2.3.5 (2023-xx-xx) =
+= 2.3.5 (2023-06-12) =
 
-* The settings link on the plugins screen has been changed.
-* The critical error for old PHP has been fixed. Props for [mlodyno](https://github.com/mlodyno). [Issue #2](https://github.com/iworks/omnibus/issues/2).
-* Unnecessary use of the function `sprintf()` has been fixed. Props for (Aleksander Mirecki)[https://geekroom.pl/].
-* The deprecated `get_product` function has been updated with the `wc_get_product` function. Props for (kanlukasz([https://github.com/kanlukasz].
-* The user ID has been added to the price log.
-* The iWorks Rate module has been updated to 2.1.2.
 * A full log of price changes has been added.
+* An extra check for WooCommerce integration has been added to avoid critical errors when a shortcode is called with the wrong post type. Props for (wapozon11)[https://wordpress.org/support/users/wapozon11/].
+* The critical error for old PHP has been fixed. Props for [mlodyno](https://github.com/mlodyno). [Issue #2](https://github.com/iworks/omnibus/issues/2).
+* The deprecated `get_product` function has been updated with the `wc_get_product` function. Props for (kanlukasz([https://github.com/kanlukasz].
 * The handling of products in the shortcode has been improved.
+* The iWorks Rate module has been updated to 2.1.2.
+* The settings link on the plugins screen has been changed.
+* The user ID has been added to the price log.
+* Unnecessary use of the function `sprintf()` has been fixed. Props for (Aleksander Mirecki)[https://geekroom.pl/].
 
 = 2.3.4 (2023-02-04) =
 
