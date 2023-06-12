@@ -193,7 +193,7 @@ The minimum WooCommerce version required is 5.5.0.
 * The [iWorks Rate](https://github.com/iworks/iworks-rate) module has been updated to 2.1.2.
 * The settings link on the plugins screen has been changed.
 * The user ID has been added to the price log.
-* Unnecessary use of the function `sprintf()` has been fixed. Props for (Aleksander Mirecki)[https://geekroom.pl/].
+* Unnecessary use of the function `sprintf()` has been fixed. Props for [Aleksander Mirecki](https://geekroom.pl/).
 
 = 2.3.4 (2023-02-04) =
 
