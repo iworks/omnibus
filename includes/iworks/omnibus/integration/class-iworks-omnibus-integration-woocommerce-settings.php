@@ -51,7 +51,7 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 			'where'    => __( 'Where on site', 'omnibus' ),
 			'messages' => __( 'Messages', 'omnibus' ),
 			'admin'    => __( 'Admin Dashboard', 'omnibus' ),
-			'debug'    => __( 'Debug', 'omnibus' ),
+			// 'debug'    => __( 'Debug', 'omnibus' ),
 		);
 	}
 
