@@ -790,6 +790,9 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		if ( empty( $price ) ) {
 			$price = $product->get_regular_price();
 		}
+		if ( empty( $price ) ) {
+			$price = $product->get_price();
+		}
 		return $price;
 	}
 

@@ -183,6 +183,10 @@ The minimum WooCommerce version required is 5.5.0.
 
 == Changelog ==
 
+= 2.3.7 (2023-06-13) =
+
+* The issue with missing Omnibus price has been fixed. Props for [Adrian](https://wordpress.org/support/users/cometto/).
+
 = 2.3.6 (2023-06-13) =
 
 * The unnecessary extra argument from the `get_price()` function has been removed.
