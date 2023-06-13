@@ -183,6 +183,10 @@ The minimum WooCommerce version required is 5.5.0.
 
 == Changelog ==
 
+= 2.3.6 (2023-06-13) =
+
+* The unnecessary extra argument from the `get_price()` function has been removed.
+
 = 2.3.5 (2023-06-12) =
 
 * A full log of price changes has been added.

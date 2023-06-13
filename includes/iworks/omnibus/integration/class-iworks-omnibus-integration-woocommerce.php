@@ -254,7 +254,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 * @since 1.0.0
 	 */
 	public function action_woocommerce_save_price_history( $product ) {
-		$price = $this->get_price( $product, 'save_price_history' );
+		$price = $this->get_price( $product );
 		if ( empty( $price ) && '0' !== $price ) {
 			return;
 		}
