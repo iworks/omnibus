@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Omnibus PLUGIN_VERSION\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/omnibus-dev\n"
-"POT-Creation-Date: 2023-06-13 07:51:56+00:00\n"
+"POT-Creation-Date: 2023-06-13 11:31:23+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -465,7 +465,7 @@ msgid "No Data Message"
 msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:398
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:989
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:992
 msgid "The previous price is not available."
 msgstr ""
 
@@ -478,7 +478,7 @@ msgid "Short Term Product Message"
 msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:406
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:966
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:969
 msgid "This is short term product."
 msgstr ""
 
@@ -567,19 +567,19 @@ msgstr ""
 msgid "Please visit new %1$ssettings page%2$s."
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:883
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:886
 msgid "Reviews"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:939
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:942
 msgid "OD: {price}"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:1004
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:1007
 msgid "Hide Omnibus"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:1005
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:1008
 msgid "This is a short-term product, keep the message hidden."
 msgstr ""
 
