@@ -314,14 +314,6 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 */
 	private function should_it_show_up( $post_id ) {
 		/**
-		 * check is product
-		 *
-		 * @since 2.3.5
-		 */
-		if ( 'product' !== get_post_type( $post_id ) ) {
-			return false;
-		}
-		/**
 		 * for admin
 		 */
 		if ( is_admin() ) {
