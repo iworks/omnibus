@@ -3,7 +3,7 @@ Contributors: iworks
 Donate link: https://ko-fi.com/iworks?utm_source=omnibus&utm_medium=readme-donate
 Tags: WooCommerce, omnibus, price, LMS, shop, e-commerce, product, course, download, history
 Requires at least: PLUGIN_REQUIRES_WORDPRESS
-Tested up to: 6.1
+Tested up to: 6.2
 Stable tag: PLUGIN_VERSION
 License: GPLv3 or later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
