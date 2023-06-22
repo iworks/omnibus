@@ -16,6 +16,9 @@
         "WordPress": "5.0",
         "PHP": "7.0"
     },
+    "tested": {
+        "WordPress": "6.2"
+    },
     "devDependencies": {
         "grunt": "^1",
         "load-grunt-tasks": "^0",
