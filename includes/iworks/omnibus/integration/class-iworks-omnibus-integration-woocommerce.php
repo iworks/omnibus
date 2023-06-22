@@ -721,8 +721,11 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 * shortcode to get message
 	 *
 	 * @since 1.2.3
+	 *
+	 * @param array $atts Array of param
+	 * @param string $content Shortcode content
 	 */
-	public function shortcode( $atts ) {
+	public function shortcode( $atts, $content = '' ) {
 		$atts = shortcode_atts(
 			array(
 				'id'         => null,
@@ -736,10 +739,10 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			$atts['id'] = get_the_ID();
 		}
 		if ( empty( $atts['id'] ) ) {
-			return;
+			return $content;
 		}
 		if ( ! $this->should_it_show_up( $atts['id'] ) ) {
-			return;
+			return $content;
 		}
 		$content = $this->run( 'return', $atts['id'], $atts['template'] );
 		/**
