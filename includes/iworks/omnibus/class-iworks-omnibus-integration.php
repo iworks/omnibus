@@ -121,11 +121,49 @@ abstract class iworks_omnibus_integration {
 		if ( 'unknown' === $price_last ) {
 			$this->add_price_log( $post_id, $price, true );
 		}
+		/**
+		 * try to get previous price
+		 *
+		 * @since 2.3.9
+		 */
+		$price_previous = null;
+		/**
+		 * filter prices names
+		 *
+		 * @since 2.3.9
+		 */
+		if ( is_array( $price_last ) ) {
+			$prices_names = apply_filters(
+				'iworks_omnibus/save_price_history/prices_names',
+				array(
+					'price',
+					'price_sale',
+					'price_regular',
+				)
+			);
+			foreach ( $prices_names as $key ) {
+				/**
+				 * already set, go away!
+				 */
+				if ( ! empty( $price_previous ) ) {
+					continue;
+				}
+				/**
+				 * check it
+				 */
+				if ( isset( $price_last[ $key ] ) ) {
+					$price_previous = $price_last[ $key ];
+				}
+			}
+		}
+		/**
+		 * check to log
+		 */
 		if (
-			is_array( $price_last )
-			&& floatval( $price ) !== floatval( $price_last['price'] )
+			! empty( $price_previous )
+			&& floatval( $price ) !== floatval( $price_previous )
 		) {
-			$this->add_price_log( $post_id, $price, floatval( $price ) !== floatval( $price_last['price'] ) );
+			$this->add_price_log( $post_id, $price, floatval( $price ) !== floatval( $price_previous ) );
 		}
 	}
 
@@ -193,6 +231,14 @@ abstract class iworks_omnibus_integration {
 		}
 		if ( isset( $price['init'] ) ) {
 			return array();
+		}
+		/**
+		 * Diff in days between promotion and now.
+		 *
+		 * @since 2.3.9
+		 */
+		if ( isset( $price['timestamp'] ) ) {
+			$price['diff-in-days'] = round( ( time() - $price['timestamp'] ) / DAY_IN_SECONDS );
 		}
 		return $price;
 	}
