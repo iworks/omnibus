@@ -132,15 +132,18 @@ abstract class iworks_omnibus_integration {
 		 *
 		 * @since 2.3.9
 		 */
-		if ( is_array( $price_last ) ) {
-			$prices_names = apply_filters(
-				'iworks_omnibus/save_price_history/prices_names',
-				array(
-					'price',
-					'price_sale',
-					'price_regular',
-				)
-			);
+		$prices_names = apply_filters(
+			'iworks_omnibus/save_price_history/prices_names',
+			array(
+				'price',
+				'price_sale',
+				'price_regular',
+			)
+		);
+		if (
+			is_array( $price_last )
+			&& ! empty( $price_last )
+		) {
 			foreach ( $prices_names as $key ) {
 				/**
 				 * already set, go away!
@@ -159,10 +162,33 @@ abstract class iworks_omnibus_integration {
 		/**
 		 * check to log
 		 */
-		if (
-			! empty( $price_previous )
-			&& floatval( $price ) !== floatval( $price_previous )
-		) {
+		$do_log = false;
+		foreach ( $prices_names as $key ) {
+			if ( $do_log ) {
+				continue;
+			}
+			if ( ! isset( $price_last[ $key ] ) ) {
+				$do_log = true;
+				continue;
+			}
+			if ( ! isset( $price_previous[ $key ] ) ) {
+				$do_log = true;
+				continue;
+			}
+			if ( floatval( $price_lowest[ $key ] ) !== floatval( $price_previous[ $key ] ) ) {
+				$do_log = true;
+				continue;
+			}
+		}
+		l(
+			array(
+				$do_log,
+				$price_last,
+				array(),
+
+			)
+		);
+		if ( $do_log ) {
 			$this->add_price_log( $post_id, $price, floatval( $price ) !== floatval( $price_previous ) );
 		}
 	}
@@ -513,6 +539,21 @@ abstract class iworks_omnibus_integration {
 			$this->meta_price_log_name,
 			$data
 		);
+	}
+
+	protected function usort_log_array( $a, $b ) {
+		if (
+			is_array( $a )
+			&& is_array( $b )
+			&& isset( $a['timestamp'] )
+			&& isset( $b['timestamp'] )
+		) {
+			if ( $a['timestamp'] === $b['timestamp'] ) {
+				return 0;
+			}
+			return $a['timestamp'] > $b['timestamp'] ? 1 : -1;
+		}
+		return 0;
 	}
 }
 

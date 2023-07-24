@@ -28,7 +28,6 @@ include_once dirname( dirname( __FILE__ ) ) . '/class-iworks-omnibus-integration
 class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration {
 
 	public function __construct() {
-
 		/**
 		 * add Settings Section
 		 *
@@ -61,8 +60,14 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 * @since x.x.x
 		 */
 		if ( false ) {
-			add_action( 'add_meta_boxes', array( $this, 'action_add_meta_boxes_rating' ), 40 );
+			add_action( 'add_meta_boxes_product', array( $this, 'action_add_meta_boxes_product_rating' ), 4100 );
 		}
+		/**
+		 * WooCommerce Omnibus Price History Meta Box
+		 *
+		 * @since 2.4.0
+		 */
+		add_action( 'add_meta_boxes_product', array( $this, 'action_add_meta_boxes_product_history' ), 4000 );
 		/**
 		 * admin init
 		 *
@@ -326,7 +331,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 						return apply_filters( 'iworks_omnibus_show', true );
 					}
 				}
-			} else {
+			} elseif ( function_exists( 'get_current_screen' ) ) {
 				$screen = get_current_screen();
 				if ( 'product' === $screen->id ) {
 					if ( 'yes' === get_option( $this->get_name( 'admin_edit' ), 'yes' ) ) {
@@ -991,13 +996,13 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	}
 
 	public function woocommerce_wp_checkbox_short( $post_id, $configuration = array() ) {
-		if ( 'no' === get_option( $this->get_name( 'admin_short' ), 'no' ) ) {
+		if ( 'no' === get_option( $this->get_name( 'is_short' ), 'no' ) ) {
 			return;
 		}
 		woocommerce_wp_checkbox(
 			wp_parse_args(
 				array(
-					'id'            => $this->get_name( 'is_short' ) . '-' . $post_id,
+					'id'            => $this->get_name( 'is_short' ),
 					'value'         => get_post_meta( $post_id, $this->get_name( 'is_short' ), true ),
 					'label'         => __( 'Hide Omnibus', 'omnibus' ),
 					'description'   => __( 'This is a short-term product, keep the message hidden.', 'omnibus' ),
@@ -1052,14 +1057,17 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 *
 	 * @since 2.3.0
 	 */
-	public function action_add_meta_boxes_rating() {
+	public function action_add_meta_boxes_product_rating( $post ) {
+		if ( ! is_product( $post ) ) {
+			return;
+		}
 		$screen    = get_current_screen();
 		$screen_id = $screen ? $screen->id : '';
 		if ( 'comment' === $screen_id && isset( $_GET['c'] ) && metadata_exists( 'comment', wc_clean( wp_unslash( $_GET['c'] ) ), 'rating' ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			add_meta_box(
 				'omnibus',
 				__( 'Omnibus', 'woocommerce' ),
-				array( $this, 'meta_box_omnibus_html' ),
+				array( $this, 'meta_box_rating_html' ),
 				'comment',
 				'normal',
 				'high'
@@ -1074,7 +1082,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 *
 	 * @param WP_Comment $comment The WP comment object.
 	 */
-	public function meta_box_omnibus_html( $comment ) {
+	public function meta_box_rating_html( $comment ) {
 		$product = wc_get_product( $comment->comment_post_ID );
 	}
 
@@ -1112,6 +1120,83 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		$data['price_regular'] = $product->get_regular_price();
 		$data['price_sale']    = $product->get_sale_price();
 		return $data;
+	}
+
+	/**
+	 * WooCommerce Omnibus Price History Meta Box
+	 *
+	 * @since 2.4.0
+	 */
+	public function action_add_meta_boxes_product_history( $post ) {
+		if ( ! $post instanceof WP_Post ) {
+			return;
+		}
+		add_meta_box(
+			'iworks-omnibus-history',
+			__( 'Omnibus Price History', 'omnibus' ),
+			array( $this, 'meta_box_history_html' )
+		);
+	}
+
+	public function meta_box_history_html( $post ) {
+		$products = $this->get_products_ids( $post );
+		d( $products );
+		$log = array();
+		foreach ( $products as $post_id ) {
+			$changes = get_post_meta( $post_id, $this->meta_price_log_name );
+			if ( is_array( $changes ) ) {
+				foreach ( $changes as $one ) {
+					$one['post_id'] = $post_id;
+					$log[]          = $one;
+				}
+			}
+		}
+		if ( empty( $log ) ) {
+			esc_html_e( 'There is no price history recorded.', 'omnibus' );
+			return;
+		}
+		echo '<table class="widefat fixed striped">';
+		echo '<thead>';
+		echo '<tr>';
+		printf( '<th>%s</th>', esc_html__( 'Product', 'omnibus' ) );
+		printf( '<th>%s</th>', esc_html__( 'Regular Price', 'omnibus' ) );
+		printf( '<th>%s</th>', esc_html__( 'Sale Price', 'omnibus' ) );
+		printf( '<th>%s</th>', esc_html__( 'Date', 'omnibus' ) );
+		echo '</tr>';
+		echo '</thead>';
+
+		echo '<tbody>';
+		usort( $log, array( $this, 'usort_log_array' ) );
+		foreach ( $log as $one ) {
+			echo '<tr>';
+			printf( '<td>%s</td>', get_the_title( $one['post_id'] ) );
+			printf( '<td>%s</td>', $one['price'] );
+			printf( '<td>%s</td>', empty( $one['price_sale'] ) ? '&mdash;' : $one['price_sale'] );
+			printf( '<td>%s</td>', date_i18n( 'Y-m-d H:i', $one['timestamp'] ) );
+			echo '</tr>';
+
+			d( $one );
+		}
+		echo '</tbody>';
+		echo '</table>';
+	}
+
+	/**
+	 * Get products list
+	 *
+	 * @param \WP_Post $post
+	 *
+	 * @return array a
+	 */
+	public function get_products_ids( $post ) {
+		$product = wc_get_product( $post->ID );
+		if ( ! $product instanceof WC_Product ) {
+			return array();
+		}
+		if ( $product instanceof WC_Product_Variable ) {
+			return $product->get_children();
+		}
+		return array( $post->ID );
 	}
 
 }
