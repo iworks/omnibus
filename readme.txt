@@ -184,6 +184,8 @@ The minimum WooCommerce version required is 5.5.0.
 
 == Changelog ==
 
+* The check for function `get_current_screen()` has been added. Props for [mic22info](https://wordpress.org/support/users/mic22info/).
+
 = 2.3.9 (2023-06-22) =
 
 * Proper handling of the `$content` param has been added to the `omnibus_price_message` shortcode.
