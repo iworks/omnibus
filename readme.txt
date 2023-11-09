@@ -186,6 +186,9 @@ The minimum WooCommerce version required is 5.5.0.
 
 * The check for function `get_current_screen()` has been added. Props for [mic22info](https://wordpress.org/support/users/mic22info/).
 
+= 2.4.1 (2023-11-09) =
+* The critical error on product edit page has been removed.
+
 = 2.4.0 (2023-11-09) =
 * Visibility of very old price has been fixed.
 * Prices changes logging has been added.

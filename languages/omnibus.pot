@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Omnibus PLUGIN_VERSION\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/omnibus-dev\n"
-"POT-Creation-Date: 2023-11-09 12:09:55+00:00\n"
+"POT-Creation-Date: 2023-11-09 15:58:21+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -48,82 +48,82 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:318
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:325
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:310
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:317
 msgid "Previous lowest price was %2$s."
 msgstr ""
 
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:436
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:428
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:519
 msgid "Omnibus Directive"
 msgstr ""
 
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:442
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:434
 msgid "Omnibus Directive Settings"
 msgstr ""
 
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:450
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:442
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-easydigitaldownloads.php:143
 msgid "Number of days"
 msgstr ""
 
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:451
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:443
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:488
 msgid ""
 "This controls the number of days to show. According to the Omnibus "
 "Directive, minimum days is 30 after curent sale was started."
 msgstr ""
 
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:465
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:457
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:52
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:369
 msgid "Messages"
 msgstr ""
 
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:478
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:470
 msgid "Price Message"
 msgstr ""
 
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:484
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:476
 msgid "Default messages (recommended)."
 msgstr ""
 
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:485
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:477
 msgid "Custom messages."
 msgstr ""
 
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:487
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:479
 msgid ""
 "Custom messages will be used only when you choose \"Custom messages.\" "
 "option."
 msgstr ""
 
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:494
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:486
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:327
 #. translators: Do not translate {price}, it is the replacement placeholder !
 msgid "Use the {price} placeholder to display price."
 msgstr ""
 
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:496
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:488
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:329
 #. translators: Do not translate {timestamp}, it is the replacement placeholder
 #. !
 msgid "Use the {timestamp} placeholder to display timestamp."
 msgstr ""
 
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:498
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:490
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:331
 #. translators: Do not translate {days}, it is the replacement placeholder !
 msgid "Use the {days} placeholder to display days."
 msgstr ""
 
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:500
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:492
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:333
 #. translators: Do not translate {when}, it is the replacement placeholder !
 msgid "Use the {when} placeholder to display date."
 msgstr ""
 
-#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:504
+#: includes/iworks/omnibus/class-iworks-omnibus-integration.php:496
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:390
 msgid "Previous lowest price: {price}."
 msgstr ""
