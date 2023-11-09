@@ -151,6 +151,10 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 * @since 1.1.0
 		 */
 		add_action( 'yith_wcpb_after_product_bundle_options_tab', array( $this, 'action_woocommerce_product_options_pricing' ) );
+		/**
+		 * get price log
+		 */
+		add_filter( 'iworks_omnibus_price_log_array', array( $this, 'filter_get_log_array' ), 10, 2 );
 	}
 
 	/**
@@ -1128,6 +1132,9 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 * @since 2.4.0
 	 */
 	public function action_add_meta_boxes_product_history( $post ) {
+		if ( true ) {
+			return;
+		}
 		if ( ! $post instanceof WP_Post ) {
 			return;
 		}
@@ -1140,8 +1147,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 
 	public function meta_box_history_html( $post ) {
 		$products = $this->get_products_ids( $post );
-		d( $products );
-		$log = array();
+		$log      = array();
 		foreach ( $products as $post_id ) {
 			$changes = get_post_meta( $post_id, $this->meta_price_log_name );
 			if ( is_array( $changes ) ) {

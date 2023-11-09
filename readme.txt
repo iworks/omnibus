@@ -186,6 +186,11 @@ The minimum WooCommerce version required is 5.5.0.
 
 * The check for function `get_current_screen()` has been added. Props for [mic22info](https://wordpress.org/support/users/mic22info/).
 
+= 2.4.0 (2023-11-09) =
+* Visibility of very old price has been fixed.
+* Prices changes logging has been added.
+* The [iWorks Rate](https://github.com/iworks/iworks-rate) module has been updated to 2.1.3.
+
 = 2.3.9 (2023-06-22) =
 
 * Proper handling of the `$content` param has been added to the `omnibus_price_message` shortcode.

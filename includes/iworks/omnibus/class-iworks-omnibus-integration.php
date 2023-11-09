@@ -111,6 +111,8 @@ abstract class iworks_omnibus_integration {
 		}
 	}
 
+
+
 	/**
 	 * Save price history
 	 *
@@ -266,6 +268,25 @@ abstract class iworks_omnibus_integration {
 		if ( isset( $price['timestamp'] ) ) {
 			$price['diff-in-days'] = round( ( time() - $price['timestamp'] ) / DAY_IN_SECONDS );
 		}
+		/**
+		 * don't propagate data if there is more days
+		 *
+		 * @since 2.4.0
+		 */
+		if (
+			isset( $price['diff-in-days'] )
+			&& $this->get_days() < $price['diff-in-days']
+		) {
+			return array();
+		}
+		/**
+		 * human reaadable data & debug
+		 *
+		 * @since 2.4.0
+		 */
+		$price['days']            = $this->get_days();
+		$price['human_from']      = gmdate( 'c', $price['from'] );
+		$price['human_timestamp'] = gmdate( 'c', $price['timestamp'] );
 		return $price;
 	}
 
@@ -524,6 +545,21 @@ abstract class iworks_omnibus_integration {
 			}
 		}
 		return false;
+	}
+
+	public function filter_get_log_array( $log, $post_id ) {
+		$log     = array();
+		$changes = get_post_meta( $post_id, $this->meta_price_log_name );
+		if ( is_array( $changes ) ) {
+			foreach ( $changes as $one ) {
+				$one['post_id'] = $post_id;
+				$log[]          = $one;
+			}
+		}
+		if ( ! empty( $changes ) ) {
+			usort( $log, array( $this, 'usort_log_array' ) );
+		}
+		return $log;
 	}
 
 	protected function price_log( $post_id, $data ) {
