@@ -304,7 +304,7 @@ abstract class iworks_omnibus_integration {
 			return $price;
 		}
 		/**
-		 * Set message template if ir is needed
+		 * Set message template if it is needed
 		 */
 		if ( empty( $message ) ) {
 			$message = __( 'Previous lowest price was %2$s.', 'omnibus' );
@@ -582,6 +582,21 @@ abstract class iworks_omnibus_integration {
 			return $a['timestamp'] > $b['timestamp'] ? 1 : -1;
 		}
 		return 0;
+	}
+
+	/**
+	 * message: price is not available
+	 *
+	 * @since 2.0.2
+	 */
+	protected function get_message_price_is_not_available() {
+		if ( 'yes' == get_option( $this->get_name( 'message_settings' ), 'no' ) ) {
+			$v = get_option( $this->get_name( 'message_no_data' ), false );
+			if ( ! empty( $v ) ) {
+				return $v;
+			}
+		}
+		return __( 'The previous price is not available.', 'omnibus' );
 	}
 }
 

@@ -987,13 +987,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 				case 'no':
 					return '';
 				case 'inform':
-					if ( 'yes' == get_option( $this->get_name( 'message_settings' ), 'no' ) ) {
-						$v = get_option( $this->get_name( 'message_no_data' ), false );
-						if ( ! empty( $v ) ) {
-							return $v;
-						}
-					}
-					return __( 'The previous price is not available.', 'omnibus' );
+					return $this->get_message_price_is_not_available();
 			}
 		}
 		return $template;
