@@ -37,9 +37,15 @@ Omnibus plugin support plugins:
 
 Read more: [Directive 2019/2161](https://eur-lex.europa.eu/eli/dir/2019/2161/oj).
 
-= GitHub =
+= See room for improvement? =
 
-The Omnibus plugin is available also on [GitHub - Omnibus](https://github.com/iworks/omnibus).
+Great! There are several ways you can get involved to help make OG better:
+
+1. **Report Bugs:** If you find a bug, error or other problem, please report it! You can do this by [creating a new topic](https://wordpress.org/support/plugin/omnibus/) in the plugin forum. Once a developer can verify the bug by reproducing it, they will create an official bug report in GitHub where the bug will be worked on.
+2. **Suggest New Features:** Have an awesome idea? Please share it! Simply [create a new topic](https://wordpress.org/support/plugin/omnibus/) in the plugin forum to express your thoughts on why the feature should be included and get a discussion going around your idea.
+3. **Issue Pull Requests:** If you're a developer, the easiest way to get involved is to help out on [issues already reported](https://github.com/iworks/omnibus/issues) in GitHub. Be sure to check out the [contributing guide](https://github.com/iworks/omnibus/blob/master/contributing.md) for developers.
+
+Thank you for wanting to make OG better for everyone!
 
 == Installation ==
 
@@ -184,6 +190,10 @@ The minimum WooCommerce version required is 5.5.0.
 
 == Changelog ==
 
+Project maintained on github at [iworks/omnibus](https://github.com/iworks/omnibus).
+
+= 2.4.2 (2023-11-19) =
+* The ability to show the regular price as the last one available before the promotion was introduced.
 * The check for function `get_current_screen()` has been added. Props for [mic22info](https://wordpress.org/support/users/mic22info/).
 
 = 2.4.1 (2023-11-09) =

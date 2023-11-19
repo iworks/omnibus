@@ -549,18 +549,30 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 					return $lowest;
 				}
 			}
-		} elseif ( 'current' !== get_option( $this->get_name( 'missing' ), 'current' ) ) {
-			return $lowest;
 		}
-		if ( empty( $lowest ) ) {
-			$lowest = array(
-				'price'     => $price,
-				'timestamp' => time(),
-			);
-		}
-		if ( isset( $lowest['price'] ) ) {
-			$lowest['qty']                 = 1;
-			$lowest['price_including_tax'] = wc_get_price_including_tax( $product, $lowest );
+		switch ( get_option( $this->get_name( 'missing' ), 'current' ) ) {
+        case 'regular':
+            if ( empty( $lowest ) ) {
+                $lowest                        = array(
+                    'price'     => $product->get_regular_price(),
+                    'qty'       => 1,
+                    'timestamp' => time(),
+                );
+                $lowest['price_including_tax'] = wc_get_price_including_tax( $product, $lowest );
+            }
+				break;
+			case 'current':
+				if ( empty( $lowest ) ) {
+					$lowest = array(
+						'price'     => $price,
+						'timestamp' => time(),
+					);
+				}
+				if ( isset( $lowest['price'] ) ) {
+					$lowest['qty']                 = 1;
+					$lowest['price_including_tax'] = wc_get_price_including_tax( $product, $lowest );
+				}
+				break;
 		}
 		return $lowest;
 	}

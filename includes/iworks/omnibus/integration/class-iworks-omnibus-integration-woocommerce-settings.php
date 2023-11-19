@@ -344,7 +344,8 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 					'default'  => 'current',
 					'type'     => 'radio',
 					'options'  => array(
-						'current' => esc_html__( 'Display current price', 'omnibus' ),
+						'current' => esc_html__( 'Display current sale price', 'omnibus' ),
+						'regular' => esc_html__( 'Display current regular price', 'omnibus' ),
 						'inform'  => esc_html__( 'Inform about it', 'omnibus' ),
 						'no'      => esc_html__( 'Do not display anything', 'omnibus' ),
 					),
