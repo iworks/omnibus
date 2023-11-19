@@ -7,7 +7,6 @@ Tested up to: PLUGIN_TESTED_WORDPRESS
 Stable tag: PLUGIN_VERSION
 Requires PHP: PLUGIN_REQUIRES_PHP
 License: GPLv3 or later
-License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 PLUGIN_TAGLINE
 
@@ -192,7 +191,7 @@ The minimum WooCommerce version required is 5.5.0.
 
 Project maintained on github at [iworks/omnibus](https://github.com/iworks/omnibus).
 
-= 2.4.2 (2023-11-19) =
+= 2.5.0 (2023-11-19) =
 * The ability to show the regular price as the last one available before the promotion was introduced.
 * The check for function `get_current_screen()` has been added. Props for [mic22info](https://wordpress.org/support/users/mic22info/).
 
@@ -411,6 +410,9 @@ Project maintained on github at [iworks/omnibus](https://github.com/iworks/omnib
 * Init.
 
 == Upgrade Notice ==
+
+= 2.5.0 =
+* The ability to show the regular price as the last one available before the promotion was introduced. Check it on WordPress Admin -> WooCommerce -> Settings -> Omnibus -> Messages.
 
 = 2.1.0 =
 
