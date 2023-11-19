@@ -37,7 +37,38 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 				'<h3>%s</h3>',
 				esc_html__( 'Product info', 'omnibus' )
 			);
+			printf(
+				'<h4>%s</h4>',
+				esc_html__( 'Product changes log', 'omnibus' )
+			);
 			$log = apply_filters( 'iworks_omnibus_price_log_array', array(), get_the_ID() );
+			if ( empty( $log ) ) {
+				esc_html_e( 'There is no price history recorded.', 'omnibus' );
+			} else {
+				echo '<table class="widefat fixed striped debug-bar-wp-query-list">';
+				echo '<thead>';
+				echo '<tr>';
+				printf( '<th>%s</th>', esc_html__( 'Regular Price', 'omnibus' ) );
+				printf( '<th>%s</th>', esc_html__( 'Sale Price', 'omnibus' ) );
+				printf( '<th>%s</th>', esc_html__( 'Date', 'omnibus' ) );
+				echo '</tr>';
+				echo '</thead>';
+				echo '<tbody>';
+				foreach ( $log as $one ) {
+					echo '<tr>';
+					printf( '<td>%s</td>', $one['price'] );
+					printf( '<td>%s</td>', empty( $one['price_sale'] ) ? '&mdash;' : $one['price_sale'] );
+					printf( '<td>%s</td>', date_i18n( 'Y-m-d H:i', $one['timestamp'] ) );
+					echo '</tr>';
+				}
+				echo '</tbody>';
+				echo '</table>';
+			}
+			printf(
+				'<h4>%s</h4>',
+				esc_html__( 'Product saved prices', 'omnibus' )
+			);
+			$log = apply_filters( 'iworks_omnibus_prices_array', array(), get_the_ID() );
 			if ( empty( $log ) ) {
 				esc_html_e( 'There is no price history recorded.', 'omnibus' );
 			} else {

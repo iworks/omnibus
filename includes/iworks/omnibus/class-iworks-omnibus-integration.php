@@ -598,5 +598,14 @@ abstract class iworks_omnibus_integration {
 		}
 		return __( 'The previous price is not available.', 'omnibus' );
 	}
+
+	/**
+	 * get all prices
+	 *
+	 * @since 2.5.1
+	 */
+	public function filter_get_prices_array( $log, $post_id ) {
+		return get_post_meta( $post_id, $this->meta_name );
+	}
 }
 

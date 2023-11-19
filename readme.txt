@@ -27,6 +27,7 @@ Omnibus plugin support plugins:
 * [LearnPress](https://wordpress.org/plugins/learnpress/)
 * [Tutor LMS](https://wordpress.org/plugins/tutor/) with WooCommerce
 * [YITH WooCommerce Product Bundles](https://wordpress.org/plugins/yith-woocommerce-product-bundles/)
+* [Debug Bar](https://wordpress.org/plugins/debug-bar/)
 
 = Directive (EU) 2019/2161 of the European Parliament =
 
@@ -194,6 +195,7 @@ Project maintained on github at [iworks/omnibus](https://github.com/iworks/omnib
 = 2.5.0 (2023-11-19) =
 * The ability to show the regular price as the last one available before the promotion was introduced.
 * The check for function `get_current_screen()` has been added. Props for [mic22info](https://wordpress.org/support/users/mic22info/).
+* The integration with the "Debug Bar" plugin has been added.
 
 = 2.4.1 (2023-11-09) =
 * The critical error on product edit page has been removed.

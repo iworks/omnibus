@@ -155,6 +155,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 * get price log
 		 */
 		add_filter( 'iworks_omnibus_price_log_array', array( $this, 'filter_get_log_array' ), 10, 2 );
+		add_filter( 'iworks_omnibus_prices_array', array( $this, 'filter_get_prices_array' ), 10, 2 );
 	}
 
 	/**
