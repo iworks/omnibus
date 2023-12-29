@@ -192,6 +192,9 @@ The minimum WooCommerce version required is 5.5.0.
 
 Project maintained on github at [iworks/omnibus](https://github.com/iworks/omnibus).
 
+= 2.5.1 (2024-xx-xx) =
+* The [iWorks Rate](https://github.com/iworks/iworks-rate) module has been updated to 2.1.6.
+
 = 2.5.0 (2023-11-19) =
 * The ability to show the regular price as the last one available before the promotion was introduced.
 * The check for function `get_current_screen()` has been added. Props for [mic22info](https://wordpress.org/support/users/mic22info/).
