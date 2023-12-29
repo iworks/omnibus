@@ -339,7 +339,7 @@ module.exports = function(grunt) {
 
         checktextdomain: {
             options: {
-                text_domain: ['omnibus', 'IWORKS_RATE_TEXTDOMAIN'],
+                text_domain: ['<%= pkg.name %>', 'IWORKS_RATE_TEXTDOMAIN', 'IWORKS_OPTIONS_TEXTDOMAIN'],
                 keywords: [ //List keyword specifications
                     '__:1,2d',
                     '_e:1,2d',
@@ -358,7 +358,7 @@ module.exports = function(grunt) {
                 ]
             },
             files: {
-                src: ['omnibus.php', 'vendor/**/*.php'], //all php 
+                src: ['<%= pkg.name %>.php', 'includes/**/*.php'],
                 expand: true,
             },
         },
