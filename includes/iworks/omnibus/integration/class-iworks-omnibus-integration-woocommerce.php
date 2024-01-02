@@ -581,6 +581,13 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 				}
 				break;
 		}
+		if ( is_array( $lowest ) ) {
+			$lowest['product_id'] = $product->get_ID();
+			if ( $product->is_type( 'variation' ) ) {
+				$lowest['variation_id'] = $lowest['product_id'];
+				$lowest['product_id']   = $product->get_parent_id();
+			}
+		}
 		return $lowest;
 	}
 

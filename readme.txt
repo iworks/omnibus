@@ -41,9 +41,9 @@ Read more: [Directive 2019/2161](https://eur-lex.europa.eu/eli/dir/2019/2161/oj)
 
 Great! There are several ways you can get involved to help make PLUGIN_TITLE better:
 
-1. **Report Bugs:** If you find a bug, error or other problem, please report it! You can do this by [creating a new topic](https://wordpress.org/support/plugin/omnibus/) in the plugin forum. Once a developer can verify the bug by reproducing it, they will create an official bug report in GitHub where the bug will be worked on.
+1. **Report Bugs:** If you find a bug, error or other problem, please report it! You can do this by [creating a new topic](https://wordpress.org/support/plugin/omnibus/) in the plugin forum. Once a developer can verify the bug by reproducing it, they will create an official bug report in (GitHub)[PLUGIN_GITHUB_WEBSITE] where the bug will be worked on.
 2. **Suggest New Features:** Have an awesome idea? Please share it! Simply [create a new topic](https://wordpress.org/support/plugin/omnibus/) in the plugin forum to express your thoughts on why the feature should be included and get a discussion going around your idea.
-3. **Issue Pull Requests:** If you're a developer, the easiest way to get involved is to help out on [issues already reported](https://github.com/iworks/omnibus/issues) in GitHub. Be sure to check out the [contributing guide](https://github.com/iworks/omnibus/blob/master/contributing.md) for developers.
+3. **Issue Pull Requests:** If you're a developer, the easiest way to get involved is to help out on [issues already reported](PLUGIN_GITHUB_WEBSITE/issues) in GitHub. Be sure to check out the [contributing guide](PLUGIN_GITHUB_WEBSITE/blob/master/contributing.md) for developers.
 
 Thank you for wanting to make PLUGIN_TITLE better for everyone!
 
@@ -111,7 +111,7 @@ do_action( 'iworks_omnibus_wc_lowest_price_message', $product_ID );
 
 = I have a problem with the plugin, or I want to suggest a feature. Where can I do this? =
 
-You can do it on [Support Threads](https://wordpress.org/support/plugin/omnibus/#new-topic-0), but please add your ticket to [Github Issues](https://github.com/iworks/omnibus/issues).
+You can do it on [Support Threads](https://wordpress.org/support/plugin/omnibus/#new-topic-0), but please add your ticket to [Github Issues](PLUGIN_GITHUB_WEBSITE/issues).
 
 
 = How can I avoid saving the price log? =
@@ -190,10 +190,14 @@ The minimum WooCommerce version required is 5.5.0.
 
 == Changelog ==
 
-Project maintained on github at [iworks/omnibus](https://github.com/iworks/omnibus).
+Project maintained on github at [iworks/omnibus](PLUGIN_GITHUB_WEBSITE).
 
 = 2.5.1 (2024-xx-xx) =
+* The function `check_ajax_referer()` has been added for checking expanded variant edits.
+* The function `strip_tags()` has been replaced by the function `wp_strip_all_tags()`.
 * The [iWorks Rate](https://github.com/iworks/iworks-rate) module has been updated to 2.1.6.
+* The `data-iwo-product_id` for the price message has been added. [#14](https://github.com/iworks/omnibus/issues/14).
+* The `data-iwo-variation_id` for the price message has been added. [#14](https://github.com/iworks/omnibus/issues/14).
 
 = 2.5.0 (2023-11-19) =
 * The ability to show the regular price as the last one available before the promotion was introduced.
