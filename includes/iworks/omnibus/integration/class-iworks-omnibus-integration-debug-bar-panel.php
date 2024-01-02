@@ -33,66 +33,100 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 	function render() {
 		echo '<div id="debug-bar-omnibus">';
 		if ( is_singular( 'product' ) ) {
+			$product = wc_get_product( get_the_ID() );
 			printf(
 				'<h3>%s</h3>',
 				esc_html__( 'Product info', 'omnibus' )
 			);
+			echo '<dl>';
+			printf( '<dt>%s</dt>', esc_html__( 'ID', 'omnibus' ) );
+			printf( '<dd>%s</dd>', esc_html( get_the_ID() ) );
+			printf( '<dt>%s</dt>', esc_html__( 'Type', 'omnibus' ) );
+			printf( '<dd>%s</dd>', esc_html( $product->get_type() ) );
+			echo '</dl>';
+			/**
+			 * Product Changes Log
+			 */
+			echo '<hr>';
 			printf(
 				'<h4>%s</h4>',
 				esc_html__( 'Product changes log', 'omnibus' )
 			);
-			$log = apply_filters( 'iworks_omnibus_price_log_array', array(), get_the_ID() );
-			if ( empty( $log ) ) {
-				esc_html_e( 'There is no price history recorded.', 'omnibus' );
-			} else {
-				echo '<table class="widefat fixed striped debug-bar-wp-query-list">';
-				echo '<thead>';
-				echo '<tr>';
-				printf( '<th>%s</th>', esc_html__( 'Regular Price', 'omnibus' ) );
-				printf( '<th>%s</th>', esc_html__( 'Sale Price', 'omnibus' ) );
-				printf( '<th>%s</th>', esc_html__( 'Date', 'omnibus' ) );
-				echo '</tr>';
-				echo '</thead>';
-				echo '<tbody>';
-				foreach ( $log as $one ) {
-					echo '<tr>';
-					printf( '<td>%s</td>', $one['price'] );
-					printf( '<td>%s</td>', empty( $one['price_sale'] ) ? '&mdash;' : $one['price_sale'] );
-					printf( '<td>%s</td>', date_i18n( 'Y-m-d H:i', $one['timestamp'] ) );
-					echo '</tr>';
-				}
-				echo '</tbody>';
-				echo '</table>';
+			/**
+			 * product type
+			 */
+			switch ( $product->get_type() ) {
+				case 'simple':
+					$this->show_log_table(
+						apply_filters( 'iworks_omnibus_price_log_array', array(), get_the_ID() )
+					);
+					break;
+				default:
+					echo wpautop( __( 'The selected product type is not supported.', 'omnibus' ) );
+					break;
 			}
+			/**
+			 * Product Saved Prives
+			 */
+			echo '<hr>';
 			printf(
 				'<h4>%s</h4>',
 				esc_html__( 'Product saved prices', 'omnibus' )
 			);
-			$log = apply_filters( 'iworks_omnibus_prices_array', array(), get_the_ID() );
-			if ( empty( $log ) ) {
-				esc_html_e( 'There is no price history recorded.', 'omnibus' );
-			} else {
-				echo '<table class="widefat fixed striped debug-bar-wp-query-list">';
-				echo '<thead>';
-				echo '<tr>';
-				printf( '<th>%s</th>', esc_html__( 'Regular Price', 'omnibus' ) );
-				printf( '<th>%s</th>', esc_html__( 'Sale Price', 'omnibus' ) );
-				printf( '<th>%s</th>', esc_html__( 'Date', 'omnibus' ) );
-				echo '</tr>';
-				echo '</thead>';
-				echo '<tbody>';
-				foreach ( $log as $one ) {
-					echo '<tr>';
-					printf( '<td>%s</td>', $one['price'] );
-					printf( '<td>%s</td>', empty( $one['price_sale'] ) ? '&mdash;' : $one['price_sale'] );
-					printf( '<td>%s</td>', date_i18n( 'Y-m-d H:i', $one['timestamp'] ) );
-					echo '</tr>';
-				}
-				echo '</tbody>';
-				echo '</table>';
+			/**
+			 * product type
+			 */
+			switch ( $product->get_type() ) {
+				case 'simple':
+					$this->show_log_table(
+						apply_filters( 'iworks_omnibus_prices_array', array(), get_the_ID() )
+					);
+					break;
+				case 'variable':
+					foreach ( $product->get_children() as $variation_id ) {
+						printf(
+							'<p>%s (id: %d)</p>',
+							esc_html( get_the_title( $variation_id ) ),
+							esc_html( $variation_id )
+						);
+						$this->show_log_table(
+							apply_filters( 'iworks_omnibus_prices_array', array(), $variation_id )
+						);
+					}
+					break;
+				default:
+					echo wpautop( __( 'The selected product type is not supported.', 'omnibus' ) );
+					break;
 			}
 		}
 		echo '</div>';
 	}
+
+
+	private function show_log_table( $log ) {
+		if ( empty( $log ) ) {
+			echo wpautop( esc_html__( 'There is no price history recorded.', 'omnibus' ) );
+			return;
+		}
+		echo '<table class="widefat fixed striped debug-bar-wp-query-list">';
+		echo '<thead>';
+		echo '<tr>';
+		printf( '<th>%s</th>', esc_html__( 'Regular Price', 'omnibus' ) );
+		printf( '<th>%s</th>', esc_html__( 'Sale Price', 'omnibus' ) );
+		printf( '<th>%s</th>', esc_html__( 'Date', 'omnibus' ) );
+		echo '</tr>';
+		echo '</thead>';
+		echo '<tbody>';
+		foreach ( $log as $one ) {
+			echo '<tr>';
+			printf( '<td>%s</td>', $one['price'] );
+			printf( '<td>%s</td>', empty( $one['price_sale'] ) ? '&mdash;' : $one['price_sale'] );
+			printf( '<td>%s</td>', date_i18n( 'Y-m-d H:i', $one['timestamp'] ) );
+			echo '</tr>';
+		}
+		echo '</tbody>';
+		echo '</table>';
+	}
+
 }
 
