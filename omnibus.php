@@ -1,14 +1,15 @@
 <?php
 /*
-Plugin Name: Omnibus
+Plugin Name: PLUGIN_NAME
 Text Domain: omnibus
 Plugin URI: http://iworks.pl/en/plugins/omnibus/
-Description: Plugin adds two additional fields in the product edit view – for the lowest price and the effective date to compatibility with EU Omnibus Directive.
+Description: PLUGIN_DESCRIPTION
+Plugin adds two additional fields in the product edit view – for the lowest price and the effective date to compatibility with EU Omnibus Directive.
 Version: PLUGIN_VERSION
 Author: Marcin Pietrzak
 Author URI: http://iworks.pl/
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+License: GPLv3 or later
+License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
 Copyright 2022-PLUGIN_TILL_YEAR Marcin Pietrzak (marcin@iworks.pl)
 
