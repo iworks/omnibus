@@ -242,6 +242,7 @@ module.exports = function(grunt) {
                     '!postcss.config.js',
                     '!README.md',
                     '!LICENSE',
+                    '!contributing.md',
                     '!**/README.md',
                     '!**/*.map',
                     '!release/**',
@@ -282,6 +283,9 @@ module.exports = function(grunt) {
                 }, {
                     match: /PLUGIN_DESCRIPTION/g,
                     replace: '<%= pkg.description %>'
+                }, {
+                    match: /PLUGIN_GITHUB_WEBSITE/g,
+                    replace: '<%= pkg.repository.url %>'
                 }, {
                     match: /PLUGIN_NAME/g,
                     replace: '<%= pkg.name %>'

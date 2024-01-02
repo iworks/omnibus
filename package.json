@@ -1,8 +1,8 @@
 {
     "name": "omnibus",
     "title": "Omnibus — show the lowest price",
-    "tagline": "The plugin adds compatibility with EU Omnibus Directive.",
-    "description": "Plugin adds two additional fields in the product edit view – for the lowest price and the effective date to compatibility with EU Omnibus Directive.",
+    "tagline": "The plugin adds price compatibility with the EU Omnibus Directive.",
+    "description": "The plugin adds two additional fields in the product edit view: the lowest price and the effective date for compatibility with the EU Omnibus Directive.",
     "version": "2.5.0",
     "homepage": "http://iworks.pl/",
     "author": [
@@ -64,7 +64,8 @@
     "keywords": [],
     "repository": {
         "type": "git",
-        "url": "git@github.com:iworks/omnibus.git"
+        "url": "git@github.com:iworks/omnibus.git",
+        "website": "https://github.com/iworks/omnibus"
     },
     "license": "GPL-3.0"
 }
