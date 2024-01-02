@@ -603,6 +603,9 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		$price_lowest = $this->woocommerce_get_lowest_price_in_history( $product->get_ID() );
 		foreach ( $product->get_available_variations() as $variable ) {
 			$o = $this->woocommerce_get_lowest_price_in_history( $variable['variation_id'] );
+			if ( empty( $o ) ) {
+				continue;
+			}
 			if ( ! isset( $price_lowest['price'] ) ) {
 				$price_lowest = $o;
 				continue;

@@ -193,11 +193,12 @@ The minimum WooCommerce version required is 5.5.0.
 Project maintained on github at [iworks/omnibus](PLUGIN_GITHUB_WEBSITE).
 
 = 2.5.1 (2024-xx-xx) =
+* Checking before price comparison has been added. [#17](https://github.com/iworks/omnibus/issues/17). Props for [Niko Vittaniemi](https://wordpress.org/support/users/nikov/).
+* The `data-iwo-product_id` for the price message has been added. [#14](https://github.com/iworks/omnibus/issues/14).
+* The `data-iwo-variation_id` for the price message has been added. [#14](https://github.com/iworks/omnibus/issues/14).
 * The function `check_ajax_referer()` has been added for checking expanded variant edits.
 * The function `strip_tags()` has been replaced by the function `wp_strip_all_tags()`.
 * The [iWorks Rate](https://github.com/iworks/iworks-rate) module has been updated to 2.1.6.
-* The `data-iwo-product_id` for the price message has been added. [#14](https://github.com/iworks/omnibus/issues/14).
-* The `data-iwo-variation_id` for the price message has been added. [#14](https://github.com/iworks/omnibus/issues/14).
 
 = 2.5.0 (2023-11-19) =
 * The ability to show the regular price as the last one available before the promotion was introduced.
