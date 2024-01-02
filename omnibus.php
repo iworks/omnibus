@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: PLUGIN_NAME
+Plugin Name: PLUGIN_TITLE
 Text Domain: omnibus
 Plugin URI: http://iworks.pl/en/plugins/omnibus/
 Description: PLUGIN_DESCRIPTION

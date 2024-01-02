@@ -2,9 +2,9 @@
 # This file is distributed under the GPLv3 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: PLUGIN_NAME PLUGIN_VERSION\n"
+"Project-Id-Version: PLUGIN_TITLE PLUGIN_VERSION\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/omnibus-dev\n"
-"POT-Creation-Date: 2024-01-02 09:16:01+00:00\n"
+"POT-Creation-Date: 2024-01-02 10:05:59+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -163,7 +163,7 @@ msgstr ""
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:867
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:1096
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-learnpress.php:80
-#: omnibus.php:63
+#: omnibus.php:62
 msgid "Omnibus"
 msgstr ""
 
@@ -781,7 +781,7 @@ msgid ""
 msgstr ""
 
 #. Plugin Name of the plugin/theme
-msgid "PLUGIN_NAME"
+msgid "PLUGIN_TITLE"
 msgstr ""
 
 #. Plugin URI of the plugin/theme

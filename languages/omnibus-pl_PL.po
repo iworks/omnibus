@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Plugins - PLUGIN_NAME (PLUGIN_VERSION)\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/omnibus-dev\n"
-"POT-Creation-Date: 2024-01-02 09:16:01+00:00\n"
+"POT-Creation-Date: 2024-01-02 09:29:04+00:00\n"
 "PO-Revision-Date: 2024-01-02 08:51+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -163,7 +163,7 @@ msgstr "Data wystąpienia najniższej ceny w ciągu ostatnich %d dni."
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:867
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:1096
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-learnpress.php:80
-#: omnibus.php:63
+#: omnibus.php:62
 msgid "Omnibus"
 msgstr "Omnibus"
 
@@ -827,7 +827,8 @@ msgstr ""
 "wszystkie oceny, recenzje oraz dodatkowe wsparcie."
 
 #. Plugin Name of the plugin/theme
-msgid "PLUGIN_NAME"
+#, fuzzy
+msgid "PLUGIN_TITLE"
 msgstr "PLUGIN_NAME"
 
 #. Plugin URI of the plugin/theme

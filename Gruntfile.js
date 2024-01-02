@@ -285,7 +285,7 @@ module.exports = function(grunt) {
                     replace: '<%= pkg.description %>'
                 }, {
                     match: /PLUGIN_GITHUB_WEBSITE/g,
-                    replace: '<%= pkg.repository.url %>'
+                    replace: '<%= pkg.repository.website %>'
                 }, {
                     match: /PLUGIN_NAME/g,
                     replace: '<%= pkg.name %>'
