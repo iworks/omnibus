@@ -192,7 +192,7 @@ The minimum WooCommerce version required is 5.5.0.
 
 Project maintained on github at [iworks/omnibus](PLUGIN_GITHUB_WEBSITE).
 
-= 2.5.1 (2024-xx-xx) =
+= 2.5.1 (2024-01-02) =
 * Checking before price comparison has been added. [#17](https://github.com/iworks/omnibus/issues/17). Props for [Niko Vittaniemi](https://wordpress.org/support/users/nikov/).
 * The `data-iwo-product_id` for the price message has been added. [#14](https://github.com/iworks/omnibus/issues/14).
 * The `data-iwo-variation_id` for the price message has been added. [#14](https://github.com/iworks/omnibus/issues/14).
