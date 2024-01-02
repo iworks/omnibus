@@ -41,7 +41,7 @@ Read more: [Directive 2019/2161](https://eur-lex.europa.eu/eli/dir/2019/2161/oj)
 
 Great! There are several ways you can get involved to help make PLUGIN_TITLE better:
 
-1. **Report Bugs:** If you find a bug, error or other problem, please report it! You can do this by [creating a new topic](https://wordpress.org/support/plugin/omnibus/) in the plugin forum. Once a developer can verify the bug by reproducing it, they will create an official bug report in (GitHub)[PLUGIN_GITHUB_WEBSITE] where the bug will be worked on.
+1. **Report Bugs:** If you find a bug, error or other problem, please report it! You can do this by [creating a new topic](https://wordpress.org/support/plugin/omnibus/) in the plugin forum. Once a developer can verify the bug by reproducing it, they will create an official bug report in [GitHub](PLUGIN_GITHUB_WEBSITE) where the bug will be worked on.
 2. **Suggest New Features:** Have an awesome idea? Please share it! Simply [create a new topic](https://wordpress.org/support/plugin/omnibus/) in the plugin forum to express your thoughts on why the feature should be included and get a discussion going around your idea.
 3. **Issue Pull Requests:** If you're a developer, the easiest way to get involved is to help out on [issues already reported](PLUGIN_GITHUB_WEBSITE/issues) in GitHub. Be sure to check out the [contributing guide](PLUGIN_GITHUB_WEBSITE/blob/master/contributing.md) for developers.
 
