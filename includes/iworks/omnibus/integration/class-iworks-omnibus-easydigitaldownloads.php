@@ -125,17 +125,17 @@ class iworks_omnibus_integration_easydigitaldownloads extends iworks_omnibus_int
 			$this->get_name( 'download' )   => array(
 				'id'   => $this->get_name( 'download' ),
 				'name' => __( 'Show on', 'omnibus' ),
-				'desc' => __( 'Single Download', 'easy-digital-downloads' ),
+				'desc' => __( 'Single Download', 'omnibus' ),
 				'type' => 'checkbox',
 			),
 			$this->get_name( 'admin_list' ) => array(
 				'id'   => $this->get_name( 'admin_list' ),
-				'desc' => __( 'Admin Download List', 'easy-digital-downloads' ),
+				'desc' => __( 'Admin Download List', 'omnibus' ),
 				'type' => 'checkbox',
 			),
 			$this->get_name( 'admin_edit' ) => array(
 				'id'   => $this->get_name( 'admin_edit' ),
-				'desc' => __( 'Admin Edit Download', 'easy-digital-downloads' ),
+				'desc' => __( 'Admin Edit Download', 'omnibus' ),
 				'type' => 'checkbox',
 			),
 			$this->get_name( 'days' )       => array(

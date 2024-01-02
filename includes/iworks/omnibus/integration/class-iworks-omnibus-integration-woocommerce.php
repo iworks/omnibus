@@ -328,6 +328,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 */
 		if ( is_admin() ) {
 			if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+				check_ajax_referer( 'load-variations', 'security' );
 				if (
 					isset( $_POST['action'] )
 					&& 'woocommerce_load_variations' === $_POST['action']
@@ -778,7 +779,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 * @since 2.3.2
 		 */
 		if ( $this->is_on( $atts['strip_tags'] ) ) {
-			$content = strip_tags( $content );
+			$content = wp_strip_all_tags( $content );
 		}
 		/**
 		 * return
@@ -1082,7 +1083,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		if ( 'comment' === $screen_id && isset( $_GET['c'] ) && metadata_exists( 'comment', wc_clean( wp_unslash( $_GET['c'] ) ), 'rating' ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			add_meta_box(
 				'omnibus',
-				__( 'Omnibus', 'woocommerce' ),
+				__( 'Omnibus', 'omnibus' ),
 				array( $this, 'meta_box_rating_html' ),
 				'comment',
 				'normal',
