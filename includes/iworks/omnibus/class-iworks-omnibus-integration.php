@@ -111,8 +111,6 @@ abstract class iworks_omnibus_integration {
 		}
 	}
 
-
-
 	/**
 	 * Save price history
 	 *

@@ -55,6 +55,12 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		add_filter( 'iworks_omnibus_message_template', array( $this, 'filter_iworks_omnibus_message_template_for_admin_list' ) );
 		add_filter( 'iworks_omnibus_message_template', array( $this, 'filter_iworks_omnibus_message_template_for_product' ), 10, 3 );
 		/**
+		 * action to call save_price_history()
+		 *
+		 * @since 2.5.2
+		 */
+		add_action( 'iworks_omnibus/wc/save_price_history/action', array( $this, 'action_iworks_omnibus_wc_save_price_history' ), 10, 2 );
+		/**
 		 * WooCommerce Review Meta Box
 		 *
 		 * @since x.x.x
@@ -1252,4 +1258,12 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		return array( $post->ID );
 	}
 
+	/**
+	 * action to call save_price_history()
+	 *
+	 * @since 2.5.2
+	 */
+	public function action_iworks_omnibus_wc_save_price_history( $post_id, $price ) {
+		$this->save_price_history( $post_id, $price );
+	}
 }
