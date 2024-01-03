@@ -158,6 +158,26 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		add_filter( 'iworks_omnibus_prices_array', array( $this, 'filter_get_prices_array' ), 10, 2 );
 	}
 
+	public function action_admin_head() {
+		?>
+<style type="text/css" media="screen" id="iworks_omnibus">
+.woocommerce_variable_attributes .iworks_omnibus_field_checkbox {
+	display: grid;
+	grid-template-columns: 2em auto;
+	grid-template-areas: "checkbox label" "description description";
+	align-items: center;
+	clear: both;
+}
+.woocommerce_variable_attributes .iworks_omnibus_field_checkbox .checkbox {
+	grid-area: checkbox;
+}
+.woocommerce_variable_attributes .iworks_omnibus_field_checkbox .description {
+	grid-area: description;
+}
+</style>
+		<?php
+	}
+
 	/**
 	 * Save Product
 	 *
@@ -218,26 +238,6 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 * add extra data to price log
 		 */
 		add_filter( 'iworks_omnibus_add_price_log_data', array( $this, 'filter_add_price_log_data' ), 10, 2 );
-	}
-
-	public function action_admin_head() {
-		?>
-<style type="text/css" media="screen" id="iworks_omnibus">
-.iworks_omnibus_field_checkbox {
-	display: grid;
-	grid-template-columns: 2em auto;
-	grid-template-areas: "checkbox label" "description description";
-	align-items: center;
-	clear: both;
-}
-.iworks_omnibus_field_checkbox .checkbox {
-	grid-area: checkbox;
-}
-.iworks_omnibus_field_checkbox .description {
-	grid-area: description;
-}
-</style>
-		<?php
 	}
 
 	public function enqueue_scripts() {
@@ -316,7 +316,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		$configuration = array(
 			'wrapper_class' => 'form-row form-row-full',
 		);
-		$this->woocommerce_wp_checkbox_short( $post_id, $configuration );
+		$this->woocommerce_wp_checkbox_short( $post_id, $configuration, $loop );
 	}
 
 	/**
@@ -988,6 +988,9 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 * short term product
 		 */
 		$post_id = get_the_ID();
+		if ( isset( $price_lowest['variation_id'] ) ) {
+			$post_id = $price_lowest['variation_id'];
+		}
 		if ( 'yes' === get_post_meta( $post_id, $this->get_name( 'is_short' ), true ) ) {
 			switch ( get_option( $this->get_name( 'short_message' ), 'no' ) ) {
 				case 'no':
@@ -1022,17 +1025,23 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		return $template;
 	}
 
-	public function woocommerce_wp_checkbox_short( $post_id, $configuration = array() ) {
-		if ( 'no' === get_option( $this->get_name( 'is_short' ), 'no' ) ) {
+	public function woocommerce_wp_checkbox_short( $post_id, $configuration = array(), $loop = null ) {
+		if ( 'not applicable' === get_option( $this->get_name( 'is_short' ), 'no' ) ) {
 			return;
+		}
+		$name = $id = $this->get_name( 'is_short' );
+		if ( is_numeric( $loop ) ) {
+			$id   .= sprintf( '_%d', $loop );
+			$name .= sprintf( '[%d]', $loop );
 		}
 		woocommerce_wp_checkbox(
 			wp_parse_args(
 				array(
-					'id'            => $this->get_name( 'is_short' ),
+					'id'            => $id,
+					'name'          => $name,
 					'value'         => get_post_meta( $post_id, $this->get_name( 'is_short' ), true ),
-					'label'         => __( 'Hide Omnibus', 'omnibus' ),
-					'description'   => __( 'This is a short-term product, keep the message hidden.', 'omnibus' ),
+					'label'         => __( 'Short Term', 'omnibus' ),
+					'description'   => __( 'This is a short-term product.', 'omnibus' ),
 					'wrapper_class' => 'iworks_omnibus_field_checkbox',
 				),
 				$configuration
@@ -1041,42 +1050,57 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	}
 
 	/**
+	 * Add or update post_meta short term product
+	 *
+	 * @since 2.5.2
+	 *
+	 * @param integer $post_id post id
+	 * @param string $meta_value meta value to save, but only "yes".
+	 */
+	private function update_post_meta_short( $post_id, $meta_value ) {
+		$meta_key = $this->get_name( 'is_short' );
+		if ( 'yes' === $meta_value ) {
+			if ( ! update_post_meta( $post_id, $meta_key, 'yes' ) ) {
+				add_post_meta( $post_id, $meta_key, 'yes', true );
+			}
+			return;
+		}
+		delete_post_meta( $post_id, $meta_key );
+	}
+
+	/**
 	 * Save short term product
 	 *
 	 * @since 2.3.0
 	 */
 	public function action_woocommerce_save_maybe_save_short( $product ) {
-		$id = $product->get_id();
+		$id       = $product->get_id();
+		$meta_key = $this->get_name( 'is_short' );
 		/**
 		 * variation
 		 */
-		if ( $product->is_type( 'variation' ) ) {
-			$name  = sprintf(
-				'%s-%d',
-				$this->get_name( 'is_short' ),
-				$id
-			);
-			$short = filter_input( INPUT_POST, $name );
-			if ( 'yes' === $short ) {
-				if ( ! update_post_meta( $id, $this->get_name( 'is_short' ), 'yes' ) ) {
-					add_post_meta( $id, $this->get_name( 'is_short' ), 'yes', true );
+		switch ( $product->get_type() ) {
+			case 'variable':
+			case 'variation':
+				if ( ! isset( $_POST['variable_post_id'] ) ) {
+					return;
 				}
-			} else {
-				delete_post_meta( $id, $this->get_name( 'is_short' ) );
-			}
-			return;
+				if ( ! isset( $_POST[ $meta_key ] ) ) {
+					return;
+				}
+				foreach ( $_POST['variable_post_id'] as $index => $post_id ) {
+					$meta_value = 'no';
+					if ( isset( $_POST[ $meta_key ][ $index ] ) ) {
+						$meta_value = $_POST[ $meta_key ][ $index ];
+					}
+					$this->update_post_meta_short( $post_id, $meta_value );
+				}
+				return;
 		}
 		/**
 		 * any other
 		 */
-		$short = filter_input( INPUT_POST, $this->get_name( 'is_short' ) );
-		if ( 'yes' === $short ) {
-			if ( ! update_post_meta( $id, $this->get_name( 'is_short' ), 'yes' ) ) {
-				add_post_meta( $id, $this->get_name( 'is_short' ), 'yes', true );
-			}
-		} else {
-			delete_post_meta( $id, $this->get_name( 'is_short' ) );
-		}
+		$this->update_post_meta_short( $id, filter_input( INPUT_POST, $meta_key ) );
 	}
 
 	/**

@@ -354,11 +354,12 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 				array(
 					'title'    => __( 'Short Term Product', 'omnibus' ),
 					'id'       => $this->get_name( 'short_message' ),
-					'default'  => 'no',
+					'default'  => 'not applicable',
 					'type'     => 'radio',
 					'options'  => array(
-						'inform' => esc_html__( 'Inform about it', 'omnibus' ),
-						'no'     => esc_html__( 'Do not display anything', 'omnibus' ),
+						'not applicable' => esc_html__( 'I don\'t have this type of products', 'omnibus' ),
+						'inform'         => esc_html__( 'Inform about it', 'omnibus' ),
+						'no'             => esc_html__( 'Do not display anything', 'omnibus' ),
 					),
 					'desc_tip' => esc_html__( 'What should I do for a product with a short term life?', 'omnibus' ),
 				),

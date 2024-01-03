@@ -192,6 +192,12 @@ The minimum WooCommerce version required is 5.5.0.
 
 Project maintained on github at [iworks/omnibus](PLUGIN_GITHUB_WEBSITE).
 
+= 2.5.2 (2024-01-03) =
+* Extra admin CSS has been improved.
+* Handling "Short Term Products" has been fixed. Props for [Mychal](https://wordpress.org/support/users/mychal/).
+* The "Short Term Product" for variants has been added.
+* The option "I don't have this type of products" for "Short Term Products" has been added.
+
 = 2.5.1 (2024-01-02) =
 * Checking before price comparison has been added. [#17](https://github.com/iworks/omnibus/issues/17). Props for [Niko Vittaniemi](https://wordpress.org/support/users/nikov/).
 * The `data-iwo-product_id` for the price message has been added. [#14](https://github.com/iworks/omnibus/issues/14).
