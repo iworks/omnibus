@@ -193,7 +193,7 @@ The minimum WooCommerce version required is 5.5.0.
 Project maintained on github at [iworks/omnibus](PLUGIN_GITHUB_WEBSITE).
 
 = 2.5.3 (2024-01-05) =
-* Fixed problem on quick edit screen.  [#21](https://github.com/iworks/omnibus/issues/21). Props for [Igorjup](https://github.com/Igorjup).
+* Fixed problem on quick edit screen. [#21](https://github.com/iworks/omnibus/issues/21). Props for [Igorjup](https://github.com/Igorjup).
 * Names of integration classes has been changed.
 
 = 2.5.2 (2024-01-03) =
@@ -386,7 +386,7 @@ Project maintained on github at [iworks/omnibus](PLUGIN_GITHUB_WEBSITE).
 
 = 1.2.2 (2023-01-02) =
 
-* A warning in the related products loop check has been fixed.  Props for [pietrzyk25](https://wordpress.org/support/users/pietrzyk25/).
+* A warning in the related products loop check has been fixed. Props for [pietrzyk25](https://wordpress.org/support/users/pietrzyk25/).
 * If no data is available, displaying the current price as the lowest has been added.
 
 = 1.2.1 (2023-01-02) =
