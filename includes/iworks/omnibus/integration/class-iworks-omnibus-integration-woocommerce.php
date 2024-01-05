@@ -334,13 +334,12 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 */
 		if ( is_admin() ) {
 			if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-				check_ajax_referer( 'load-variations', 'security' );
-				if (
-					isset( $_POST['action'] )
-					&& 'woocommerce_load_variations' === $_POST['action']
-				) {
-					if ( 'yes' === get_option( $this->get_name( 'admin_edit' ), 'yes' ) ) {
-						return apply_filters( 'iworks_omnibus_show', true );
+				if ( isset( $_POST['action'] ) ) {
+					if ( 'woocommerce_load_variations' === $_POST['action'] ) {
+						check_ajax_referer( 'load-variations', 'security' );
+						if ( 'yes' === get_option( $this->get_name( 'admin_edit' ), 'yes' ) ) {
+							return apply_filters( 'iworks_omnibus_show', true );
+						}
 					}
 				}
 			} elseif ( function_exists( 'get_current_screen' ) ) {
