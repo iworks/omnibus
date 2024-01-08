@@ -270,12 +270,14 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 * @since 1.0.0
 	 */
 	public function action_woocommerce_save_price_history( $product ) {
-		$price = $this->get_price( $product );
-		if ( empty( $price ) && '0' !== $price ) {
-			return;
-		}
-		$post_id = $product->get_id();
-		$this->save_price_history( $post_id, $price );
+		$this->save_price_history(
+			$product->get_id(),
+			array(
+				'price'         => $product->get_price(),
+				'price_regular' => $product->get_regular_price(),
+				'price_sale'    => $product->get_sale_price(),
+			)
+		);
 	}
 
 	/**

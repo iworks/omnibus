@@ -90,6 +90,16 @@ abstract class iworks_omnibus_integration {
 			'user_id'   => get_current_user_id(),
 		);
 		/**
+		 * if price is an array
+		 *
+		 * @since 2.5.4
+		 */
+		if ( is_array( $price ) ) {
+			foreach ( $price as $key => $value ) {
+				$data[ $key ] = $value;
+			}
+		}
+		/**
 		 * filter data
 		 *
 		 * @since 2.3.2
@@ -120,13 +130,8 @@ abstract class iworks_omnibus_integration {
 		$price_last = $this->get_last_price( $post_id );
 		if ( 'unknown' === $price_last ) {
 			$this->add_price_log( $post_id, $price, true );
+			return;
 		}
-		/**
-		 * try to get previous price
-		 *
-		 * @since 2.3.9
-		 */
-		$price_previous = null;
 		/**
 		 * filter prices names
 		 *
@@ -140,25 +145,6 @@ abstract class iworks_omnibus_integration {
 				'price_regular',
 			)
 		);
-		if (
-			is_array( $price_last )
-			&& ! empty( $price_last )
-		) {
-			foreach ( $prices_names as $key ) {
-				/**
-				 * already set, go away!
-				 */
-				if ( ! empty( $price_previous ) ) {
-					continue;
-				}
-				/**
-				 * check it
-				 */
-				if ( isset( $price_last[ $key ] ) ) {
-					$price_previous = $price_last[ $key ];
-				}
-			}
-		}
 		/**
 		 * check to log
 		 */
@@ -171,11 +157,11 @@ abstract class iworks_omnibus_integration {
 				$do_log = true;
 				continue;
 			}
-			if ( ! isset( $price_previous[ $key ] ) ) {
+			if ( ! isset( $price_last[ $key ] ) ) {
 				$do_log = true;
 				continue;
 			}
-			if ( floatval( $price_lowest[ $key ] ) !== floatval( $price_previous[ $key ] ) ) {
+			if ( floatval( $price_last[ $key ] ) !== floatval( $price[ $key ] ) ) {
 				$do_log = true;
 				continue;
 			}

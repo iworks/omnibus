@@ -192,6 +192,9 @@ The minimum WooCommerce version required is 5.5.0.
 
 Project maintained on github at [iworks/omnibus](PLUGIN_GITHUB_WEBSITE).
 
+= 2.5.4 (2024-01-09) =
+* The unexpectedly growing database has been fixed.  [#22](https://github.com/iworks/omnibus/issues/22). Props for [Karol](https://wordpress.org/support/users/lewshop/).
+
 = 2.5.3 (2024-01-05) =
 * Fixed problem on quick edit screen. [#21](https://github.com/iworks/omnibus/issues/21). Props for [Igorjup](https://github.com/Igorjup).
 * Names of integration classes has been changed.
