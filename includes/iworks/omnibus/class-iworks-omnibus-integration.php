@@ -167,7 +167,14 @@ abstract class iworks_omnibus_integration {
 			}
 		}
 		if ( $do_log ) {
-			$this->add_price_log( $post_id, $price, floatval( $price ) !== floatval( $price_previous ) );
+			$update_last_drop = false;
+			if (
+				isset( $price['price_sale'] )
+				&& isset( $price_last['price_sale'] )
+			) {
+				$update_last_drop = floatval( $price['price_sale'] ) !== floatval( $price_last['price_sale'] );
+			}
+			$this->add_price_log( $post_id, $price, $update_last_drop );
 		}
 	}
 
