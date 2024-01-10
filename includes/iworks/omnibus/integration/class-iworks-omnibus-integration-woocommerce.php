@@ -206,9 +206,10 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 */
 		$product = wc_get_product( $post );
 		$current = array(
-			'price'      => $product->get_regular_price(),
-			'price_sale' => $product->get_sale_price(),
-			'timestamp'  => time(),
+			'price'               => $product->get_regular_price(),
+			'price_sale'          => $product->get_sale_price(),
+			'price_including_tax' => $product->get_price_including_tax(),
+			'timestamp'           => time(),
 		);
 		$last    = get_post_meta( $post_id, $this->meta_name_last_change, true );
 		/**
@@ -273,9 +274,10 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		$this->save_price_history(
 			$product->get_id(),
 			array(
-				'price'         => $product->get_price(),
-				'price_regular' => $product->get_regular_price(),
-				'price_sale'    => $product->get_sale_price(),
+				'price'               => $product->get_price(),
+				'price_regular'       => $product->get_regular_price(),
+				'price_sale'          => $product->get_sale_price(),
+				'price_including_tax' => $product->get_price_including_tax(),
 			)
 		);
 	}
@@ -1175,8 +1177,9 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		if ( ! is_array( $data ) ) {
 			$data = array();
 		}
-		$data['price_regular'] = $product->get_regular_price();
-		$data['price_sale']    = $product->get_sale_price();
+		$data['price_regular']       = $product->get_regular_price();
+		$data['price_sale']          = $product->get_sale_price();
+		$data['price_including_tax'] = $product->get_price_including_tax();
 		return $data;
 	}
 

@@ -192,6 +192,9 @@ The minimum WooCommerce version required is 5.5.0.
 
 Project maintained on github at [iworks/omnibus](PLUGIN_GITHUB_WEBSITE).
 
+= 2.5.5 (2024-01-10) =
+* In some configurations with taxes, it was an issue to display the previous price with or without tax. Props for [Agata Wiatrowska](https://www.facebook.com/agatawiatr).
+
 = 2.5.4 (2024-01-09) =
 * The unexpectedly growing database has been fixed.  [#22](https://github.com/iworks/omnibus/issues/22). Props for [Karol](https://wordpress.org/support/users/lewshop/).
 
