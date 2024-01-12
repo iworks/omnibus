@@ -28,6 +28,13 @@ class iworks_omnibus {
 	private $objects = array();
 	private $root;
 
+	/**
+	 * Are logs migrated to version 3?
+	 *
+	 * @since 3.0.0
+	 */
+	protected $are_logs_migrated_to_version_3 = false;
+
 	public function __construct() {
 		/**
 		 * set plugin root
@@ -51,6 +58,13 @@ class iworks_omnibus {
 		 * @param object $plugin Plugin basic data.
 		 */
 		add_filter( 'iworks_rate_notice_logo_style', array( $this, 'filter_plugin_logo' ), 10, 2 );
+		/**
+		 * check migration
+		 *
+		 * @since 3.0.0
+		 */
+		add_action( 'admin_init', array( $this, 'action_admin_init_maybe_check_migration' ) );
+		add_filter( 'iworks/omnibus/get/migration/status/3', array( $this, 'filter_get_migration_status_to_version_3' ) );
 	}
 
 	public function action_plugins_loaded() {
@@ -110,6 +124,13 @@ class iworks_omnibus {
 			include_once $dir . '/integration/class-iworks-omnibus-integration-debug-bar.php';
 			$this->objects['debug-bar'] = new iworks_omnibus_integration_debug_bar();
 		}
+		/**
+		 * Price log as post type not a meta fields
+		 *
+		 * @since 3.0.0
+		 */
+		include_once $dir . '/post-types/class-iworks-omnibus-post-type-price-log.php';
+		$this->objects['iw_omnibus_price_log'] = new iWorks_Omnibus_Post_Type_Price_Log();
 		/**
 		 * Omnibus loaded action
 		 *
@@ -197,5 +218,18 @@ class iworks_omnibus {
 			'version-minimal' => '5.5.0',
 		);
 		load_template( $file, true, $args );
+	}
+
+	/**
+	 * check is nessary to make log conversion
+	 *
+	 * @since 3.0.0
+	 */
+	public function action_admin_init_maybe_check_migration() {
+
+	}
+
+	public function filter_get_migration_status_to_version_3( $status ) {
+		return $this->are_logs_migrated_to_version_3;
 	}
 }

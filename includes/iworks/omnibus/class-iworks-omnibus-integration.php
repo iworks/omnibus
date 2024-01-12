@@ -108,15 +108,19 @@ abstract class iworks_omnibus_integration {
 		/**
 		 * add
 		 */
-		add_post_meta( $post_id, $this->meta_name, $data );
-		/**
-		 * update last price drop timestamp
-		 *
-		 * @since 2.0.0
-		 */
-		if ( $update_last_drop ) {
-			if ( ! update_post_meta( $post_id, $this->last_price_drop_timestamp, $now ) ) {
-				add_post_meta( $post_id, $this->last_price_drop_timestamp, $now, true );
+		if ( 'migrated' === apply_filters( 'iworks/omnibus/v3/get/migration/status', false ) ) {
+			do_action( 'iworks/omnibus/v3/add/log', $post_id, $data, $this->get_days() );
+		} else {
+			add_post_meta( $post_id, $this->meta_name, $data );
+			/**
+			 * update last price drop timestamp
+			 *
+			 * @since 2.0.0
+			 */
+			if ( $update_last_drop ) {
+				if ( ! update_post_meta( $post_id, $this->last_price_drop_timestamp, $now ) ) {
+					add_post_meta( $post_id, $this->last_price_drop_timestamp, $now, true );
+				}
 			}
 		}
 	}
@@ -184,20 +188,24 @@ abstract class iworks_omnibus_integration {
 	 * @since 1.0.0
 	 */
 	private function get_last_price( $post_id ) {
-		$meta = get_post_meta( $post_id, $this->meta_name );
-		if ( empty( $meta ) ) {
-			return 'unknown';
-		}
-		$old       = strtotime( sprintf( '-%d days', $this->get_days() ) );
-		$timestamp = 0;
-		$last      = array();
-		foreach ( $meta as $data ) {
-			if ( $old >= $data['timestamp'] ) {
-				continue;
+		$last = array();
+		if ( 'migrated' === apply_filters( 'iworks/omnibus/v3/get/migration/status', false ) ) {
+			return apply_filters( 'iworks/omnibus/v3/get/last/price', $last, $post_id );
+		} else {
+			$meta = get_post_meta( $post_id, $this->meta_name );
+			if ( empty( $meta ) ) {
+				return 'unknown';
 			}
-			if ( $timestamp < $data['timestamp'] ) {
-				$timestamp = $data['timestamp'];
-				$last      = $data;
+			$old       = strtotime( sprintf( '-%d days', $this->get_days() ) );
+			$timestamp = 0;
+			foreach ( $meta as $data ) {
+				if ( $old >= $data['timestamp'] ) {
+					continue;
+				}
+				if ( $timestamp < $data['timestamp'] ) {
+					$timestamp = $data['timestamp'];
+					$last      = $data;
+				}
 			}
 		}
 		return $last;
@@ -209,39 +217,43 @@ abstract class iworks_omnibus_integration {
 	 * @since 1.0.0
 	 */
 	protected function _get_lowest_price_in_history( $lowest, $post_id ) {
-		$meta = get_post_meta( $post_id, $this->meta_name );
-		if ( empty( $meta ) ) {
-			return array();
-		}
-		uasort( $meta, array( $this, 'sort_meta_by_price' ) );
-		$price_lowest              = array();
-		$now                       = time();
-		$price                     = array(
-			'init'      => true,
-			'price'     => PHP_INT_MAX,
-			'timestamp' => $now,
-			'from'      => $now,
-		);
-		$old                       = strtotime( sprintf( '-%d days', $this->get_days() ) );
-		$last_price_drop_timestamp = intval( get_post_meta( $post_id, $this->last_price_drop_timestamp, true ) );
-		if ( ! empty( $last_price_drop_timestamp ) ) {
-			$old = strtotime( sprintf( '-%d days', $this->get_days() ), $last_price_drop_timestamp );
-		}
-		foreach ( $meta as $data ) {
-			if ( floatval( $data['price'] ) > $price['price'] ) {
-				continue;
+		if ( 'migrated' === apply_filters( 'iworks/omnibus/v3/get/migration/status', false ) ) {
+			$price = apply_filters( 'iworks/omnibus/v3/get/lowest/price/array', $lowest, $post_id );
+		} else {
+			$meta = get_post_meta( $post_id, $this->meta_name );
+			if ( empty( $meta ) ) {
+				return array();
 			}
-			if ( intval( $old ) >= intval( $data['timestamp'] ) ) {
-				continue;
+			uasort( $meta, array( $this, 'sort_meta_by_price' ) );
+			$price_lowest              = array();
+			$now                       = time();
+			$price                     = array(
+				'init'      => true,
+				'price'     => PHP_INT_MAX,
+				'timestamp' => $now,
+				'from'      => $now,
+			);
+			$old                       = strtotime( sprintf( '-%d days', $this->get_days() ) );
+			$last_price_drop_timestamp = intval( get_post_meta( $post_id, $this->last_price_drop_timestamp, true ) );
+			if ( ! empty( $last_price_drop_timestamp ) ) {
+				$old = strtotime( sprintf( '-%d days', $this->get_days() ), $last_price_drop_timestamp );
 			}
-			if ( intval( $last_price_drop_timestamp ) === intval( $data['timestamp'] ) ) {
-				continue;
+			foreach ( $meta as $data ) {
+				if ( floatval( $data['price'] ) > $price['price'] ) {
+					continue;
+				}
+				if ( intval( $old ) >= intval( $data['timestamp'] ) ) {
+					continue;
+				}
+				if ( intval( $last_price_drop_timestamp ) === intval( $data['timestamp'] ) ) {
+					continue;
+				}
+				$price         = $data;
+				$price['from'] = $old;
 			}
-			$price         = $data;
-			$price['from'] = $old;
-		}
-		if ( isset( $price['init'] ) ) {
-			return array();
+			if ( isset( $price['init'] ) ) {
+				return array();
+			}
 		}
 		/**
 		 * Diff in days between promotion and now.

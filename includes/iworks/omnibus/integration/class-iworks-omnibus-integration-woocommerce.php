@@ -273,12 +273,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	public function action_woocommerce_save_price_history( $product ) {
 		$this->save_price_history(
 			$product->get_id(),
-			array(
-				'price'               => $product->get_price(),
-				'price_regular'       => $product->get_regular_price(),
-				'price_sale'          => $product->get_sale_price(),
-				'price_including_tax' => $product->get_price_including_tax(),
-			)
+			$this->get_prices_by_product( $product )
 		);
 	}
 
@@ -944,19 +939,22 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		if ( ! is_singular( 'product' ) ) {
 			return;
 		}
-		if ( ! empty( get_post_meta( get_the_ID(), $this->get_name() ) ) ) {
-			return;
-		}
 		global $product;
 		$data = array(
 			'price'     => $this->get_price( $product ),
 			'timestamp' => get_the_modified_date( 'U' ),
 			'type'      => 'autosaved',
 		);
-		if ( empty( $data['price'] ) ) {
-			return;
+		if ( 'migrated' === apply_filters( 'iworks/omnibus/v3/get/migration/status', false ) ) {
+		} else {
+			if ( ! empty( get_post_meta( get_the_ID(), $this->get_name() ) ) ) {
+				return;
+			}
+			if ( empty( $data['price'] ) ) {
+				return;
+			}
+			add_post_meta( $product->get_ID(), $this->meta_name, $data );
 		}
-		add_post_meta( $product->get_ID(), $this->meta_name, $data );
 	}
 
 	public function filter_woocommerce_get_settings_pages( $settings ) {
@@ -1177,10 +1175,25 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		if ( ! is_array( $data ) ) {
 			$data = array();
 		}
-		$data['price_regular']       = $product->get_regular_price();
-		$data['price_sale']          = $product->get_sale_price();
-		$data['price_including_tax'] = $product->get_price_including_tax();
-		return $data;
+		return wp_parse_args(
+			$this->get_prices_by_product( $product ),
+			$data
+		);
+	}
+
+	/**
+	 * get product prices
+	 *
+	 * @since 3.0.0
+	 */
+	private function get_prices_by_product( $product ) {
+		return array(
+			'price'               => $product->get_price(),
+			'price_regular'       => $product->get_regular_price(),
+			'price_sale'          => $product->get_sale_price(),
+			'price_including_tax' => $product->get_price_including_tax(),
+			'currency'            => get_woocommerce_currency(),
+		);
 	}
 
 	/**
