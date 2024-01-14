@@ -192,6 +192,9 @@ The minimum WooCommerce version required is 5.5.0.
 
 Project maintained on github at [iworks/omnibus](PLUGIN_GITHUB_WEBSITE).
 
+= 3.0.0 (2024-01-10) =
+* A new way of logging changes - more efficient, faster, more flexible. Complete overhaul of the way changes are saved.
+
 = 2.5.5 (2024-01-10) =
 * In some configurations with taxes, it was an issue to display the previous price with or without tax. Props for [Agata Wiatrowska](https://www.facebook.com/agatawiatr).
 

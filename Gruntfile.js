@@ -23,6 +23,9 @@ module.exports = function(grunt) {
             'assets/scripts/admin/woocommerce.js': [
                 'assets/scripts/src/admin/woocommerce.js',
             ],
+            'assets/scripts/admin/migrate-v3.js': [
+                'assets/scripts/src/admin/migrate-v3.js',
+            ],
         },
 
         css_files_compile: {},

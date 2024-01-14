@@ -180,6 +180,12 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 .woocommerce_variable_attributes .iworks_omnibus_field_checkbox .description {
 	grid-area: description;
 }
+#omnibus-migration-v3-form progress {
+	border-radius: 0;
+	height: 20px;
+	max-width: 400px;
+	width: 100%;
+}
 </style>
 		<?php
 	}
@@ -208,7 +214,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		$current = array(
 			'price'               => $product->get_regular_price(),
 			'price_sale'          => $product->get_sale_price(),
-			'price_including_tax' => $product->get_price_including_tax(),
+			'price_including_tax' => wc_get_price_including_tax( $product ),
 			'timestamp'           => time(),
 		);
 		$last    = get_post_meta( $post_id, $this->meta_name_last_change, true );
@@ -657,7 +663,9 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 				array(
 					'id'                => $this->meta_name . '_date',
 					'custom_attributes' => array( 'disabled' => 'disabled' ),
-					'value'             => empty( $price_lowest ) ? esc_html__( 'no data', 'omnibus' ) : date_i18n( get_option( 'date_format' ), $price_lowest['timestamp'] ),
+					'value'             => empty( $price_lowest ) ?
+						esc_html__( 'no data', 'omnibus' ) :
+						date_i18n( get_option( 'date_format' ), isset( $price_lowest['timestamp'] ) ? $price_lowest['timestamp'] : '' ),
 					'data_type'         => 'text',
 					'label'             => __( 'Date', 'omnibus' ),
 					'desc_tip'          => true,
@@ -1191,7 +1199,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			'price'               => $product->get_price(),
 			'price_regular'       => $product->get_regular_price(),
 			'price_sale'          => $product->get_sale_price(),
-			'price_including_tax' => $product->get_price_including_tax(),
+			'price_including_tax' => wc_get_price_including_tax( $product ),
 			'currency'            => get_woocommerce_currency(),
 		);
 	}

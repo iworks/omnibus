@@ -2,6 +2,7 @@
 /**
  * Notice displayed in admin panel.
  */
+defined( 'ABSPATH' ) || exit; // Exit if accessed directly
 ?>
 <div class="notice notice-error">
 	<h2><?php esc_html_e( 'Omnibus: installed version of WooCommerce is too low!', 'omnibus' ); ?></h2>

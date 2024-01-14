@@ -80,34 +80,66 @@ class iWorks_Omnibus_Post_Type_Price_Log extends iWorks_Omnibus_Post_Type {
 		 * get the lowest saved price array
 		 */
 		add_filter( 'iworks/omnibus/v3/get/lowest/price/array', array( $this, 'get_lowest_price_array' ), 10, 2 );
+		/**
+		 * get the log
+		 */
+		add_filter( 'iworks/omnibus/v3/get/price/log/array', array( $this, 'filter_get_log_array' ), 10, 2 );
 	}
 
 	public function register() {
 		register_post_type( $this->post_type_name );
 	}
 
+	public function filter_get_log_array( $log, $post_id ) {
+		$args             = $this->get_basic_wp_query_args( $post_id );
+		$args['nopaging'] = true;
+		$args['fields']   = 'ids';
+		$args['orderby']  = 'date';
+		$args['order']    = 'DESC';
+		$the_query        = new WP_Query( $args );
+		foreach ( $the_query->posts as $price_log_id ) {
+			$data = array(
+				'ID' => $price_log_id,
+			);
+			$meta = get_post_meta( $price_log_id );
+			foreach ( $meta as $meta_key => $meta_array ) {
+				$data[ $meta_key ] = array_shift( $meta_array );
+			}
+			$log[] = $data;
+		}
+		return $log;
+	}
+
+	private function get_basic_wp_query_args( $post_id ) {
+		return array(
+			'post_type'   => $this->post_type_name,
+			'post_parent' => $post_id,
+			'post_status' => 'publish',
+		);
+	}
+
 	private function get_common_wp_query_args( $post_id ) {
 		$after  = strtotime( sprintf( '-%d day', $this->days ) );
 		$before = strtotime( '+1 day' );
-		return array(
-			'post_type'      => $this->post_type_name,
-			'post_parent'    => $post_id,
-			'post_status'    => 'publish',
-			'date_query'     => array(
-				'relation' => 'AND',
-				'after'    => array(
-					'year'  => gmdate( 'Y', $after ),
-					'month' => gmdate( 'n', $after ),
-					'day'   => gmdate( 'j', $after ),
+		return wp_parse_args(
+			array(
+				'date_query'     => array(
+					'relation' => 'AND',
+					'after'    => array(
+						'year'  => gmdate( 'Y', $after ),
+						'month' => gmdate( 'n', $after ),
+						'day'   => gmdate( 'j', $after ),
+					),
+					'before'   => array(
+						'year'  => gmdate( 'Y', $before ),
+						'month' => gmdate( 'n', $before ),
+						'day'   => gmdate( 'j', $before ),
+					),
 				),
-				'before'   => array(
-					'year'  => gmdate( 'Y', $before ),
-					'month' => gmdate( 'n', $before ),
-					'day'   => gmdate( 'j', $before ),
-				),
+				'posts_per_page' => 1,
+				'fields'         => 'ids',
 			),
-			'posts_per_page' => 1,
-			'fields'         => 'ids',
+			$this->get_basic_wp_query_args( $post_id )
 		);
 	}
 
@@ -120,6 +152,7 @@ class iWorks_Omnibus_Post_Type_Price_Log extends iWorks_Omnibus_Post_Type {
 				'meta_key' => 'price_sale',
 				'orderby'  => 'meta_value_num',
 				'order'    => 'ASC',
+				'offset'   => 1,
 			),
 			$this->get_common_wp_query_args( $post_id )
 		);
@@ -131,7 +164,6 @@ class iWorks_Omnibus_Post_Type_Price_Log extends iWorks_Omnibus_Post_Type {
 				$data[ $meta_key ] = array_shift( $meta_array );
 			}
 		}
-
 		return $data;
 	}
 
@@ -180,18 +212,20 @@ class iWorks_Omnibus_Post_Type_Price_Log extends iWorks_Omnibus_Post_Type {
 		if ( is_wp_error( $check ) ) {
 			return true;
 		}
-
 		foreach ( $this->prices_names as $price_name ) {
 			if ( ! isset( $check[ $price_name ] ) ) {
 				return true;
 			}
-			if ( floatval( $check[ $price_name ] ) !== floatval( $data[ $price_name ] ) ) {
+			if (
+				isset( $check[ $price_name ] )
+				&& isset( $data[ $price_name ] )
+				&& floatval( $check[ $price_name ] ) !== floatval( $data[ $price_name ] )
+			) {
 				return true;
 			}
 		}
 		return false;
 	}
-
 
 	public function add_log( $post_id, $data ) {
 		if ( ! $this->should_be_created_log_entry( $post_id, $data ) ) {
@@ -209,7 +243,10 @@ class iWorks_Omnibus_Post_Type_Price_Log extends iWorks_Omnibus_Post_Type {
 			'comment_status' => 'closed',
 			'ping_status'    => 'closed',
 		);
-		$result  = wp_insert_post( $postarr );
+		if ( isset( $data['post_date'] ) ) {
+			$postarr['post_date'] = date( 'c', $data['post_date'] );
+		}
+		$result = wp_insert_post( $postarr );
 		if ( $result ) {
 			foreach ( $data as $meta_key => $meta_value ) {
 				add_post_meta( $result, $meta_key, $meta_value, true );

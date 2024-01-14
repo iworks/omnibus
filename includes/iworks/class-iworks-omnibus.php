@@ -35,6 +35,13 @@ class iworks_omnibus {
 	 */
 	protected $are_logs_migrated_to_version_3 = false;
 
+	/**
+	 * option name form migration to v3 status
+	 *
+	 * @since 3.0.0
+	 */
+	 private $option_name_migration_3_status = 'iworks_omnibus_data_migration_v3';
+
 	public function __construct() {
 		/**
 		 * set plugin root
@@ -64,7 +71,8 @@ class iworks_omnibus {
 		 * @since 3.0.0
 		 */
 		add_action( 'admin_init', array( $this, 'action_admin_init_maybe_check_migration' ) );
-		add_filter( 'iworks/omnibus/get/migration/status/3', array( $this, 'filter_get_migration_status_to_version_3' ) );
+		add_filter( 'iworks/omnibus/get/migration/status/3', array( $this, 'migration_v3_filter_get_migration_status_to_version_3' ) );
+		add_action( 'wp_ajax_iworks_omnibus_migrate_v3', array( $this, 'migration_v3_action_wp_ajax_iworks_omnibus_migrate_v3' ) );
 	}
 
 	public function action_plugins_loaded() {
@@ -87,6 +95,13 @@ class iworks_omnibus {
 			if ( version_compare( WC_VERSION, '5.5', '<' ) ) {
 				add_action( 'admin_notices', array( $this, 'action_admin_notices_show_woocommerce_version' ) );
 			} else {
+				if ( 'migrated' !== apply_filters(
+					'iworks_omnibus_integration_woocommerce/omnibus/get/migration/status/3',
+					get_option( $this->option_name_migration_3_status, false )
+				) ) {
+					add_action( 'admin_notices', array( $this, 'action_admin_notices_show_migration_message_v3' ) );
+					add_action( 'admin_menu', array( $this, 'action_admin_menu_add_migration_v3_page' ) );
+				}
 				/**
 				 * Add Settings link on the Plugins list
 				 *
@@ -200,7 +215,7 @@ class iworks_omnibus {
 		return sprintf(
 			'%s/assets/templates/%s%s.php',
 			$this->root,
-			'' === $group ? '' : $group . '/',
+			'' === $group ? '' : sanitize_title( $group ) . '/',
 			sanitize_title( $file )
 		);
 	}
@@ -229,7 +244,168 @@ class iworks_omnibus {
 
 	}
 
-	public function filter_get_migration_status_to_version_3( $status ) {
-		return $this->are_logs_migrated_to_version_3;
+	public function migration_v3_filter_get_migration_status_to_version_3( $status ) {
+		if ( $this->are_logs_migrated_to_version_3 ) {
+			return 'migrated';
+		}
+		$is_migrated_v3 = get_option( $this->option_name_migration_3_status, false );
+		if ( 'migrated' === $is_migrated_v3 ) {
+			$this->are_logs_migrated_to_version_3 = true;
+			return 'migrated';
+		}
+		return $is_migrated_v3;
 	}
+
+	/**
+	 * Show migration message
+	 *
+	 * @since 3.0.0
+	 *
+	 */
+	public function action_admin_notices_show_migration_message_v3() {
+		if ( 'dashboard' === get_current_screen()->base ) {
+			$file = $this->get_file( 'message', 'migration-v3' );
+			$args = array(
+				'meta'   => $this->migration_v3_count_number_of_meta_fields(),
+				'status' => get_option( $this->option_name_migration_3_status ),
+			);
+			load_template( $file, true, $args );
+		}
+	}
+
+	/**
+	 * add data migration page
+	 *
+	 * @since 3.0.0
+	 */
+	public function action_admin_menu_add_migration_v3_page() {
+		$hook = add_management_page(
+			__( 'Omnibus Migration', 'omnibus' ),
+			__( 'Omnibus Migration', 'omnibus' ),
+			'manage_options',
+			'omnibus-migration-v3',
+			array( $this, 'migration_v3_callback_omnibus_admin_page' )
+		);
+		add_action( 'load-' . $hook, array( $this, 'action_load_omnibus_migration_v3_admin_page' ) );
+	}
+
+	public function action_load_omnibus_migration_v3_admin_page() {
+		wp_register_script(
+			__FUNCTION__,
+			plugins_url( 'assets/scripts/admin/migrate-v3.min.js', dirname( __DIR__ ) ),
+			array( 'jquery' ),
+			'PLUGIN_VERSION'
+		);
+		wp_enqueue_script( __FUNCTION__ );
+	}
+
+	private function build_place_holder( $array ) {
+		$placeholders = array();
+		foreach ( $array as $x ) {
+			$placeholders[] = '%s';
+		}
+		return implode( ', ', $placeholders );
+	}
+
+	private function migration_v3_meta_keys_array() {
+		return array(
+			'_iwo_price_lowest',
+			'_iwo_price_last_change',
+			'_iwo_last_price_drop_timestamp',
+			'_iwo_price_log',
+			// '_iwo_price_lowest_is_short',
+		);
+	}
+
+
+	private function migration_v3_migrate_batch() {
+		global $wpdb;
+		$names   = $this->migration_v3_meta_keys_array();
+		$query   = sprintf(
+			'select * from %s where meta_key in ( %s ) order by rand() limit 10',
+			$wpdb->postmeta,
+			$this->build_place_holder( $names )
+		);
+		$query   = $wpdb->prepare( $query, $names );
+		$results = $wpdb->get_results( $query, 'ARRAY_A' );
+		foreach ( $results as $one ) {
+			switch ( $one['meta_key'] ) {
+				case '_iwo_price_lowest':
+				case '_iwo_price_log':
+				case '_iwo_price_last_change':
+					$data              = maybe_unserialize( $one['meta_value'] );
+					$data['post_date'] = $data['timestamp'];
+					do_action( 'iworks/omnibus/v3/add/log', $one['post_id'], $data );
+					delete_metadata_by_mid( 'post', $one['meta_id'] );
+					break;
+				case '_iwo_last_price_drop_timestamp':
+					delete_metadata_by_mid( 'post', $one['meta_id'] );
+					break;
+				default:
+					l( $one );
+			}
+		}
+	}
+
+	private function migration_v3_count_number_of_meta_fields() {
+		global $wpdb;
+		$names = $this->migration_v3_meta_keys_array();
+		$query = sprintf(
+			'select count(*) from %s where meta_key in ( %s )',
+			$wpdb->postmeta,
+			$this->build_place_holder( $names )
+		);
+		$query = $wpdb->prepare( $query, $names );
+		return intval( $wpdb->get_var( $query ) );
+	}
+
+	public function migration_v3_callback_omnibus_admin_page() {
+		$file = $this->get_file( 'admin-page', 'migration-v3' );
+		$args = array(
+			'meta'   => $this->migration_v3_count_number_of_meta_fields(),
+			'status' => get_option( $this->option_name_migration_3_status ),
+		);
+		load_template( $file, true, $args );
+	}
+
+	private function migration_v3_update_status( $status ) {
+		switch ( $status ) {
+			case 'started':
+			case 'migrated':
+				$result = update_option( $this->option_name_migration_3_status, $status );
+				if ( ! $result ) {
+					add_option( $this->option_name_migration_3_status, $status );
+				}
+				return;
+		}
+		delete_option( $this->option_name_migration_3_status );
+	}
+
+	public function migration_v3_action_wp_ajax_iworks_omnibus_migrate_v3() {
+		$nonce_value = filter_input( INPUT_POST, '_wpnonce' );
+		if ( ! wp_verify_nonce( $nonce_value, 'omnibus-migration-v3' ) ) {
+			wp_send_json_error( array( 'message' => esc_html__( 'Failed Security Check', 'omnibus' ) ) );
+		}
+		$this->migration_v3_migrate_batch();
+		$this->migration_v3_update_status( 'started' );
+		$count = $this->migration_v3_count_number_of_meta_fields();
+		if ( 0 < $count ) {
+			wp_send_json_success(
+				array(
+					'action' => 'continue',
+					'count'  => $count,
+				)
+			);
+		} else {
+			$this->migration_v3_update_status( 'migrated' );
+			wp_send_json_success(
+				array(
+					'action'  => 'done',
+					'message' => esc_html__( 'The migration was successful.', 'omnibus' ),
+				)
+			);
+		}
+		wp_send_json_error( array( 'message' => esc_html__( 'Unknown Error Occurred', 'omnibus' ) ) );
+	}
+
 }

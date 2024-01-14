@@ -132,7 +132,7 @@ abstract class iworks_omnibus_integration {
 	 */
 	protected function save_price_history( $post_id, $price ) {
 		$price_last = $this->get_last_price( $post_id );
-		if ( 'unknown' === $price_last ) {
+		if ( is_wp_error( $price_last ) || 'unknown' === $price_last ) {
 			$this->add_price_log( $post_id, $price, true );
 			return;
 		}
@@ -261,7 +261,8 @@ abstract class iworks_omnibus_integration {
 		 * @since 2.3.9
 		 */
 		if ( isset( $price['timestamp'] ) ) {
-			$price['diff-in-days'] = round( ( time() - $price['timestamp'] ) / DAY_IN_SECONDS );
+			$price['diff-in-days']    = round( ( time() - $price['timestamp'] ) / DAY_IN_SECONDS );
+			$price['human_timestamp'] = gmdate( 'c', $price['timestamp'] );
 		}
 		/**
 		 * don't propagate data if there is more days
@@ -279,9 +280,10 @@ abstract class iworks_omnibus_integration {
 		 *
 		 * @since 2.4.0
 		 */
-		$price['days']            = $this->get_days();
-		$price['human_from']      = gmdate( 'c', $price['from'] );
-		$price['human_timestamp'] = gmdate( 'c', $price['timestamp'] );
+		$price['days'] = $this->get_days();
+		if ( isset( $price['from'] ) ) {
+			$price['human_from'] = gmdate( 'c', $price['from'] );
+		}
 		return $price;
 	}
 
@@ -346,11 +348,13 @@ abstract class iworks_omnibus_integration {
 					$price_to_show = $price_lowest['price_including_tax'];
 				} else {
 					global $product;
-					$tax   = new WC_Tax();
-					$taxes = $tax->get_rates( $product->get_tax_class() );
-					if ( ! empty( $taxes ) ) {
-						$t             = array_shift( $taxes );
-						$price_to_show = ( 100 + $t['rate'] ) * $price_to_show / 100;
+					if ( $product ) {
+						$tax   = new WC_Tax();
+						$taxes = $tax->get_rates( $product->get_tax_class() );
+						if ( ! empty( $taxes ) ) {
+							$t             = array_shift( $taxes );
+							$price_to_show = ( 100 + $t['rate'] ) * $price_to_show / 100;
+						}
 					}
 				}
 			}
@@ -384,8 +388,10 @@ abstract class iworks_omnibus_integration {
 		 */
 		$price = preg_replace( '/{days}/', $this->get_days(), $price );
 		$price = preg_replace( '/{price}/', $price_to_show, $price );
-		$price = preg_replace( '/{timestamp}/', $price_lowest['timestamp'], $price );
-		$price = preg_replace( '/{when}/', date_i18n( get_option( 'date_format' ), $price_lowest['timestamp'] ), $price );
+		if ( isset( $price_lowest['timestamp'] ) ) {
+			$price = preg_replace( '/{timestamp}/', $price_lowest['timestamp'], $price );
+			$price = preg_replace( '/{when}/', date_i18n( get_option( 'date_format' ), $price_lowest['timestamp'] ), $price );
+		}
 		/**
 		 * use filter `iworks_omnibus_message_html`
 		 */
@@ -551,16 +557,20 @@ abstract class iworks_omnibus_integration {
 	}
 
 	public function filter_get_log_array( $log, $post_id ) {
-		$log     = array();
-		$changes = get_post_meta( $post_id, $this->meta_price_log_name );
-		if ( is_array( $changes ) ) {
-			foreach ( $changes as $one ) {
-				$one['post_id'] = $post_id;
-				$log[]          = $one;
+		$log = array();
+		if ( 'migrated' === apply_filters( 'iworks/omnibus/v3/get/migration/status', false ) ) {
+			$log = apply_filters( 'iworks/omnibus/v3/get/price/log/array', $log, $post_id );
+		} else {
+			$changes = get_post_meta( $post_id, $this->meta_price_log_name );
+			if ( is_array( $changes ) ) {
+				foreach ( $changes as $one ) {
+					$one['post_id'] = $post_id;
+					$log[]          = $one;
+				}
 			}
-		}
-		if ( ! empty( $changes ) ) {
-			usort( $log, array( $this, 'usort_log_array' ) );
+			if ( ! empty( $changes ) ) {
+				usort( $log, array( $this, 'usort_log_array' ) );
+			}
 		}
 		return $log;
 	}
@@ -616,6 +626,9 @@ abstract class iworks_omnibus_integration {
 	 * @since 2.5.1
 	 */
 	public function filter_get_prices_array( $log, $post_id ) {
+		if ( 'migrated' === apply_filters( 'iworks/omnibus/v3/get/migration/status', false ) ) {
+			return apply_filters( 'iworks/omnibus/v3/get/price/log/array', array(), $post_id );
+		}
 		return get_post_meta( $post_id, $this->meta_name );
 	}
 }

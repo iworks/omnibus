@@ -22,6 +22,8 @@ defined( 'ABSPATH' ) || exit;
 
 class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 
+	private $days = 30;
+
 	function init() {
 		$this->title( __( 'Omnibus', 'omnibus' ) );
 	}
@@ -31,6 +33,13 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 	}
 
 	function render() {
+		/**
+		 * days
+		 */
+		$this->days = apply_filters(
+			'iworks_omnibus_days',
+			max( 30, intval( get_option( '_iwo_price_lowest_days', 30 ) ) )
+		);
 		echo '<div id="debug-bar-omnibus">';
 		if ( is_singular( 'product' ) ) {
 			$product = wc_get_product( get_the_ID() );
@@ -45,6 +54,13 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 			printf( '<dd>%s</dd>', esc_html( $product->get_type() ) );
 			echo '</dl>';
 			/**
+			 * select function
+			 */
+			$show_log_table_function = 'show_log_table';
+			if ( 'migrated' === apply_filters( 'iworks/omnibus/v3/get/migration/status', false ) ) {
+				$show_log_table_function = 'show_log_table_v3';
+			}
+			/**
 			 * Product Changes Log
 			 */
 			echo '<hr>';
@@ -57,7 +73,7 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 			 */
 			switch ( $product->get_type() ) {
 				case 'simple':
-					$this->show_log_table(
+					$this->$show_log_table_function(
 						apply_filters( 'iworks_omnibus_price_log_array', array(), get_the_ID() )
 					);
 					break;
@@ -68,40 +84,41 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 			/**
 			 * Product Saved Prives
 			 */
-			echo '<hr>';
-			printf(
-				'<h4>%s</h4>',
-				esc_html__( 'Product saved prices', 'omnibus' )
-			);
-			/**
-			 * product type
-			 */
-			switch ( $product->get_type() ) {
-				case 'simple':
-					$this->show_log_table(
-						apply_filters( 'iworks_omnibus_prices_array', array(), get_the_ID() )
-					);
-					break;
-				case 'variable':
-					foreach ( $product->get_children() as $variation_id ) {
-						printf(
-							'<p>%s (id: %d)</p>',
-							esc_html( get_the_title( $variation_id ) ),
-							esc_html( $variation_id )
+			if ( 'migrated' !== apply_filters( 'iworks/omnibus/v3/get/migration/status', false ) ) {
+				echo '<hr>';
+				printf(
+					'<h4>%s</h4>',
+					esc_html__( 'Product saved prices', 'omnibus' )
+				);
+				/**
+				 * product type
+				 */
+				switch ( $product->get_type() ) {
+					case 'simple':
+						$this->$show_log_table_function(
+							apply_filters( 'iworks_omnibus_prices_array', array(), get_the_ID() )
 						);
-						$this->show_log_table(
-							apply_filters( 'iworks_omnibus_prices_array', array(), $variation_id )
-						);
-					}
-					break;
-				default:
-					echo wpautop( __( 'The selected product type is not supported.', 'omnibus' ) );
-					break;
+						break;
+					case 'variable':
+						foreach ( $product->get_children() as $variation_id ) {
+							printf(
+								'<p>%s (id: %d)</p>',
+								esc_html( get_the_title( $variation_id ) ),
+								esc_html( $variation_id )
+							);
+							$this->$show_log_table_function(
+								apply_filters( 'iworks_omnibus_prices_array', array(), $variation_id )
+							);
+						}
+						break;
+					default:
+						echo wpautop( __( 'The selected product type is not supported.', 'omnibus' ) );
+						break;
+				}
 			}
 		}
 		echo '</div>';
 	}
-
 
 	private function show_log_table( $log ) {
 		if ( empty( $log ) ) {
@@ -128,5 +145,40 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 		echo '</table>';
 	}
 
+	private function show_log_table_v3( $log ) {
+		if ( empty( $log ) ) {
+			echo wpautop( esc_html__( 'There is no price history recorded.', 'omnibus' ) );
+			return;
+		}
+		echo '<table class="widefat fixed striped debug-bar-wp-query-list">';
+		echo '<thead>';
+		echo '<tr>';
+		printf( '<th>%s</th>', esc_html__( 'ID', 'omnibus' ) );
+		printf( '<th>%s</th>', esc_html__( 'Regular Price', 'omnibus' ) );
+		printf( '<th>%s</th>', esc_html__( 'Sale Price', 'omnibus' ) );
+		printf( '<th>%s</th>', esc_html__( 'Days', 'omnibus' ) );
+		printf( '<th>%s</th>', esc_html__( 'Date', 'omnibus' ) );
+		echo '</tr>';
+		echo '</thead>';
+		echo '<tbody>';
+		foreach ( $log as $one ) {
+			if ( isset( $one['timestamp'] ) ) {
+				$one['diff-in-days'] = round( ( time() - $one['timestamp'] ) / DAY_IN_SECONDS );
+			}
+			if ( isset( $one['diff-in-days'] ) && $one['diff-in-days'] > $this->days ) {
+				echo '<tr style="opacity:.3">';
+			} else {
+				echo '<tr>';
+			}
+			printf( '<td>%s</td>', $one['ID'] );
+			printf( '<td>%s</td>', isset( $one['price_regular'] ) ? $one['price_regular'] : $one['price'] );
+			printf( '<td>%s</td>', empty( $one['price_sale'] ) ? '&mdash;' : $one['price_sale'] );
+			printf( '<td>%d</td>', isset( $one['diff-in-days'] ) ? $one['diff-in-days'] : '&mdash;' );
+			printf( '<td>%s</td>', date_i18n( 'Y-m-d H:i', $one['timestamp'] ) );
+			echo '</tr>';
+		}
+		echo '</tbody>';
+		echo '</table>';
+	}
 }
 
