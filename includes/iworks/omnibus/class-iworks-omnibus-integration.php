@@ -334,12 +334,14 @@ abstract class iworks_omnibus_integration {
 					$price_to_show = $price_lowest['price_including_tax'];
 				} else {
 					global $product;
-					$tax = new WC_Tax();
-					if ( ! empty( $tax ) ) {
-						$taxes = $tax->get_rates( $product->get_tax_class() );
-						if ( ! empty( $taxes ) ) {
-							$t             = array_shift( $taxes );
-							$price_to_show = ( 100 + $t['rate'] ) * $price_to_show / 100;
+					if ( is_object( $product ) ) {
+						$tax = new WC_Tax();
+						if ( ! empty( $tax ) ) {
+							$taxes = $tax->get_rates( $product->get_tax_class() );
+							if ( ! empty( $taxes ) ) {
+								$t             = array_shift( $taxes );
+								$price_to_show = ( 100 + $t['rate'] ) * $price_to_show / 100;
+							}
 						}
 					}
 				}
