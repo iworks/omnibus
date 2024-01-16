@@ -195,6 +195,9 @@ Project maintained on github at [iworks/omnibus](PLUGIN_GITHUB_WEBSITE).
 = 3.0.0 (2024-01-10) =
 * A new way of logging changes - more efficient, faster, more flexible. Complete overhaul of the way changes are saved.
 
+= 2.5.7 (2024-01-16) =
+* An extra check for the product has been added.
+
 = 2.5.6 (2024-01-16) =
 * Issue with price display when tax rates are not defined has been fixed [#24](https://github.com/iworks/omnibus/issues/24). Props for [stalica](https://github.com/stalica).
 * The [iWorks Rate](https://github.com/iworks/iworks-rate) module has been updated to 2.1.7.
