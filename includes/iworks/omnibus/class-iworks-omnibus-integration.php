@@ -336,7 +336,7 @@ abstract class iworks_omnibus_integration {
 					global $product;
 					if ( is_object( $product ) ) {
 						$tax = new WC_Tax();
-						if ( ! empty( $tax ) ) {
+						if ( ! empty( $tax ) && is_object( $tax ) ) {
 							$taxes = $tax->get_rates( $product->get_tax_class() );
 							if ( ! empty( $taxes ) ) {
 								$t             = array_shift( $taxes );
