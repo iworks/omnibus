@@ -79,7 +79,7 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 					break;
 				case 'variable':
 					foreach ( $product->get_available_variations() as $variation ) {
-						printf( '<h5>%s</h5>', esc_html__( get_the_title( $variation['variation_id'] ) ) );
+						printf( '<h5>%s</h5>', esc_html( get_the_title( $variation['variation_id'] ) ) );
 						$this->$show_log_table_function(
 							apply_filters( 'iworks_omnibus_price_log_array', array(), $variation['variation_id'] )
 						);
