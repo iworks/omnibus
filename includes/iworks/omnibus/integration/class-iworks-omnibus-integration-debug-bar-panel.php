@@ -77,6 +77,14 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 						apply_filters( 'iworks_omnibus_price_log_array', array(), get_the_ID() )
 					);
 					break;
+				case 'variable':
+					foreach ( $product->get_available_variations() as $variation ) {
+						printf( '<h5>%s</h5>', esc_html__( get_the_title( $variation['variation_id'] ) ) );
+						$this->$show_log_table_function(
+							apply_filters( 'iworks_omnibus_price_log_array', array(), $variation['variation_id'] )
+						);
+					}
+					break;
 				default:
 					echo wpautop( __( 'The selected product type is not supported.', 'omnibus' ) );
 					break;

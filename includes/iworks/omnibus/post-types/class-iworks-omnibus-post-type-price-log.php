@@ -149,10 +149,24 @@ class iWorks_Omnibus_Post_Type_Price_Log extends iWorks_Omnibus_Post_Type {
 		);
 		$args      = wp_parse_args(
 			array(
-				'meta_key' => 'price_sale',
-				'orderby'  => 'meta_value_num',
-				'order'    => 'ASC',
-				'offset'   => 1,
+				'meta_query'     => array(
+					'relation'   => 'AND',
+					'price_sale' => array(
+						'key'     => 'price_sale',
+						'value'   => 0,
+						'compare' => '>',
+						'type'    => 'NUMERIC',
+					),
+					array(
+						'key'     => 'price_sale',
+						'value'   => $price,
+						'compare' => '!=',
+						'type'    => 'NUMERIC',
+					),
+				),
+				'orderby'        => 'price_sale',
+				'order'          => 'ASC',
+				'posts_per_page' => 1,
 			),
 			$this->get_common_wp_query_args( $post_id )
 		);
@@ -211,6 +225,15 @@ class iWorks_Omnibus_Post_Type_Price_Log extends iWorks_Omnibus_Post_Type {
 		$check = $this->get_last_log( $post_id );
 		if ( is_wp_error( $check ) ) {
 			return true;
+		}
+		if ( ! is_array( $data ) ) {
+			return false;
+		}
+		if ( ! isset( $data['price_sale'] ) ) {
+			return false;
+		}
+		if ( empty( $data['price_sale'] ) ) {
+			return false;
 		}
 		foreach ( $this->prices_names as $price_name ) {
 			if ( ! isset( $check[ $price_name ] ) ) {
