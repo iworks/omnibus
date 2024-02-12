@@ -52,6 +52,8 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 			printf( '<dd>%s</dd>', esc_html( get_the_ID() ) );
 			printf( '<dt>%s</dt>', esc_html__( 'Type', 'omnibus' ) );
 			printf( '<dd>%s</dd>', esc_html( $product->get_type() ) );
+			printf( '<dt>%s</dt>', esc_html__( 'Title', 'omnibus' ) );
+			printf( '<dd>%s</dd>', esc_html( $product->get_title() ) );
 			echo '</dl>';
 			/**
 			 * select function
@@ -73,6 +75,7 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 			 */
 			switch ( $product->get_type() ) {
 				case 'simple':
+				case 'course':
 					$this->$show_log_table_function(
 						apply_filters( 'iworks_omnibus_price_log_array', array(), get_the_ID() )
 					);
@@ -103,6 +106,7 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 				 */
 				switch ( $product->get_type() ) {
 					case 'simple':
+					case 'course':
 						$this->$show_log_table_function(
 							apply_filters( 'iworks_omnibus_prices_array', array(), get_the_ID() )
 						);
