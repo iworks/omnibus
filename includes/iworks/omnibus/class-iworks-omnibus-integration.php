@@ -26,6 +26,13 @@ if ( class_exists( 'iworks_omnibus_integration' ) ) {
 abstract class iworks_omnibus_integration {
 
 	/**
+	 * Plugin version
+	 *
+	 * @since 3.0.0
+	 */
+	private $version = 'PLUGIN_VERSION';
+
+	/**
 	 * meta field name
 	 *
 	 * @since 1.0.0
@@ -336,6 +343,9 @@ abstract class iworks_omnibus_integration {
 		 * price to show
 		 */
 		$price_to_show = $price_lowest['price'];
+		if ( isset( $price_lowest['price_sale'] ) ) {
+			$price_to_show = $price_lowest['price_sale'];
+		}
 		/**
 		 * WooCommerce: include tax
 		 */
@@ -367,15 +377,25 @@ abstract class iworks_omnibus_integration {
 		/**
 		 * add attributes
 		 */
-		$attributes = array();
+		$attributes = array(
+			'data-iwo-version' => $this->version,
+		);
 		foreach ( $price_lowest as $key => $value ) {
-			$attributes[] = sprintf( 'data-iwo-%s="%s"', esc_html( $key ), esc_attr( $value ) );
+			$attributes[ sprintf( 'data-iwo-%s', $key ) ] = esc_attr( $value );
+		}
+		$attribute_data_string = '';
+		foreach ( $attributes as $attribute_name => $attribute_value ) {
+			$attribute_data_string .= sprintf(
+				' %s="%s"',
+				esc_html( $attribute_name ),
+				esc_attr( $attribute_value )
+			);
 		}
 		$price .= apply_filters(
 			'iworks_omnibus_message',
 			sprintf(
-				'<p class="iworks-omnibus" %s>%s</p>',
-				implode( ' ', $attributes ),
+				'<p class="iworks-omnibus"%s>%s</p>',
+				$attribute_data_string,
 				sprintf(
 					$message,
 					$this->get_days(),
