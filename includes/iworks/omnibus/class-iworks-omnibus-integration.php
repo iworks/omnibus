@@ -97,6 +97,12 @@ abstract class iworks_omnibus_integration {
 			'user_id'   => get_current_user_id(),
 		);
 		/**
+		 * promotion schedule
+		 */
+		if ( isset( $_POST['_sale_price_dates_from'] ) ) {
+			$data['timestamp'] = strtotime( $_POST['_sale_price_dates_from'] );
+		}
+		/**
 		 * if price is an array
 		 *
 		 * @since 2.5.4
@@ -106,6 +112,10 @@ abstract class iworks_omnibus_integration {
 				$data[ $key ] = $value;
 			}
 		}
+		/**
+		 * convert timestamp to human time
+		 */
+		$data['human'] = wp_date( 'c', $data['timestamp'] );
 		/**
 		 * filter data
 		 *
