@@ -3,7 +3,7 @@
     "title": "Omnibus — show the lowest price",
     "tagline": "The plugin adds price compatibility with the EU Omnibus Directive.",
     "description": "The plugin adds two additional fields in the product edit view: the lowest price and the effective date for compatibility with the EU Omnibus Directive.",
-    "version": "3.0.0.beta1",
+    "version": "3.0.0.beta2",
     "homepage": "http://iworks.pl/",
     "author": [
         {
