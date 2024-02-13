@@ -22,6 +22,6 @@ $content .= sprintf( '<strong>%s</strong>', __( 'We highly recommend creating a 
 echo wpautop( wp_kses_post( $content ) );
 ?>
 		<div class="iworks-rate-buttons">
-			<a href="<?php echo add_query_arg( 'page', 'omnibus-migration-v3', admin_url( 'tools.php' ) ); ?>" class="button button-primary" ><?php echo esc_html( __( 'Go to migration page', 'omnibus' ) ); ?></a>
+			<p><a href="<?php echo add_query_arg( 'page', 'omnibus-migration-v3', admin_url( 'tools.php' ) ); ?>" class="button button-primary" ><?php echo esc_html( __( 'Go to migration page', 'omnibus' ) ); ?></a></p>
 		</div>
 </div>

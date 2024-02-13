@@ -128,6 +128,12 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 						break;
 				}
 			}
+		} else {
+			printf(
+				'<h3>%s</h3>',
+				esc_html__( 'Omnibus', 'omnibus' )
+			);
+			echo wpautop( __( 'The selected content is not a product.', 'omnibus' ) );
 		}
 		echo '</div>';
 	}
@@ -175,7 +181,7 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 		echo '<tbody>';
 		foreach ( $log as $one ) {
 			if ( isset( $one['timestamp'] ) ) {
-				$one['diff-in-days'] = round( ( time() - $one['timestamp'] ) / DAY_IN_SECONDS );
+				$one['diff-in-days'] = round( ( time() - intval( $one['timestamp'] ) ) / DAY_IN_SECONDS );
 			}
 			if ( isset( $one['diff-in-days'] ) && $one['diff-in-days'] > $this->days ) {
 				echo '<tr style="opacity:.3">';

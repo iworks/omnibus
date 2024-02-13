@@ -32,8 +32,10 @@ class iworks_omnibus_integration_debug_bar extends iworks_omnibus_integration {
 	}
 
 	public function filter_debug_bar_panels( $panels ) {
-		include_once __DIR__ . '/class-iworks-omnibus-integration-debug-bar-panel.php';
-		$panels[] = new iworks_omnibus_integration_debug_bar_panel();
+		if ( is_singular( 'product' ) ) {
+			include_once __DIR__ . '/class-iworks-omnibus-integration-debug-bar-panel.php';
+			$panels[] = new iworks_omnibus_integration_debug_bar_panel();
+		}
 		return $panels;
 	}
 

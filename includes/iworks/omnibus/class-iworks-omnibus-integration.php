@@ -99,7 +99,10 @@ abstract class iworks_omnibus_integration {
 		/**
 		 * promotion schedule
 		 */
-		if ( isset( $_POST['_sale_price_dates_from'] ) ) {
+		if (
+			isset( $_POST['_sale_price_dates_from'] )
+			&& ! empty( $_POST['_sale_price_dates_from'] )
+		) {
 			$data['timestamp'] = strtotime( $_POST['_sale_price_dates_from'] );
 		}
 		/**
@@ -271,6 +274,14 @@ abstract class iworks_omnibus_integration {
 			if ( isset( $price['init'] ) ) {
 				return array();
 			}
+		}
+		/**
+		 * return if empty
+		 *
+		 * @since 3.0.0
+		 */
+		if ( empty( $price ) ) {
+			return $price;
 		}
 		/**
 		 * Diff in days between promotion and now.

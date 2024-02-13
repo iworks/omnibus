@@ -144,9 +144,7 @@ class iWorks_Omnibus_Post_Type_Price_Log extends iWorks_Omnibus_Post_Type {
 	}
 
 	public function get_lowest_price_array( $price, $post_id ) {
-		$data      = array(
-			'price' => $price,
-		);
+		$data      = array();
 		$args      = wp_parse_args(
 			array(
 				'meta_query'     => array(
