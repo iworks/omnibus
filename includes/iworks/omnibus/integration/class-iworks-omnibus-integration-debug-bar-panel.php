@@ -172,8 +172,8 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 		echo '<thead>';
 		echo '<tr>';
 		printf( '<th>%s</th>', esc_html__( 'ID', 'omnibus' ) );
-		printf( '<th>%s</th>', esc_html__( 'Regular Price', 'omnibus' ) );
-		printf( '<th>%s</th>', esc_html__( 'Sale Price', 'omnibus' ) );
+		printf( '<th style="color:#07d">%s</th>', esc_html__( 'Regular Price', 'omnibus' ) );
+		printf( '<th style="color:#c20">%s</th>', esc_html__( 'Sale Price', 'omnibus' ) );
 		printf( '<th>%s</th>', esc_html__( 'Days', 'omnibus' ) );
 		printf( '<th>%s</th>', esc_html__( 'Date', 'omnibus' ) );
 		echo '</tr>';
@@ -197,6 +197,143 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 		}
 		echo '</tbody>';
 		echo '</table>';
+		/**
+		 * chart
+		 */
+		if ( 2 > count( $log ) ) {
+			return;
+		}
+		$width             = 500;
+		$step              = $width / ( count( $log ) - 1 );
+		$height            = 100;
+		$date_first        = $date_last = null;
+		$price_regular_max = $price_regular_min = null;
+		$price_sale_max    = $price_sale_min = null;
+		foreach ( $log as $one ) {
+			if ( isset( $one['price_regular'] ) ) {
+				$price = intval( $one['price_regular'] );
+				if ( 0 < $price ) {
+					if ( null === $price_regular_max ) {
+						$price_regular_max = $price_regular_min = $price;
+					} else {
+						if ( $price_regular_max < $price ) {
+							$price_regular_max = $price;
+						}
+						if ( $price_regular_min > $price ) {
+							$price_regular_min = $price;
+						}
+					}
+				}
+			}
+			if ( isset( $one['price_sale'] ) ) {
+				$price = intval( $one['price_sale'] );
+				if ( 0 < $price ) {
+					if ( null === $price_sale_max ) {
+						$price_sale_max = $price_sale_min = $price;
+					} else {
+						if ( $price_sale_max < $price ) {
+							$price_sale_max = $price;
+						}
+						if ( $price_sale_min > $price ) {
+							$price_sale_min = $price;
+						}
+					}
+				}
+			}
+			if ( isset( $one['timestamp'] ) ) {
+				$timestamp = intval( $one['timestamp'] );
+				if ( ! empty( $timestamp ) ) {
+					if ( null === $date_first ) {
+						$date_first = $date_last = $timestamp;
+					} else {
+						if ( $timestamp < $date_first ) {
+							$date_first = $timestamp;
+						}
+						if ( $timestamp > $date_last ) {
+							$date_last = $timestamp;
+						}
+					}
+				}
+			}
+		}
+		$price_max = max( $price_regular_max, $price_sale_max );
+		$price_min = min( $price_regular_min, $price_sale_min );
+		$max = $price_max - $price_min;
+		echo '<section class="omnibus-draw">';
+		printf(
+			'<svg viewBox="0 0 %d %d">',
+			$width,
+			$height + 10
+		);
+		echo '<line x1="0" y1="0" x2="0" y2="110" stroke="black" stroke-width=".5" />';
+		echo '<line x1="0" y1="110" x2="500" y2="110" stroke="black" stroke-width=".5"/>';
+		$stroke = 1;
+		printf(
+			'<polyline fill="none" stroke="#07d" stroke-width="%d" points="',
+			$stroke
+		);
+		$i = -1;
+		foreach ( $log as $one ) {
+			$i++;
+			if (
+				! isset( $one['timestamp'] )
+				|| empty( $one['timestamp'] )
+			) {
+				continue;
+			}
+			if (
+				! isset( $one['price_regular'] )
+				|| empty( $one['price_regular'] )
+			) {
+				continue;
+			}
+			$timestamp = intval( $one['timestamp'] );
+			if ( empty( $timestamp ) ) {
+				continue;
+			}
+			$y = $height * ( $price_max - $one['price_regular'] ) / $max + $stroke;
+			printf(
+				'%d,%d%s',
+				$i * $step,
+				$y,
+				PHP_EOL
+			);
+		}
+		echo '"/>';
+		printf(
+			'<polyline fill="none" stroke="#c20" stroke-width="%d" points="',
+			$stroke
+		);
+		$i = -1;
+		foreach ( $log as $one ) {
+			$i++;
+			if (
+				! isset( $one['timestamp'] )
+				|| empty( $one['timestamp'] )
+			) {
+				continue;
+			}
+			if (
+				! isset( $one['price_sale'] )
+				|| empty( $one['price_sale'] )
+			) {
+				continue;
+			}
+			$timestamp = intval( $one['timestamp'] );
+			if ( empty( $timestamp ) ) {
+				continue;
+			}
+			$y = $height * ( $price_max - $one['price_sale'] ) / $max + $stroke;
+			printf(
+				'%d,%d%s',
+				$i * $step,
+				$y,
+				PHP_EOL
+			);
+		}
+		echo '"/>';
+		echo '</svg>';
+		echo '</section>';
 	}
 }
 
