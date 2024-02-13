@@ -74,8 +74,9 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 			 * product type
 			 */
 			switch ( $product->get_type() ) {
-				case 'simple':
 				case 'course':
+				case 'grouped':
+				case 'simple':
 					$this->$show_log_table_function(
 						apply_filters( 'iworks_omnibus_price_log_array', array(), get_the_ID() )
 					);
@@ -105,8 +106,9 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 				 * product type
 				 */
 				switch ( $product->get_type() ) {
-					case 'simple':
 					case 'course':
+					case 'grouped':
+					case 'simple':
 						$this->$show_log_table_function(
 							apply_filters( 'iworks_omnibus_prices_array', array(), get_the_ID() )
 						);
@@ -258,7 +260,7 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 		}
 		$price_max = max( $price_regular_max, $price_sale_max );
 		$price_min = min( $price_regular_min, $price_sale_min );
-		$max = $price_max - $price_min;
+		$max       = $price_max - $price_min;
 		echo '<section class="omnibus-draw">';
 		printf(
 			'<svg viewBox="0 0 %d %d">',
@@ -272,7 +274,7 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 			'<polyline fill="none" stroke="#07d" stroke-width="%d" points="',
 			$stroke
 		);
-		$i = -1;
+		$i = 1;
 		foreach ( $log as $one ) {
 			$i++;
 			if (
@@ -294,7 +296,7 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 			$y = $height * ( $price_max - $one['price_regular'] ) / $max + $stroke;
 			printf(
 				'%d,%d%s',
-				$i * $step,
+				$width - $i * $step,
 				$y,
 				PHP_EOL
 			);
@@ -304,7 +306,7 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 			'<polyline fill="none" stroke="#c20" stroke-width="%d" points="',
 			$stroke
 		);
-		$i = -1;
+		$i = 0;
 		foreach ( $log as $one ) {
 			$i++;
 			if (
@@ -326,7 +328,7 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 			$y = $height * ( $price_max - $one['price_sale'] ) / $max + $stroke;
 			printf(
 				'%d,%d%s',
-				$i * $step,
+				$width - $i * $step,
 				$y,
 				PHP_EOL
 			);

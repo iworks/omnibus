@@ -195,6 +195,7 @@ Project maintained on github at [iworks/omnibus](PLUGIN_GITHUB_WEBSITE).
 = 3.0.0 (2024-01-10) =
 * A new way of logging changes - more efficient, faster, more flexible. Complete overhaul of the way changes are saved.
 * A support for promotion schedule has been added.
+* Price history chart has been added to [Debug Bar] panel.
 
 = 2.5.7 (2024-01-16) =
 * An extra check for the product has been added.
@@ -226,13 +227,13 @@ Project maintained on github at [iworks/omnibus](PLUGIN_GITHUB_WEBSITE).
 * The `data-iwo-variation_id` for the price message has been added. [#14](https://github.com/iworks/omnibus/issues/14).
 * The function `check_ajax_referer()` has been added for checking expanded variant edits.
 * The function `strip_tags()` has been replaced by the function `wp_strip_all_tags()`.
-* The integration with the "Debug Bar" for variants has been improved.
+* The integration with the [Debug Bar] for variants has been improved.
 * The [iWorks Rate](https://github.com/iworks/iworks-rate) module has been updated to 2.1.6.
 
 = 2.5.0 (2023-11-19) =
 * The ability to show the regular price as the last one available before the promotion was introduced.
 * The check for function `get_current_screen()` has been added. Props for [mic22info](https://wordpress.org/support/users/mic22info/).
-* The integration with the "Debug Bar" plugin has been added.
+* The integration with the [Debug Bar] plugin has been added.
 
 = 2.4.1 (2023-11-09) =
 * The critical error on product edit page has been removed.
