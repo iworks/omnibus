@@ -1,4 +1,4 @@
-/*! Omnibus — show the lowest price - v3.0.0.beta2
+/*! Omnibus — show the lowest price - v3.0.0.beta3
  * http://iworks.pl/
  * Copyright (c) 2024; * Licensed GPL-3.0 */
 (function($) {
