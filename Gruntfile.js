@@ -11,6 +11,8 @@
  */
 
 module.exports = function(grunt) {
+    // Show elapsed time at the end.
+    // require('time-grunt')(grunt);
 
     // Load all grunt tasks.
     require('load-grunt-tasks')(grunt);
@@ -19,6 +21,7 @@ module.exports = function(grunt) {
     var buildyear = 1900 + new Date().getYear();
 
     var conf = {
+        // Concatenate those JS files into a single file (target: [source, source, ...]).
         js_files_concat: {
             'assets/scripts/admin/woocommerce.js': [
                 'assets/scripts/src/admin/woocommerce.js',
@@ -37,6 +40,7 @@ module.exports = function(grunt) {
         translation: {
             ignore_files: [
                 '.git*',
+                'includes/external/.*', // External libraries.
                 'node_modules/.*',
                 '(^.php)', // Ignore non-php files.
                 'release/.*', // Temp release files.
@@ -48,11 +52,11 @@ module.exports = function(grunt) {
         }
     };
 
-
     // Project configuration
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
 
+        // JS - Concat .js source files into a single .js file.
         concat: {
             options: {
                 stripBanners: true,
@@ -67,6 +71,7 @@ module.exports = function(grunt) {
             }
         },
 
+        // JS - Validate .js source code.
         jshint: {
             all: [
                 'Gruntfile.js',
@@ -91,6 +96,7 @@ module.exports = function(grunt) {
             }
         },
 
+        // JS - Uglyfies the source code of .js files (to make files smaller).
         uglify: {
             all: {
                 files: [{
@@ -118,6 +124,10 @@ module.exports = function(grunt) {
             files: ['assets/scripts/test/**/*.js']
         },
 
+        /**
+         * TEST - Run the PHPUnit tests.
+         * -- Not used right now...
+         */
         phpunit: {
             classes: {
                 dir: ''
@@ -134,6 +144,7 @@ module.exports = function(grunt) {
             }
         },
 
+        // CSS - Compile a .scss file into a normal .css file.
         sass: {
             all: {
                 options: {
@@ -145,6 +156,7 @@ module.exports = function(grunt) {
             }
         },
 
+        // CSS - Minify all .css files.
         cssmin: {
             options: {
                 banner: '/*! <%= pkg.title %> - v<%= pkg.version %>\n' +
@@ -165,6 +177,7 @@ module.exports = function(grunt) {
             },
         },
 
+        // WATCH - Watch filesystem for changes during development.
         watch: {
             sass: {
                 files: [
@@ -185,6 +198,7 @@ module.exports = function(grunt) {
             }
         },
 
+        // BUILD - Remove previous build version and temp files.
         clean: {
             main: {
                 src: ['release/<%= pkg.version %>']
@@ -208,6 +222,7 @@ module.exports = function(grunt) {
                         poedit: true, // Includes common Poedit headers.
                         'x-poedit-keywordslist': true // Include a list of all possible gettext functions.
                     },
+                    exclude: ['node_modules', '.git', '.sass-cache', 'release'],
                     type: 'wp-plugin',
                     updateTimestamp: true,
                     updatePoFiles: true
@@ -325,7 +340,11 @@ module.exports = function(grunt) {
                 expand: true,
                 src: [
                     'release/**',
-                    '!release/**/images/**'
+                    '!release/**/images/**',
+                    '!release/**/*.gif',
+                    '!release/**/*.jpg',
+                    '!release/**/*.png',
+                    '!release/**/*.webp'
                 ],
                 dest: '.'
             }
@@ -383,6 +402,7 @@ module.exports = function(grunt) {
         grunt.log.writeln('  7. RELEASE the plugin on WordPress.org!');
         grunt.log.writeln('  8. Add git tag!');
         grunt.log.writeln('  9. RELEASE the plugin on GitHub!');
+        grunt.log.writeln(' 10. RELEASE the plugin!');
     });
 
     // Default task.

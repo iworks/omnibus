@@ -2,7 +2,7 @@
 /*
 Plugin Name: PLUGIN_TITLE
 Text Domain: omnibus
-Plugin URI: http://iworks.pl/en/plugins/omnibus/
+Plugin URI: PLUGIN_URI
 Description: PLUGIN_DESCRIPTION
 Version: PLUGIN_VERSION
 Author: Marcin Pietrzak

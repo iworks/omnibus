@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PLUGIN_TITLE PLUGIN_VERSION\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/omnibus-dev\n"
-"POT-Creation-Date: 2024-02-13 06:35:00+00:00\n"
+"POT-Creation-Date: 2024-02-16 06:33:26+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -202,8 +202,8 @@ msgid "The lowest price in %d days."
 msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-class-easydigitaldownloads.php:106
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:151
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:178
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:153
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:180
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:670
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:1248
 msgid "Date"
@@ -217,7 +217,7 @@ msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-class-easydigitaldownloads.php:119
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:28
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:134
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:136
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:80
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:27
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:879
@@ -254,7 +254,7 @@ msgid "Product info"
 msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:51
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:174
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:176
 msgid "ID"
 msgstr ""
 
@@ -270,38 +270,38 @@ msgstr ""
 msgid "Product changes log"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:92
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:127
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:93
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:129
 msgid "The selected product type is not supported."
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:102
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:103
 msgid "Product saved prices"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:136
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:138
 msgid "The selected content is not a product."
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:143
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:168
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:145
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:170
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:1239
 msgid "There is no price history recorded."
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:149
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:175
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:151
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:177
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:1246
 msgid "Regular Price"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:150
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:176
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:152
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:178
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:1247
 msgid "Sale Price"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:177
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:179
 msgid "Days"
 msgstr ""
 
@@ -769,15 +769,15 @@ msgstr ""
 msgid "Provide us a coffee"
 msgstr ""
 
-#: includes/iworks/rate/rate.php:541
+#: includes/iworks/rate/rate.php:547
 msgid "OpenGraph"
 msgstr ""
 
-#: includes/iworks/rate/rate.php:557
+#: includes/iworks/rate/rate.php:563
 msgid "OG — Better Share on Social Media"
 msgstr ""
 
-#: includes/iworks/rate/rate.php:558
+#: includes/iworks/rate/rate.php:564
 msgid "https://wordpress.org/plugins/og/"
 msgstr ""
 
@@ -868,7 +868,7 @@ msgid "PLUGIN_TITLE"
 msgstr ""
 
 #. Plugin URI of the plugin/theme
-msgid "http://iworks.pl/en/plugins/omnibus/"
+msgid "PLUGIN_URI"
 msgstr ""
 
 #. Description of the plugin/theme
@@ -883,13 +883,13 @@ msgstr ""
 msgid "http://iworks.pl/"
 msgstr ""
 
-#: includes/iworks/rate/rate.php:453
+#: includes/iworks/rate/rate.php:459
 #. translators: %s: plugin slug
 msgctxt "plugins home"
 msgid "https://wordpress.org/plugins/%s"
 msgstr ""
 
-#: includes/iworks/rate/rate.php:460
+#: includes/iworks/rate/rate.php:466
 #. translators: %s: plugin slug
 msgctxt "plugins support home"
 msgid "https://wordpress.org/support/plugin/%s"

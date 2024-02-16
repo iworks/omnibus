@@ -196,6 +196,7 @@ Project maintained on github at [iworks/omnibus](PLUGIN_GITHUB_WEBSITE).
 * A new way of logging changes - more efficient, faster, more flexible. Complete overhaul of the way changes are saved.
 * A support for promotion schedule has been added.
 * Price history chart has been added to [Debug Bar] panel.
+* The [iWorks Rate](https://github.com/iworks/iworks-rate) module has been updated to 2.1.8.
 
 = 2.5.7 (2024-01-16) =
 * An extra check for the product has been added.
