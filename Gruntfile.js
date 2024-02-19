@@ -34,7 +34,7 @@ module.exports = function(grunt) {
         css_files_compile: {},
 
         plugin_dir: '',
-        plugin_file: 'omnibus.php',
+        plugin_file: '<%= pkg.name %>.php',
 
         // Regex patterns to exclude from transation.
         translation: {
@@ -48,7 +48,7 @@ module.exports = function(grunt) {
                 'tests/.*', // Unit testing.
             ],
             pot_dir: 'languages/', // With trailing slash.
-            textdomain: 'omnibus',
+            textdomain: '<%= pkg.name %>',
         }
     };
 
@@ -293,10 +293,10 @@ module.exports = function(grunt) {
                     match: /BUILDTIME/g,
                     replace: buildtime
                 }, {
-                    match: /IWORKS_RATE_TEXTDOMAIN/g,
+                    match: /IWORKS_OPTIONS_TEXTDOMAIN/g,
                     replace: '<%= pkg.name %>'
                 }, {
-                    match: /IWORKS_OPTIONS_TEXTDOMAIN/g,
+                    match: /IWORKS_RATE_TEXTDOMAIN/g,
                     replace: '<%= pkg.name %>'
                 }, {
                     match: /PLUGIN_DESCRIPTION/g,
