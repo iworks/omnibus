@@ -192,7 +192,7 @@ The minimum WooCommerce version required is 5.5.0.
 
 Project maintained on github at [iworks/omnibus](PLUGIN_GITHUB_WEBSITE).
 
-= 3.0.0 (2024-01-10) =
+= 3.0.0 (2024-01-19) =
 * A new way of logging changes - more efficient, faster, more flexible. Complete overhaul of the way changes are saved.
 * A support for promotion schedule has been added.
 * Price history chart has been added to [Debug Bar] panel.
