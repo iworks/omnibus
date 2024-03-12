@@ -71,7 +71,7 @@ class iworks_omnibus {
 		 * @since 3.0.0
 		 */
 		add_action( 'admin_init', array( $this, 'action_admin_init_maybe_check_migration' ) );
-		add_filter( 'iworks/omnibus/get/migration/status/3', array( $this, 'migration_v3_filter_get_migration_status_to_version_3' ) );
+		add_filter( 'iworks/omnibus/v3/get/migration/status', array( $this, 'migration_v3_filter_get_migration_status_to_version_3' ) );
 		add_action( 'wp_ajax_iworks_omnibus_migrate_v3', array( $this, 'migration_v3_action_wp_ajax_iworks_omnibus_migrate_v3' ) );
 	}
 
