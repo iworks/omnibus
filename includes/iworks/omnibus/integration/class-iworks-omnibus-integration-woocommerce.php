@@ -34,7 +34,6 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 * @since 2.3.0
 		 */
 		add_filter( 'woocommerce_get_settings_pages', array( $this, 'filter_woocommerce_get_settings_pages' ) );
-
 		/**
 		 * Show message
 		 *
@@ -311,8 +310,6 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			return;
 		}
 		$price_lowest = $this->woocommerce_get_lowest_price_in_history( $post_id );
-		// echo '</div>';
-		// echo '<div>';
 		$this->print_header( 'form-row form-row-full' );
 		$configuration = array(
 			'wrapper_class' => 'form-row form-row-first',
@@ -636,12 +633,19 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 * @since 1.0.0
 	 */
 	private function woocommerce_wp_text_input_price( $price_lowest, $configuration = array() ) {
+		$value = __( 'no data', 'omnibus' );
+		if ( ! empty( $price_lowest )
+			&& isset( $price_lowest['price_sale'] )
+			&& ! empty( $price_lowest['price_sale'] )
+		) {
+			$value = $price_lowest['price_sale'];
+		}
 		woocommerce_wp_text_input(
 			wp_parse_args(
 				array(
 					'id'                => $this->meta_name . '_price',
 					'custom_attributes' => array( 'disabled' => 'disabled' ),
-					'value'             => empty( $price_lowest ) ? __( 'no data', 'omnibus' ) : $price_lowest['price'],
+					'value'             => $value,
 					'data_type'         => 'price',
 					'label'             => __( 'Price', 'omnibus' ) . ' (' . get_woocommerce_currency_symbol() . ')',
 					'desc_tip'          => true,
