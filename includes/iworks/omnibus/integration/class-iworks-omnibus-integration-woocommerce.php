@@ -616,7 +616,10 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			if ( empty( $o ) ) {
 				continue;
 			}
-			if ( ! isset( $price_lowest['price'] ) ) {
+			if (
+				! isset( $price_lowest['price'] )
+				|| empty( $price_lowest['price'] )
+			) {
 				$price_lowest = $o;
 				continue;
 			}
