@@ -646,6 +646,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 					'label'             => __( 'Price', 'omnibus' ) . ' (' . get_woocommerce_currency_symbol() . ')',
 					'desc_tip'          => true,
 					'description'       => sprintf(
+						/* translators: %d: nuber of days */
 						__( 'The lowest price in %d days.', 'omnibus' ),
 						$this->get_days()
 					),
@@ -673,6 +674,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 					'label'             => __( 'Date', 'omnibus' ),
 					'desc_tip'          => true,
 					'description'       => sprintf(
+						/* translators: %d: nuber of days */
 						__( 'The date when lowest price in %d days occurred.', 'omnibus' ),
 						$this->get_days()
 					),
@@ -697,6 +699,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 				'id'    => $this->get_name( 'moved' ),
 				'type'  => 'title',
 				'desc'  => sprintf(
+					/* translators: %1$s: a tag begin, %2$s: a tag end */
 					esc_html__( 'Please visit new %1$ssettings page%2$s.', 'omnibus' ),
 					sprintf( '<a href="%s">', remove_query_arg( 'section', add_query_arg( 'tab', 'omnibus' ) ) ),
 					'</a>'

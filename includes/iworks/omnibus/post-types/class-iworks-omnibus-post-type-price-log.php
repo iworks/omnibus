@@ -265,7 +265,7 @@ class iWorks_Omnibus_Post_Type_Price_Log extends iWorks_Omnibus_Post_Type {
 			'ping_status'    => 'closed',
 		);
 		if ( isset( $data['post_date'] ) ) {
-			$postarr['post_date'] = date( 'c', $data['post_date'] );
+			$postarr['post_date'] = gmdate( 'c', $data['post_date'] );
 		}
 		$result = wp_insert_post( $postarr );
 		if ( $result ) {

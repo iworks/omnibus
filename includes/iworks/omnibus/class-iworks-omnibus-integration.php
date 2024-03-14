@@ -340,6 +340,7 @@ abstract class iworks_omnibus_integration {
 		 * Set message template if it is needed
 		 */
 		if ( empty( $message ) ) {
+			/* translators: %2$s: rich html price */
 			$message = __( 'Previous lowest price was %2$s.', 'omnibus' );
 			if (
 				'custom' === get_option( $this->get_name( 'message_settings' ), 'no' )
@@ -347,6 +348,7 @@ abstract class iworks_omnibus_integration {
 			) {
 				$message = get_option(
 					$this->get_name( 'message' ),
+					/* translators: %2$s: rich html price */
 					__( 'Previous lowest price was %2$s.', 'omnibus' )
 				);
 			}

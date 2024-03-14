@@ -192,6 +192,13 @@ The minimum WooCommerce version required is 5.5.0.
 
 Project maintained on github at [iworks/omnibus](PLUGIN_GITHUB_WEBSITE).
 
+= 3.0.2 (2024-03-14) =
+* The general omnibus price for variable products has been fixed. Props for [Bartek Konopka](https://wordpress.org/support/users/bartekkonopka/).
+* The translators strings where been added.
+* The function `date()` has been replaced by the function `gmdate()`.
+* The output sanitization where been added.
+* The [iWorks Rate](https://github.com/iworks/iworks-rate) module has been updated to 2.1.9.
+
 = 3.0.1 (2024-03-12) =
 * The zero variant price has been fixed.
 
@@ -212,7 +219,7 @@ Project maintained on github at [iworks/omnibus](PLUGIN_GITHUB_WEBSITE).
 * In some configurations with taxes, it was an issue to display the previous price with or without tax. Props for [Agata Wiatrowska](https://www.facebook.com/agatawiatr).
 
 = 2.5.4 (2024-01-09) =
-* The unexpectedly growing database has been fixed.  [#22](https://github.com/iworks/omnibus/issues/22). Props for [Karol](https://wordpress.org/support/users/lewshop/).
+* The unexpectedly growing database has been fixed. [#22](https://github.com/iworks/omnibus/issues/22). Props for [Karol](https://wordpress.org/support/users/lewshop/).
 
 = 2.5.3 (2024-01-05) =
 * Fixed problem on quick edit screen. [#21](https://github.com/iworks/omnibus/issues/21). Props for [Igorjup](https://github.com/Igorjup).

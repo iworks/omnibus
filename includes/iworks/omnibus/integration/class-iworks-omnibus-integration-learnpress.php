@@ -203,6 +203,7 @@ class iworks_omnibus_integration_learnpress extends iworks_omnibus_integration {
 		$configuration[ $this->meta_name . 'price' ] = new LP_Meta_Box_Text_Field(
 			esc_html__( 'Omnibus Price', 'omnibus' ),
 			sprintf(
+				/* translators: %d: nuber of days */
 				esc_html__( 'The lowest price in %d days.', 'omnibus' ),
 				$this->get_days()
 			),
@@ -214,9 +215,10 @@ class iworks_omnibus_integration_learnpress extends iworks_omnibus_integration {
 				),
 			)
 		);
-		$configuration[ $this->meta_name . 'date' ]  = new LP_Meta_Box_Text_Field(
+		$configuration[ $this->meta_name . 'date' ] = new LP_Meta_Box_Text_Field(
 			esc_html__( 'Omnibus Date', 'omnibus' ),
 			sprintf(
+				/* translators: %d: nuber of days */
 				esc_html__( 'The date when lowest price in %d days occurred.', 'omnibus' ),
 				$this->get_days()
 			),

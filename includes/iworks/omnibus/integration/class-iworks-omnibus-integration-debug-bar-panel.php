@@ -90,7 +90,7 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 					}
 					break;
 				default:
-					echo wpautop( __( 'The selected product type is not supported.', 'omnibus' ) );
+					echo wp_kses_post( wpautop( esc_html__( 'The selected product type is not supported.', 'omnibus' ) ) );
 					break;
 			}
 			/**
@@ -126,7 +126,7 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 						}
 						break;
 					default:
-						echo wpautop( __( 'The selected product type is not supported.', 'omnibus' ) );
+						echo wp_kses_post( wpautop( esc_html__( 'The selected product type is not supported.', 'omnibus' ) ) );
 						break;
 				}
 			}
@@ -135,14 +135,14 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 				'<h3>%s</h3>',
 				esc_html__( 'Omnibus', 'omnibus' )
 			);
-			echo wpautop( __( 'The selected content is not a product.', 'omnibus' ) );
+			echo wp_kses_post( wpautop( esc_html__( 'The selected content is not a product.', 'omnibus' ) ) );
 		}
 		echo '</div>';
 	}
 
 	private function show_log_table( $log ) {
 		if ( empty( $log ) ) {
-			echo wpautop( esc_html__( 'There is no price history recorded.', 'omnibus' ) );
+			echo wp_kses_post( wpautop( esc_html__( 'There is no price history recorded.', 'omnibus' ) ) );
 			return;
 		}
 		echo '<table class="widefat fixed striped debug-bar-wp-query-list">';
@@ -156,9 +156,9 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 		echo '<tbody>';
 		foreach ( $log as $one ) {
 			echo '<tr>';
-			printf( '<td>%s</td>', $one['price'] );
-			printf( '<td>%s</td>', empty( $one['price_sale'] ) ? '&mdash;' : $one['price_sale'] );
-			printf( '<td>%s</td>', date_i18n( 'Y-m-d H:i', $one['timestamp'] ) );
+			printf( '<td>%s</td>', esc_html( $one['price'] ) );
+			printf( '<td>%s</td>', esc_html( empty( $one['price_sale'] ) ? '&mdash;' : $one['price_sale'] ) );
+			printf( '<td>%s</td>', esc_html( date_i18n( 'Y-m-d H:i', $one['timestamp'] ) ) );
 			echo '</tr>';
 		}
 		echo '</tbody>';
@@ -167,7 +167,7 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 
 	private function show_log_table_v3( $log ) {
 		if ( empty( $log ) ) {
-			echo wpautop( esc_html__( 'There is no price history recorded.', 'omnibus' ) );
+			echo wp_kses_post( wpautop( esc_html__( 'There is no price history recorded.', 'omnibus' ) ) );
 			return;
 		}
 		echo '<table class="widefat fixed striped debug-bar-wp-query-list">';
@@ -190,11 +190,11 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 			} else {
 				echo '<tr>';
 			}
-			printf( '<td>%s</td>', $one['ID'] );
-			printf( '<td>%s</td>', isset( $one['price_regular'] ) ? $one['price_regular'] : $one['price'] );
-			printf( '<td>%s</td>', empty( $one['price_sale'] ) ? '&mdash;' : $one['price_sale'] );
-			printf( '<td>%d</td>', isset( $one['diff-in-days'] ) ? $one['diff-in-days'] : '&mdash;' );
-			printf( '<td>%s</td>', date_i18n( 'Y-m-d H:i', $one['timestamp'] ) );
+			printf( '<td>%s</td>', esc_html( $one['ID'] ) );
+			printf( '<td>%s</td>', esc_html( isset( $one['price_regular'] ) ? $one['price_regular'] : $one['price'] ) );
+			printf( '<td>%s</td>', esc_html( empty( $one['price_sale'] ) ? '&mdash;' : $one['price_sale'] ) );
+			printf( '<td>%d</td>', esc_html( isset( $one['diff-in-days'] ) ? $one['diff-in-days'] : '&mdash;' ) );
+			printf( '<td>%s</td>', esc_html( date_i18n( 'Y-m-d H:i', $one['timestamp'] ) ) );
 			echo '</tr>';
 		}
 		echo '</tbody>';
@@ -264,15 +264,15 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 		echo '<section class="omnibus-draw">';
 		printf(
 			'<svg viewBox="0 0 %d %d">',
-			$width,
-			$height + 10
+			intval( $width ),
+			intval( $height + 10 )
 		);
 		echo '<line x1="0" y1="0" x2="0" y2="110" stroke="black" stroke-width=".5" />';
 		echo '<line x1="0" y1="110" x2="500" y2="110" stroke="black" stroke-width=".5"/>';
 		$stroke = 1;
 		printf(
 			'<polyline fill="none" stroke="#07d" stroke-width="%d" points="',
-			$stroke
+			intval( $stroke )
 		);
 		$i = 1;
 		foreach ( $log as $one ) {
@@ -296,15 +296,15 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 			$y = $height * ( $price_max - $one['price_regular'] ) / $max + $stroke;
 			printf(
 				'%d,%d%s',
-				$width - $i * $step,
-				$y,
+				intval( $width - $i * $step ),
+				intval( $y ),
 				PHP_EOL
 			);
 		}
 		echo '"/>';
 		printf(
 			'<polyline fill="none" stroke="#c20" stroke-width="%d" points="',
-			$stroke
+			intval( $stroke )
 		);
 		$i = 0;
 		foreach ( $log as $one ) {
@@ -328,8 +328,8 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 			$y = $height * ( $price_max - $one['price_sale'] ) / $max + $stroke;
 			printf(
 				'%d,%d%s',
-				$width - $i * $step,
-				$y,
+				intval( $width - $i * $step ),
+				intval( $y ),
 				PHP_EOL
 			);
 		}

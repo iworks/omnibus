@@ -250,6 +250,7 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 				'default'  => 'no',
 				'type'     => 'checkbox',
 				'desc'     => sprintf(
+					/* translators: %s WC Settings/Products admin url */
 					__( 'Show on the <a href="%s#woocommerce_shop_page_id" target="_blank">Shop Page</a>.', 'omnibus' ),
 					add_query_arg(
 						array(
@@ -267,6 +268,7 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 				'default'  => 'no',
 				'type'     => 'checkbox',
 				'desc'     => sprintf(
+					/* translators: %s WC Settings/Advance admin url */
 					__( 'Show on the <a href="%s#woocommerce_cart_page_id" target="_blank">Cart Page</a>.', 'omnibus' ),
 					add_query_arg(
 						array(
@@ -444,6 +446,7 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 					'default'         => 'no',
 					'type'            => 'checkbox',
 					'desc'            => sprintf(
+						/* translators: %1$s: example of price,  %2$s: the code tag begin, %3$s: the end of the code tag */
 						__( 'Show short message: %2$sOD: $1$s%3$s', 'omnibus' ),
 						wc_price( 11.70 ),
 						'<code>',

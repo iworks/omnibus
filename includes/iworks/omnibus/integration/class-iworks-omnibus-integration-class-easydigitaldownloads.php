@@ -99,14 +99,30 @@ class iworks_omnibus_integration_easydigitaldownloads extends iworks_omnibus_int
 					<td><?php esc_html_e( 'Price', 'omnibus' ); ?></td>
 					<td>
 					<input type="text" class="edd-form-group__input" value="<?php echo empty( $price_lowest ) ? '' : esc_attr( $price_lowest['price'] ); ?>" readonly="readonly" />
-						<span alt="f223" class="edd-help-tip dashicons dashicons-editor-help" title="<?php printf( __( 'The lowest price in %d days.', 'omnibus' ), $this->get_days() ); ?>"></span>
+						<span alt="f223" class="edd-help-tip dashicons dashicons-editor-help" title="
+						<?php
+						printf(
+						/* translators: %d: number of days */
+							__( 'The lowest price in %d days.', 'omnibus' ),
+							$this->get_days()
+						);
+						?>
+						"></span>
 					</td>
 				</tr>
 				<tr>
 					<td><?php esc_html_e( 'Date', 'omnibus' ); ?></td>
 					<td>
 					<input type="text" class="edd-form-group__input" value="<?php echo empty( $price_lowest ) ? '' : date_i18n( get_option( 'date_format' ), $price_lowest['timestamp'] ); ?>" readonly="readonly" />
-						<span alt="f223" class="edd-help-tip dashicons dashicons-editor-help" title="<?php printf( __( 'The date when lowest price in %d days occurred.', 'omnibus' ), $this->get_days() ); ?>"></span>
+					<span alt="f223" class="edd-help-tip dashicons dashicons-editor-help" title="
+					<?php
+					printf(
+					/* translators: %d: number of days */
+						__( 'The date when lowest price in %d days occurred.', 'omnibus' ),
+						$this->get_days()
+					);
+					?>
+																									"></span>
 					</td>
 				</tr>
 			</table>

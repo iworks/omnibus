@@ -161,7 +161,12 @@ class iworks_omnibus {
 	 */
 	public function plugin_row_meta( $plugin_meta, $plugin_file, $plugin_data, $status ) {
 		if ( isset( $plugin_data['slug'] ) && 'omnibus' == $plugin_data['slug'] ) {
-			$plugin_meta['rating'] = sprintf( __( 'If you like <strong>Omnibus</strong> please leave us a %1$s&#9733;&#9733;&#9733;&#9733;&#9733;%2$s rating. A huge thanks in advance!', 'omnibus' ), '<a href="https://wordpress.org/support/plugin/omnibus/reviews/?rate=5#new-post" target="_blank">', '</a>' );
+			$plugin_meta['rating'] = sprintf(
+				/* translators: %1$s: A tag begin, %2$s: the A tag close */
+				__( 'If you like <strong>Omnibus</strong> please leave us a %1$s&#9733;&#9733;&#9733;&#9733;&#9733;%2$s rating. A huge thanks in advance!', 'omnibus' ),
+				'<a href="https://wordpress.org/support/plugin/omnibus/reviews/?rate=5#new-post" target="_blank">',
+				'</a>'
+			);
 		}
 		return $plugin_meta;
 	}
