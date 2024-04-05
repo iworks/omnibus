@@ -331,6 +331,12 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 * helper to decide show it or no
 	 */
 	private function should_it_show_up( $post_id ) {
+        if ( 'yes' === get_option( $this->get_name( 'on_sale' ), 'yes' ) ) {
+            $course = learn_press_get_course( $post_id );
+            if ( ! $course->has_sale_price() ) {
+                return apply_filters( 'iworks_omnibus_show', false );
+            }
+        }
 		/**
 		 * for admin
 		 */
