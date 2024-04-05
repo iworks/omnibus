@@ -347,7 +347,6 @@ class iworks_omnibus {
 					delete_metadata_by_mid( 'post', $one['meta_id'] );
 					break;
 				default:
-					l( $one );
 			}
 		}
 	}
