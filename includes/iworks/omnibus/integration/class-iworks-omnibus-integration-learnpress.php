@@ -56,6 +56,12 @@ class iworks_omnibus_integration_learnpress extends iworks_omnibus_integration {
 		add_filter( 'plugin_action_links', array( $this, 'filter_add_link_omnibus_configuration' ), PHP_INT_MAX, 4 );
 	}
 
+        if ( 'yes' === get_option( $this->get_name( 'on_sale' ), 'yes' ) ) {
+            $course = learn_press_get_course( $post_id );
+            if ( ! $course->has_sale_price() ) {
+                return apply_filters( 'iworks_omnibus_show', false );
+            }
+        }
 	/**
 	 * Add configuration link to plugin_row_meta.
 	 *

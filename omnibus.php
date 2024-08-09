@@ -58,6 +58,11 @@ new iworks_omnibus();
  *
  * @since 1.0.2
  */
-include_once dirname( __FILE__ ) . '/includes/iworks/rate/rate.php';
-do_action( 'iworks-register-plugin', plugin_basename( __FILE__ ), __( 'Omnibus', 'omnibus' ), 'omnibus' );
+add_action(
+	'init',
+	function() {
+		include_once dirname( __FILE__ ) . '/includes/iworks/rate/rate.php';
+		do_action( 'iworks-register-plugin', plugin_basename( __FILE__ ), __( 'Omnibus', 'omnibus' ), 'omnibus' );
+	}
+);
 

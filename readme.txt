@@ -192,8 +192,9 @@ The minimum WooCommerce version required is 5.5.0.
 
 Project maintained on github at [iworks/omnibus](PLUGIN_GITHUB_WEBSITE).
 
-= 3.0.3 (2024-xx-xx) =
+= 3.0.3 (2024-08-09) =
 * The omnibus price for variant in admin panel has been fixed.
+* Error calling `wp_rand()` function has been fixed. Props for [mcdeth](https://wordpress.org/support/users/mcdeth/).
 
 = 3.0.2 (2024-03-14) =
 * The general omnibus price for variable products has been fixed. Props for [Bartek Konopka](https://wordpress.org/support/users/bartekkonopka/).
