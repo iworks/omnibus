@@ -54,14 +54,19 @@ class iworks_omnibus_integration_learnpress extends iworks_omnibus_integration {
 		add_filter( 'learn-press/courses-settings-fields', array( $this, 'filter_learnpress_courses_settings_fields' ) );
 		add_filter( 'lp/course/meta-box/fields/price', array( $this, 'filter_learnpress_admin_show_omnibus' ) );
 		add_filter( 'plugin_action_links', array( $this, 'filter_add_link_omnibus_configuration' ), PHP_INT_MAX, 4 );
+		add_filter( 'iworks_omnibus_show', array( $this, 'filter_iworks_omnibus_show' ) );
 	}
 
-        if ( 'yes' === get_option( $this->get_name( 'on_sale' ), 'yes' ) ) {
-            $course = learn_press_get_course( $post_id );
-            if ( ! $course->has_sale_price() ) {
-                return apply_filters( 'iworks_omnibus_show', false );
-            }
-        }
+	public function filter_iworks_omnibus_show( $show ) {
+		if ( 'yes' === get_option( $this->get_name( 'on_sale' ), 'yes' ) ) {
+			$course = learn_press_get_course( $post_id );
+			if ( ! $course->has_sale_price() ) {
+				return apply_filters( 'iworks_omnibus_show::learnpress', $show );
+			}
+		}
+		return $show;
+	}
+
 	/**
 	 * Add configuration link to plugin_row_meta.
 	 *
