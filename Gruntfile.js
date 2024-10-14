@@ -29,9 +29,14 @@ module.exports = function(grunt) {
 			'assets/scripts/admin/migrate-v3.js': [
 				'assets/scripts/src/admin/migrate-v3.js',
 			],
+			'assets/scripts/admin/migrate-v4.js': [
+				'assets/scripts/src/admin/migrate-v4.js',
+			],
 		},
 
-		css_files_compile: {},
+		css_files_compile: {
+            'assets/styles/admin/migrate.css': 'assets/sass/admin/migrate.scss',
+		},
 
 		plugin_dir: '',
 		plugin_file: '<%= pkg.name %>.php',
@@ -222,7 +227,6 @@ module.exports = function(grunt) {
 						poedit: true, // Includes common Poedit headers.
 						'x-poedit-keywordslist': true // Include a list of all possible gettext functions.
 					},
-					exclude: ['node_modules', '.git', '.sass-cache', 'release'],
 					type: 'wp-plugin',
 					updateTimestamp: true,
 					updatePoFiles: true

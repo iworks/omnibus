@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Plugins - PLUGIN_NAME (PLUGIN_VERSION)\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/omnibus-dev\n"
-"POT-Creation-Date: 2024-08-09 05:04:30+00:00\n"
+"POT-Creation-Date: 2024-08-09 05:27:10+00:00\n"
 "PO-Revision-Date: 2024-01-14 18:06+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -211,7 +211,7 @@ msgstr "Cena"
 #. translators: %d: nuber of days
 #. translators: %d: nuber of days
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-class-easydigitaldownloads.php:106
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:213
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:218
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:654
 msgid "The lowest price in %d days."
 msgstr "Najniższa cena w ciągu ostatnich %d dni."
@@ -228,7 +228,7 @@ msgstr "Data"
 #. translators: %d: nuber of days
 #. translators: %d: nuber of days
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-class-easydigitaldownloads.php:121
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:228
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:233
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:682
 msgid "The date when lowest price in %d days occurred."
 msgstr "Data wystąpienia najniższej ceny w ciągu ostatnich %d dni."
@@ -236,7 +236,7 @@ msgstr "Data wystąpienia najniższej ceny w ciągu ostatnich %d dni."
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-class-easydigitaldownloads.php:135
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:28
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:136
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:86
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:91
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:27
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:889
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:1145
@@ -245,7 +245,7 @@ msgid "Omnibus"
 msgstr "Omnibus"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-class-easydigitaldownloads.php:143
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:131
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:136
 msgid "Show on"
 msgstr "Wyświetlaj na"
 
@@ -326,55 +326,55 @@ msgstr "Cena promocyjna"
 msgid "Days"
 msgstr "Dni"
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:121
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:126
 msgid "Only on sale"
 msgstr "Tylko promocje"
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:125
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:130
 msgid "Display only for the course on sale."
 msgstr "Wyświetlaj tylko dla kursów w promocji."
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:132
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:137
 msgid "Course single"
 msgstr "Pojedyncza strona kursu"
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:137
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:142
 msgid "Show or hide on a single course page."
 msgstr "Pokaż lub ukryj to pole na stronie kursu."
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:143
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:148
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:310
 msgid "Display anywhere else"
 msgstr "Wyświetlaj gdziekolwiek indziej"
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:144
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:149
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:311
 msgid "Display anywhere else that doesn't fit any of the above."
 msgstr ""
 "Wyświetlaj w dowolnym miejscu, które nie pasuje do żadnego z powyższych."
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:151
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:156
 msgid "Show on admin on"
 msgstr "Pokaż w administratorze na"
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:152
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:157
 msgid "Courses list"
 msgstr "Lista kursów"
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:159
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:164
 msgid "Course edit"
 msgstr "Edycja kursu"
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:210
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:215
 msgid "Omnibus Price"
 msgstr "Cena Omnibusa"
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:216
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:231
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:221
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:236
 msgid "no data available"
 msgstr "brak danych"
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:225
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:230
 msgid "Omnibus Date"
 msgstr "Data Omnibusa"
 

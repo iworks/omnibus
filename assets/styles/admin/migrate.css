@@ -1,0 +1,19 @@
+.omnibus-migration .omnibus-migration-admin-dashboard {
+  display: none;
+}
+.omnibus-migration .req {
+  color: red;
+  font-weight: bolder;
+}
+.omnibus-migration progress {
+  appearance: none;
+  max-width: 500px;
+  width: 100%;
+  height: 24px;
+}
+.omnibus-migration.done .omnibus-migration-admin-dashboard {
+  display: block;
+}
+.omnibus-migration.done ul {
+  display: none;
+}

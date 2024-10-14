@@ -192,6 +192,11 @@ The minimum WooCommerce version required is 5.5.0.
 
 Project maintained on github at [iworks/omnibus](PLUGIN_GITHUB_WEBSITE).
 
+= 4.0.0 (2024-xx-xx) =
+* The [iWorks Rate](https://github.com/iworks/iworks-rate) module has been updated to 2.2.0.
+* Display Omnibus with or without tax has been removed.
+
+
 = 3.0.3 (2024-08-09) =
 * The omnibus price for variant in admin panel has been fixed.
 * Error calling `wp_rand()` function has been fixed. Props for [mcdeth](https://wordpress.org/support/users/mcdeth/).

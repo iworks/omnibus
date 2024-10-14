@@ -23,7 +23,7 @@ if ( class_exists( 'iworks_omnibus_integration_woocommerce' ) ) {
 	return;
 }
 
-include_once dirname( dirname( __FILE__ ) ) . '/class-iworks-omnibus-integration.php';
+include_once 'class-iworks-omnibus-integration.php';
 
 class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration {
 
@@ -60,14 +60,6 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 */
 		add_action( 'iworks_omnibus/wc/save_price_history/action', array( $this, 'action_iworks_omnibus_wc_save_price_history' ), 10, 2 );
 		/**
-		 * WooCommerce Review Meta Box
-		 *
-		 * @since x.x.x
-		 */
-		if ( false ) {
-			add_action( 'add_meta_boxes_product', array( $this, 'action_add_meta_boxes_product_rating' ), 4100 );
-		}
-		/**
 		 * WooCommerce Omnibus Price History Meta Box
 		 *
 		 * @since 2.4.0
@@ -102,12 +94,6 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 */
 		add_filter( 'woocommerce_get_sections_products', array( $this, 'filter_woocommerce_get_sections_products' ), 999 );
 		add_filter( 'woocommerce_get_settings_products', array( $this, 'filter_woocommerce_get_settings_for_section' ), 10, 2 );
-		/**
-		 * WooCommerce: exclude meta
-		 *
-		 * @since 2.0.3
-		 */
-		add_filter( 'woocommerce_duplicate_product_exclude_meta', array( $this, 'filter_woocommerce_duplicate_product_exclude_meta' ), 10, 2 );
 		/**
 		 * WooCommerce bind message
 		 *
@@ -255,7 +241,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		/**
 		 * add extra data to price log
 		 */
-		add_filter( 'iworks_omnibus_add_price_log_data', array( $this, 'filter_add_price_log_data' ), 10, 2 );
+		add_filter( 'iworks_omnibus_add_price_log_data', array( $this, 'ilter_add_price_log_data' ), 10, 2 );
 	}
 
 	public function enqueue_scripts() {
@@ -831,45 +817,13 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 * @since 2.0.2
 	 */
 	private function get_price( $product ) {
-		/**
-		 * check method_exists
-		 *
-		 * @since 1.2.1
-		 */
-		if ( ! is_object( $product ) ) {
-			return;
+		switch ( $product->get_type() ) {
 		}
-		/**
-		 * check method_exists
-		 *
-		 * @since 1.2.1
-		 */
-		if ( ! method_exists( $product, 'get_sale_price' ) ) {
-			return;
-		}
-		$price = $product->get_sale_price();
-		if ( empty( $price ) ) {
-			$price = $product->get_regular_price();
-		}
-		if ( empty( $price ) ) {
-			$price = $product->get_price();
-		}
-		return $price;
+
+		l( $product->get_type() );
+
 	}
 
-	/**
-	 * Filter to allow us to exclude meta keys from product duplication..
-	 *
-	 * @param array $exclude_meta The keys to exclude from the duplicate.
-	 * @param array $existing_meta_keys The meta keys that the product already has.
-	 *
-	 * @since 2.0.3
-	 */
-	public function filter_woocommerce_duplicate_product_exclude_meta( $meta_to_exclude, $existing_meta_keys = array() ) {
-		$meta_to_exclude[] = $this->meta_name;
-		$meta_to_exclude[] = $this->last_price_drop_timestamp;
-		return $meta_to_exclude;
-	}
 
 	/**
 	 * Add configuration link to plugin_row_meta.
@@ -909,6 +863,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			}
 		}
 		$price_lowest = $this->get_lowest_price( $cart_item['data'] );
+		l( $price_lowest );
 		if ( empty( $price_lowest ) ) {
 			return $price;
 		}
@@ -962,22 +917,6 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	public function action_shutdown_maybe_save_product_price() {
 		if ( ! is_singular( 'product' ) ) {
 			return;
-		}
-		global $product;
-		$data = array(
-			'price'     => $this->get_price( $product ),
-			'timestamp' => get_the_modified_date( 'U' ),
-			'type'      => 'autosaved',
-		);
-		if ( 'migrated' === apply_filters( 'iworks/omnibus/v3/get/migration/status', false ) ) {
-		} else {
-			if ( ! empty( get_post_meta( get_the_ID(), $this->get_name() ) ) ) {
-				return;
-			}
-			if ( empty( $data['price'] ) ) {
-				return;
-			}
-			add_post_meta( $product->get_ID(), $this->meta_name, $data );
 		}
 	}
 
@@ -1134,39 +1073,6 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		$this->update_post_meta_short( $id, filter_input( INPUT_POST, $meta_key ) );
 	}
 
-	/**
-	 * Add Meta boxx for WC Review
-	 *
-	 * @since 2.3.0
-	 */
-	public function action_add_meta_boxes_product_rating( $post ) {
-		if ( ! is_product( $post ) ) {
-			return;
-		}
-		$screen    = get_current_screen();
-		$screen_id = $screen ? $screen->id : '';
-		if ( 'comment' === $screen_id && isset( $_GET['c'] ) && metadata_exists( 'comment', wc_clean( wp_unslash( $_GET['c'] ) ), 'rating' ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			add_meta_box(
-				'omnibus',
-				__( 'Omnibus', 'omnibus' ),
-				array( $this, 'meta_box_rating_html' ),
-				'comment',
-				'normal',
-				'high'
-			);
-		}
-	}
-
-	/**
-	 * Render Meta Box content.
-	 *
-	 * @since 2.3.0
-	 *
-	 * @param WP_Comment $comment The WP comment object.
-	 */
-	public function meta_box_rating_html( $comment ) {
-		$product = wc_get_product( $comment->comment_post_ID );
-	}
 
 	/**
 	 * get WooCommerce product lowest price
@@ -1212,11 +1118,8 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 */
 	private function get_prices_by_product( $product ) {
 		return array(
-			'price'               => $product->get_price(),
-			'price_regular'       => $product->get_regular_price(),
-			'price_sale'          => $product->get_sale_price(),
-			'price_including_tax' => wc_get_price_including_tax( $product ),
-			'currency'            => get_woocommerce_currency(),
+			'price_regular' => $product->get_regular_price(),
+			'price_sale'    => $product->get_sale_price(),
 		);
 	}
 

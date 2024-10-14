@@ -44,6 +44,11 @@ class iworks_omnibus {
 
 	public function __construct() {
 		/**
+		 * add database table name
+		 */
+		global $wpdb;
+		$wpdb->iworks_omnibus = $wpdb->prefix . 'iworks_omnibus';
+		/**
 		 * set plugin root
 		 *
 		 * @since 2.3.4
@@ -66,13 +71,31 @@ class iworks_omnibus {
 		 */
 		add_filter( 'iworks_rate_notice_logo_style', array( $this, 'filter_plugin_logo' ), 10, 2 );
 		/**
-		 * check migration
+		 * check migration to v3
 		 *
 		 * @since 3.0.0
 		 */
-		add_action( 'admin_init', array( $this, 'action_admin_init_maybe_check_migration' ) );
 		add_filter( 'iworks/omnibus/v3/get/migration/status', array( $this, 'migration_v3_filter_get_migration_status_to_version_3' ) );
 		add_action( 'wp_ajax_iworks_omnibus_migrate_v3', array( $this, 'migration_v3_action_wp_ajax_iworks_omnibus_migrate_v3' ) );
+		/**
+		 * check migration to v4
+		 *
+		 * @since 4.0.0
+		 */
+		if ( $this->is_migrated_v4() ) {
+			include_once dirname( __FILE__ ) . '/omnibus/class-iworks-omnibus-logger-v4.php';
+			new iworks_omnibus_logger_v4();
+		} else {
+			include_once dirname( __FILE__ ) . '/omnibus/migration/class-iworks-omnibus-migration-v4.php';
+			new iworks_omnibus_migration_v4();
+		}
+		add_filter( 'iworks/omnibus/v4/get/migration/status', array( $this, 'migration_v4_filter_get_migration_status_to_version_4' ) );
+		/**
+		 * db install
+		 *
+		 * @since 4.0.0
+		 */
+		add_action( 'admin_init', array( $this, 'db_install' ) );
 	}
 
 	public function action_plugins_loaded() {
@@ -86,6 +109,7 @@ class iworks_omnibus {
 			defined( 'WC_PLUGIN_FILE' )
 			&& defined( 'WC_VERSION' )
 		) {
+			$v4_directory = $this->is_migrated_v4() ? '/v4' : '';
 			/**
 			 * Check minimal WooCommerce version to run.
 			 *
@@ -101,6 +125,8 @@ class iworks_omnibus {
 				) ) {
 					add_action( 'admin_notices', array( $this, 'action_admin_notices_show_migration_message_v3' ) );
 					add_action( 'admin_menu', array( $this, 'action_admin_menu_add_migration_v3_page' ) );
+				} elseif ( ! $this->is_migrated_v4() ) {
+					do_action( 'iworks/omnibus/action/migration/v4/plugins_loaded' );
 				}
 				/**
 				 * Add Settings link on the Plugins list
@@ -108,7 +134,7 @@ class iworks_omnibus {
 				 * @since 1.0.2
 				 */
 				add_filter( 'plugin_action_links_' . basename( $this->root ) . '/omnibus.php', array( $this, 'add_settings_link' ), 90, 4 );
-				include_once $dir . '/integration/class-iworks-omnibus-integration-woocommerce.php';
+				include_once $dir . '/integration' . $v4_directory . '/class-iworks-omnibus-integration-woocommerce.php';
 				$this->objects['woocommerce'] = new iworks_omnibus_integration_woocommerce();
 			}
 		}
@@ -136,7 +162,7 @@ class iworks_omnibus {
 		 * @since 2.4.0
 		 */
 		if ( isset( $GLOBALS['debug_bar'] ) ) {
-			include_once $dir . '/integration/class-iworks-omnibus-integration-debug-bar.php';
+			include_once $dir . '/integration' . $v4_directory . '/class-iworks-omnibus-integration-debug-bar.php';
 			$this->objects['debug-bar'] = new iworks_omnibus_integration_debug_bar();
 		}
 		/**
@@ -144,8 +170,10 @@ class iworks_omnibus {
 		 *
 		 * @since 3.0.0
 		 */
-		include_once $dir . '/post-types/class-iworks-omnibus-post-type-price-log.php';
-		$this->objects['iw_omnibus_price_log'] = new iWorks_Omnibus_Post_Type_Price_Log();
+		if ( ! $this->is_migrated_v4() ) {
+			include_once $dir . '/post-types/class-iworks-omnibus-post-type-price-log.php';
+			$this->objects['iw_omnibus_price_log'] = new iWorks_Omnibus_Post_Type_Price_Log();
+		}
 		/**
 		 * Omnibus loaded action
 		 *
@@ -241,14 +269,10 @@ class iworks_omnibus {
 	}
 
 	/**
-	 * check is nessary to make log conversion
+	 * check is nessary to make log conversion to v3
 	 *
 	 * @since 3.0.0
 	 */
-	public function action_admin_init_maybe_check_migration() {
-
-	}
-
 	public function migration_v3_filter_get_migration_status_to_version_3( $status ) {
 		if ( $this->are_logs_migrated_to_version_3 ) {
 			return 'migrated';
@@ -262,7 +286,7 @@ class iworks_omnibus {
 	}
 
 	/**
-	 * Show migration message
+	 * Show migration message to v3
 	 *
 	 * @since 3.0.0
 	 *
@@ -322,7 +346,6 @@ class iworks_omnibus {
 		);
 	}
 
-
 	private function migration_v3_migrate_batch() {
 		global $wpdb;
 		$names   = $this->migration_v3_meta_keys_array();
@@ -366,9 +389,14 @@ class iworks_omnibus {
 	public function migration_v3_callback_omnibus_admin_page() {
 		$file = $this->get_file( 'admin-page', 'migration-v3' );
 		$args = array(
-			'meta'   => $this->migration_v3_count_number_of_meta_fields(),
-			'status' => get_option( $this->option_name_migration_3_status ),
+			'meta'    => $this->migration_v3_count_number_of_meta_fields(),
+			'status'  => get_option( $this->option_name_migration_3_status ),
+			'message' => '',
 		);
+		if ( 0 === $args['meta'] ) {
+			$this->migration_v3_update_status( 'migrated' );
+			$args['status'] = 'migrated';
+		}
 		load_template( $file, true, $args );
 	}
 
@@ -405,11 +433,86 @@ class iworks_omnibus {
 			wp_send_json_success(
 				array(
 					'action'  => 'done',
-					'message' => esc_html__( 'The migration was successful.', 'omnibus' ),
+					'message' => esc_html__( 'Data migration to version 3 of the database was successfully completed!', 'omnibus' ),
 				)
 			);
 		}
 		wp_send_json_error( array( 'message' => esc_html__( 'Unknown Error Occurred', 'omnibus' ) ) );
 	}
 
+	public function db_install() {
+		global $wpdb;
+		$option_name_db_version = 'iworks_omnibus_db_version';
+		/**
+		 * get Version
+		 */
+		$version = intval( get_option( $option_name_db_version ) );
+		if ( empty( $version ) ) {
+			add_option( $option_name_db_version, 0, '', 'no' );
+		}
+		/**
+		 * 20241011
+		 */
+		$install = 20241011;
+		if ( $install > $version ) {
+			$charset_collate = $wpdb->get_charset_collate();
+			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
+			$table_name = $wpdb->iworks_omnibus;
+			$sql        = "CREATE TABLE $table_name (
+				omnibus_id bigint unsigned not null auto_increment,
+				post_id bigint unsigned not null,
+				user_id bigint unsigned not null,
+				created datetime not null,
+				currency varchar(5) not null,
+				price_regular decimal(26, 8) unsigned default null,
+				price_sale decimal(26, 8) unsigned default null,
+				primary key ( omnibus_id ),
+				key ( post_id ),
+				key ( currency ),
+				key ( created )
+			) $charset_collate;";
+			dbDelta( $sql );
+			update_option( $option_name_db_version, $install );
+		}
+	}
+
+	/**
+	 * check is nessary to make log conversion to v4
+	 *
+	 * @since 4.0.0
+	 */
+	public function is_migrated_v4() {
+		return get_option( 'iworks_omnibus_data_migration_v4', false ) === 'migrated';
+	}
+
+	/**
+	 * check is nessary to make log conversion to v4
+	 *
+	 * @since 4.0.0
+	 */
+	public function migration_v4_filter_get_migration_status_to_version_4( $status ) {
+		return $this->is_migrated_v4() ? 'migrated' : false;
+	}
+
+	/**
+	 * register_activation_hook
+	 *
+	 * @since 4.0.0
+	 */
+	public function register_activation_hook() {
+		delete_option( '_iwo_price_lowest_delete' );
+		$this->db_install();
+		do_action( 'iworks/omnibus/register_activation_hook' );
+	}
+
+	/**
+	 * register_deactivation_hook
+	 *
+	 * @since 4.0.0
+	 */
+	public function register_deactivation_hook() {
+		delete_option( 'iworks_omnibus_data_migration_v3' );
+		delete_option( 'iworks_omnibus_data_migration_v4' );
+		do_action( 'iworks/omnibus/register_deactivation_hook' );
+	}
 }

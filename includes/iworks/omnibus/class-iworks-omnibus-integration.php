@@ -22,7 +22,9 @@ defined( 'ABSPATH' ) || exit;
 if ( class_exists( 'iworks_omnibus_integration' ) ) {
 	return;
 }
-
+/**
+ * Deprecated Since 4.0.0
+ */
 abstract class iworks_omnibus_integration {
 
 	/**
@@ -237,6 +239,12 @@ abstract class iworks_omnibus_integration {
 	 * @since 1.0.0
 	 */
 	protected function _get_lowest_price_in_history( $lowest, $post_id ) {
+		/**
+		 * logger version 4
+		 */
+		if ( 'migrated' === apply_filters( 'iworks/omnibus/v4/get/migration/status', false ) ) {
+			return apply_filters( 'iworks/omnibus/v4/get/lowest/price/array', $lowest, $post_id );
+		}
 		if ( 'migrated' === apply_filters( 'iworks/omnibus/v3/get/migration/status', false ) ) {
 			$price = apply_filters( 'iworks/omnibus/v3/get/lowest/price/array', $lowest, $post_id );
 		} else {

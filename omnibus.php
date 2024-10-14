@@ -45,13 +45,13 @@ if ( ! class_exists( 'iworks_omnibus' ) ) {
  */
 load_plugin_textdomain( 'omnibus', false, plugin_basename( dirname( __FILE__ ) ) . '/languages' );
 
-new iworks_omnibus();
+$omnibus = new iworks_omnibus();
 
 /**
  * install & uninstall
  */
-// register_activation_hook( __FILE__,   'iworks_omnibus_activate' );
-// register_deactivation_hook( __FILE__, 'iworks_omnibus_deactivate' );
+register_activation_hook( __FILE__, array( $omnibus, 'register_activation_hook' ) );
+register_deactivation_hook( __FILE__, array( $omnibus, 'register_deactivation_hook' ) );
 
 /**
  * iWorks Rate
