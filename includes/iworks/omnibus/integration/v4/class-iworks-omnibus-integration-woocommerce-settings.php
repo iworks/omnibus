@@ -502,7 +502,7 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 					'title'             => __( 'Delete After', 'omnibus' ),
 					'desc'              => __( 'This controls the number of days to delete changes.', 'omnibus' ),
 					'id'                => $this->get_name( 'days_delete' ),
-					'default'           => '30',
+					'default'           => '45',
 					'type'              => 'number',
 					'css'               => 'width: 80px;',
 					'custom_attributes' => array(
