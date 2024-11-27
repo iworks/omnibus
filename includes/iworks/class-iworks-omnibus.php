@@ -85,6 +85,8 @@ class iworks_omnibus {
 		if ( $this->is_migrated_v4() ) {
 			include_once dirname( __FILE__ ) . '/omnibus/class-iworks-omnibus-logger-v4.php';
 			new iworks_omnibus_logger_v4();
+			include_once dirname( __FILE__ ) . '/omnibus/integration/v4/class-iworks-omnibus-integration-commons.php';
+			new iworks_omnibus_integration_commons();
 		} else {
 			include_once dirname( __FILE__ ) . '/omnibus/migration/class-iworks-omnibus-migration-v4.php';
 			new iworks_omnibus_migration_v4();
@@ -530,4 +532,5 @@ class iworks_omnibus {
 	public function action_init_load_plugin_textdomain() {
 		load_plugin_textdomain( 'omnibus', false, plugin_basename( $this->root ) . '/languages' );
 	}
+
 }
