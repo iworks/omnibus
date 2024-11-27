@@ -96,6 +96,12 @@ class iworks_omnibus {
 		 * @since 4.0.0
 		 */
 		add_action( 'admin_init', array( $this, 'db_install' ) );
+		/**
+		 * i18n
+		 *
+		 * @since 4.0.0
+		 */
+		add_action( 'init', array( $this, 'action_init_load_plugin_textdomain' ), PHP_INT_MAX );
 	}
 
 	public function action_plugins_loaded() {
@@ -514,5 +520,14 @@ class iworks_omnibus {
 		delete_option( 'iworks_omnibus_data_migration_v3' );
 		delete_option( 'iworks_omnibus_data_migration_v4' );
 		do_action( 'iworks/omnibus/register_deactivation_hook' );
+	}
+
+	/**
+	 * Load translation
+	 *
+	 * @since 4.0.0
+	 */
+	public function action_init_load_plugin_textdomain() {
+		load_plugin_textdomain( 'omnibus', false, plugin_basename( $this->root ) . '/languages' );
 	}
 }

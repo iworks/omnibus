@@ -27,23 +27,18 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
  */
 
-if ( ! defined( 'WPINC' ) ) {
-	die;
-}
-
-$includes = dirname( __FILE__ ) . '/includes';
+defined( 'ABSPATH' ) || exit;
 
 /**
- * require: Iworksomnibus Class
+ * require: iworks_omnibus class
  */
 if ( ! class_exists( 'iworks_omnibus' ) ) {
-	require_once $includes . '/iworks/class-iworks-omnibus.php';
+	require_once dirname( __FILE__ ) . '/includes/iworks/class-iworks-omnibus.php';
 }
 
 /**
- * i18n
+ * Load Plugin Class
  */
-load_plugin_textdomain( 'omnibus', false, plugin_basename( dirname( __FILE__ ) ) . '/languages' );
 
 $omnibus = new iworks_omnibus();
 
