@@ -38,6 +38,8 @@ abstract class iworks_omnibus_integration {
 	 * meta field name
 	 *
 	 * @since 1.0.0
+	 *
+	 * @deprecated 4.0.0
 	 */
 	protected $meta_name = '_iwo_price_lowest';
 
@@ -45,6 +47,8 @@ abstract class iworks_omnibus_integration {
 	 * meta field name last change
 	 *
 	 * @since 1.0.0
+	 *
+	 * @deprecated 4.0.0
 	 */
 	protected $meta_name_last_change = '_iwo_price_last_change';
 
@@ -59,6 +63,8 @@ abstract class iworks_omnibus_integration {
 	 * just a price log
 	 *
 	 * @since 2.3.5
+	 *
+	 * @deprecated 4.0.0
 	 */
 	protected $meta_price_log_name = '_iwo_price_log';
 
