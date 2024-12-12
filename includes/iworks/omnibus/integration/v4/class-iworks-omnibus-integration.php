@@ -39,6 +39,8 @@ abstract class iworks_omnibus_integration {
 	 */
 	protected $meta_name = '_iwo_price_lowest';
 
+	protected string $mysql_data_format = 'Y-m-d H:i:s';
+
 	public function get_name( $name = '' ) {
 		if ( empty( $name ) ) {
 			return $this->meta_name;
@@ -55,33 +57,38 @@ abstract class iworks_omnibus_integration {
 	/**
 	 * Add price log
 	 *
-	 * @since 1.0.0
+	 * @since 4.0.0
 	 */
-	private function add_price_log( $post_id, $price, $update_last_drop ) {
+	private function add_log( $data ) {
+		global $wpdb;
+		if ( empty( $data['price_sale_from'] ) ) {
+			$data['price_sale_from'] = date( $this->mysql_data_format );
+		} else {
+			$this->delete_future_logs( $data['post_id'] );
+		}
+		if (
+			empty( $data['price_sale'] )
+			|| 'now' === $data['price_sale_from']
+		) {
+			$data['price_sale_from'] = date( $this->mysql_data_format );
+		}
+		l( $data );
+		$wpdb->insert(
+			$wpdb->iworks_omnibus,
+			$data,
+			array( '%d', '%s', '%s', '%f', '%f', '%s', '%s', '%d' )
+		);
 	}
 
-	/**
-	 * Save price history
-	 *
-	 * @since 1.0.0
-	 */
-	protected function save_price_history( $post_id, $price ) {
-	}
-
-	/**
-	 * get last recorded price
-	 *
-	 * @since 1.0.0
-	 */
-	private function get_last_price( $post_id ) {
-	}
-
-	/**
-	 * Get lowest price in history
-	 *
-	 * @since 1.0.0
-	 */
-	protected function _get_lowest_price_in_history( $lowest, $post_id ) {
+	private function delete_future_logs( $post_id ) {
+		global $wpdb;
+		$wpdb->query(
+			$wpdb->prepare(
+				"delete from $wpdb->iworks_omnibus where post_id = %d and price_sale_from > %s",
+				$post_id,
+				date( $this->mysql_data_format )
+			)
+		);
 	}
 
 	/**
@@ -405,8 +412,22 @@ abstract class iworks_omnibus_integration {
 	 *
 	 * @since 4.0.0
 	 */
-	protected function maybe_update_last_saved_prices( $data ) {
-		l( $data );
+	protected function maybe_add_last_saved_prices( $data ) {
+		$last = $this->get_last_saved_prices_by_id( $data['post_id'] );
+		/**
+		 * there is no data, nothing to compare
+		 */
+		if ( is_wp_error( $last ) ) {
+			$this->add_log( $data );
+			return;
+		}
+		if (
+			floatval( $last['price_regular'] ) === floatval( $data['price_regular'] )
+			&& floatval( $last['price_sale'] ) === floatval( $data['price_sale'] )
+		) {
+			return;
+		}
+		$this->add_log( $data );
 	}
 
 	/**
@@ -415,27 +436,28 @@ abstract class iworks_omnibus_integration {
 	 *
 	 * @since 4.0.0
 	 */
-	protected function get_last_saved_prices_by_id( $object_id ) {
+	protected function get_last_saved_prices_by_id( $post_id ) {
 		global $wpdb;
 		$query = $wpdb->prepare(
-			sprintf(
-				'select * from %s where omnibus_id = %%d order by created desc limit 1',
-				$wpdb->iworks_omnibus
-			),
-			$object_id
+			"select * from $wpdb->iworks_omnibus where post_id = %d and price_sale_from <= %s order by price_sale_from desc limit 1",
+			$post_id,
+			date( $this->mysql_data_format )
 		);
-		$data  = $wpdb->get_row( $query );
+		$data  = $wpdb->get_row( $query, ARRAY_A );
 		if ( empty( $data ) ) {
 			$data = new WP_Error(
 				'omnibus',
 				sprintf(
 					/* translators: %d object ID */
-					esc_html__( 'There is no saved prices for id: %d.' . 'omnibus' ),
-					$object_id
+					esc_html__( 'There is no saved prices for id: %d.', 'omnibus' ),
+					$post_id
 				)
 			);
 		}
 		return $data;
+	}
+
+	public function _get_lowest_price_in_history( $post_id ) {
 	}
 }
 

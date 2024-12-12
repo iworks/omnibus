@@ -14,7 +14,7 @@ class iworks_omnibus_logger_v4 {
 	private function get_full_log_by_id( $id ) {
 		global $wpdb;
 		$sql   = sprintf(
-			'select * from %s where post_id = %%d order by omnibus_id',
+			'select *, datediff( now(), price_sale_from ) as days from %s where post_id = %%d order by price_sale_from',
 			$wpdb->iworks_omnibus
 		);
 		$query = $wpdb->prepare( $sql, $id );

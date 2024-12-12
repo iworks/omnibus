@@ -83,10 +83,14 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 * @since 1.0.0
 		 */
 		add_action( 'woocommerce_after_product_object_save', array( $this, 'action_woocommerce_save_maybe_save_short' ), 10, 1 );
-		add_action( 'woocommerce_after_product_object_save', array( $this, 'action_woocommerce_save_price_history' ), 10, 1 );
 		add_action( 'woocommerce_product_options_pricing', array( $this, 'action_woocommerce_product_options_pricing' ) );
 		add_action( 'woocommerce_variation_options_pricing', array( $this, 'action_woocommerce_variation_options_pricing' ), 10, 3 );
-		add_action( 'save_post_product', array( $this, 'action_save_post_product' ), 10, 3 );
+		/**
+		 * maybe add price log
+		 */
+		add_action( 'woocommerce_product_quick_edit_save', array( $this, 'maybe_add_price_log' ) );
+		add_action( 'woocommerce_product_bulk_edit_save', array( $this, 'maybe_add_price_log' ) );
+		add_action( 'woocommerce_after_product_object_save', array( $this, 'maybe_add_price_log' ) );
 		/**
 		 * Settings
 		 *
@@ -182,35 +186,33 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	}
 
 	/**
-	 * Save Product
+	 * Maybe add price log
 	 *
-	 * @since 2.3.1
+	 * @since 4.0.0
 	 *
-	 * @param int     $post_ID Post ID.
-	 * @param WP_Post $post    Post object.
-	 * @param bool    $update  Whether this is an existing post being updated.
 	 *
 	 */
-	public function action_save_post_product( $post_id, $post, $update ) {
-		if ( 'product' !== get_post_type( $post ) ) {
+	public function maybe_add_price_log( $product ) {
+		if ( 'publish' !== get_post_status( $product ) ) {
 			return;
 		}
-		if ( 'publish' !== get_post_status( $post ) ) {
-			return;
+		$sale_from = $product->get_date_on_sale_from();
+		if ( is_a( $sale_from, 'WC_DateTime' ) ) {
+			$sale_from = $sale_from->date( $this->mysql_data_format );
+		} else {
+			$sale_from = 'now';
 		}
-		/**
-		 * maybe update price log
-		 */
-		$product = wc_get_product( $post );
-		$data    = array(
-			'omnibus_id'   => $post_id,
-			'origin'       => 'woocommerce',
-			'product_type' => $product->get_type(),
-			'price'        => $product->get_regular_price(),
-			'price_sale'   => $product->get_sale_price(),
-			'sale_from'    => $product->get_date_on_sale_from(),
+		$data = array(
+			'post_id'         => $product->get_id(),
+			'product_origin'  => 'woocommerce',
+			'product_type'    => $product->get_type(),
+			'price_regular'   => $product->get_regular_price(),
+			'price_sale'      => $product->get_sale_price(),
+			'price_sale_from' => $sale_from,
+			'currency'        => get_woocommerce_currency(),
+			'user_id'         => get_current_user_id(),
 		);
-		$this->maybe_update_last_saved_prices( $data );
+		$this->maybe_add_last_saved_prices( $data );
 	}
 
 	/**
@@ -244,18 +246,6 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			plugins_url( 'assets/scripts/admin/woocommerce.min.js', dirname( dirname( dirname( __DIR__ ) ) ) ),
 			array( 'jquery' ),
 			'PLUGIN_VERSION'
-		);
-	}
-
-	/**
-	 * WooCommerce: save price history
-	 *
-	 * @since 1.0.0
-	 */
-	public function action_woocommerce_save_price_history( $product ) {
-		$this->save_price_history(
-			$product->get_id(),
-			$this->get_prices_by_product( $product )
 		);
 	}
 

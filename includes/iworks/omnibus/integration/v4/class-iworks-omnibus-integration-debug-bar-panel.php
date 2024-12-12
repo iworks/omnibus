@@ -128,7 +128,7 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 				'<h3>%s</h3>',
 				esc_html__( 'Omnibus', 'omnibus' )
 			);
-			echo wp_kses_post( wpautop( esc_html__( 'The selected content is not a product.', 'omnibus' ) ) );
+			echo wp_kses_post( wpautop( esc_html__( 'The selected content is not supported by the Omnibus plugin.', 'omnibus' ) ) );
 		}
 		echo '</div>';
 	}
@@ -150,12 +150,7 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 		echo '</thead>';
 		echo '<tbody>';
 		foreach ( $log as $one ) {
-			$one['timestamp'] = 0;
-			if ( isset( $one['created'] ) ) {
-				$one['timestamp']    = strtotime( $one['created'] );
-				$one['diff-in-days'] = round( ( time() - $one['timestamp'] ) / DAY_IN_SECONDS );
-			}
-			if ( isset( $one['diff-in-days'] ) && $one['diff-in-days'] > $this->days ) {
+			if ( $one['days'] > $this->days ) {
 				echo '<tr style="opacity:.3">';
 			} else {
 				echo '<tr>';
@@ -167,149 +162,12 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 			} else {
 				printf( '<td>%0.2f</td>', $one['price_sale'] );
 			}
-			printf( '<td>%d</td>', esc_html( isset( $one['diff-in-days'] ) ? $one['diff-in-days'] : '&mdash;' ) );
-			printf( '<td>%s</td>', esc_html( date_i18n( 'Y-m-d H:i', $one['timestamp'] ) ) );
+			printf( '<td>%d</td>', $one['days'] );
+			printf( '<td>%s</td>', esc_html( $one['price_sale_from'] ) );
 			echo '</tr>';
 		}
 		echo '</tbody>';
 		echo '</table>';
-		/**
-		 * chart
-		 */
-		if ( 2 > count( $log ) ) {
-			return;
-		}
-		$width             = 500;
-		$step              = $width / ( count( $log ) - 1 );
-		$height            = 100;
-		$date_first        = $date_last = null;
-		$price_regular_max = $price_regular_min = null;
-		$price_sale_max    = $price_sale_min = null;
-		foreach ( $log as $one ) {
-			if ( isset( $one['price_regular'] ) ) {
-				$price = $one['price_regular'];
-				if ( 0 < $price ) {
-					if ( null === $price_regular_max ) {
-						$price_regular_max = $price_regular_min = $price;
-					} else {
-						if ( $price_regular_max < $price ) {
-							$price_regular_max = $price;
-						}
-						if ( $price_regular_min > $price ) {
-							$price_regular_min = $price;
-						}
-					}
-				}
-			}
-			if ( isset( $one['price_sale'] ) ) {
-				$price = $one['price_sale'];
-				if ( 0 < $price ) {
-					if ( null === $price_sale_max ) {
-						$price_sale_max = $price_sale_min = $price;
-					} else {
-						if ( $price_sale_max < $price ) {
-							$price_sale_max = $price;
-						}
-						if ( $price_sale_min > $price ) {
-							$price_sale_min = $price;
-						}
-					}
-				}
-			}
-			if ( isset( $one['timestamp'] ) ) {
-				if ( ! empty( $one['timestamp'] ) ) {
-					if ( null === $date_first ) {
-						$date_first = $date_last = $one['timestamp'];
-					} else {
-						if ( $one['timestamp'] < $date_first ) {
-							$date_first = $one['timestamp'];
-						}
-						if ( $one['timestamp'] > $date_last ) {
-							$date_last = $one['timestamp'];
-						}
-					}
-				}
-			}
-		}
-		$price_max = max( $price_regular_max, $price_sale_max );
-		$price_min = min( $price_regular_min, $price_sale_min );
-		$max       = $price_max - $price_min;
-		echo '<section class="omnibus-draw">';
-		printf(
-			'<svg viewBox="0 0 %d %d">',
-			intval( $width ),
-			intval( $height + 10 )
-		);
-		echo '<line x1="0" y1="0" x2="0" y2="110" stroke="black" stroke-width=".5" />';
-		echo '<line x1="0" y1="110" x2="500" y2="110" stroke="black" stroke-width=".5"/>';
-		$stroke = 1;
-		printf(
-			'<polyline fill="none" stroke="#07d" stroke-width="%d" points="',
-			intval( $stroke )
-		);
-		$i = 1;
-		foreach ( $log as $one ) {
-			$i++;
-			if (
-				! isset( $one['created'] )
-				|| empty( $one['created'] )
-			) {
-				continue;
-			}
-			$one['timestamp'] = strtotime( $one['created'] );
-			if (
-				! isset( $one['price_regular'] )
-				|| empty( $one['price_regular'] )
-			) {
-				continue;
-			}
-			$timestamp = intval( $one['timestamp'] );
-			if ( empty( $timestamp ) ) {
-				continue;
-			}
-			$y = $height * ( $price_max - $one['price_regular'] ) / $max + $stroke;
-			printf(
-				'%d,%d%s',
-				intval( $width - $i * $step ),
-				intval( $y ),
-				PHP_EOL
-			);
-		}
-		echo '"/>';
-		printf(
-			'<polyline fill="none" stroke="#c20" stroke-width="%d" points="',
-			intval( $stroke )
-		);
-		$i = 0;
-		foreach ( $log as $one ) {
-			$i++;
-			if (
-				! isset( $one['created'] )
-				|| empty( $one['created'] )
-			) {
-				continue;
-			}
-			$one['timestamp'] = strtotime( $one['created'] );
-			if (
-				! isset( $one['price_sale'] )
-				|| empty( $one['price_sale'] )
-			) {
-				continue;
-			}
-			$timestamp = intval( $one['timestamp'] );
-			if ( empty( $timestamp ) ) {
-				continue;
-			}
-			$y = $height * ( $price_max - $one['price_sale'] ) / $max + $stroke;
-			printf(
-				'%d,%d%s',
-				intval( $width - $i * $step ),
-				intval( $y ),
-				PHP_EOL
-			);
-		}
-		echo '"/>';
-		echo '</svg>';
 		echo '</section>';
 	}
 }
