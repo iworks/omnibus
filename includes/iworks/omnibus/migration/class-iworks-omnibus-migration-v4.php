@@ -33,12 +33,43 @@ require dirname( dirname( __FILE__ ) ) . '/class-iworks-omnibus-migration.php';
 
 class iworks_omnibus_migration_v4 extends iworks_omnibus_migration {
 
+	/**
+	 * Are logs migrated to version 4?
+	 *
+	 * @since 4.0.0
+	 */
+	protected $are_logs_migrated = false;
+
+	/**
+	 * option name form migration to v4 status
+	 *
+	 * @since 3.0.0
+	 */
+	 private $option_name_migration_status = 'iworks_omnibus_data_migration_v4';
+
 	public function __construct() {
 		parent::__construct();
 		add_action( 'iworks/omnibus/action/migration/v4/plugins_loaded', array( $this, 'action_plugins_loaded' ) );
 		add_action( 'wp_ajax_iworks_omnibus_migrate_v4', array( $this, 'action_wp_ajax_iworks_omnibus_migrate' ) );
-		add_filter( 'iworks/omnibus/v4/get/migration/status', array( $this, 'migration_v4_filter_get_migration_status' ) );
+		add_filter( 'iworks/omnibus/v4/get/migration/status', array( $this, 'get_migration_status' ) );
 	}
+
+	/**
+	 * check is nessary to make log conversion to v4
+	 *
+	 * @since 4.0.0
+	 */
+	public function get_migration_status( $status ) {
+		if ( $this->are_logs_migrated ) {
+			return $this->are_logs_migrated;
+		}
+		if ( 'migrated' === get_option( $this->option_name_migration_status, false ) ) {
+			$this->are_logs_migrated = 'migrated';
+			return $this->are_logs_migrated;
+		}
+		return $status;
+	}
+
 
 	/**
 	 * define admin actions
@@ -100,10 +131,10 @@ class iworks_omnibus_migration_v4 extends iworks_omnibus_migration {
 	}
 
 	private function get_args() {
-			return array(
-				'count'  => $this->count_number_of_data_to_migrate(),
-				'status' => get_option( $this->option_name_migration_4_status ),
-			);
+		return array(
+			'count'  => $this->count_number_of_data_to_migrate(),
+			'status' => get_option( $this->option_name_migration_4_status ),
+		);
 	}
 
 	/**
@@ -165,12 +196,14 @@ class iworks_omnibus_migration_v4 extends iworks_omnibus_migration {
 		$wp_query      = new WP_Query( $wp_query_args );
 		foreach ( $wp_query->posts as $price_log_item ) {
 			$fields = array(
-				'post_id'       => '%d',
-				'user_id'       => '%d',
-				'created'       => '%s',
-				'currency'      => '%s',
-				'price_regular' => '%f',
-				'price_sale'    => '%f',
+				'product_origin'  => '%s',
+				'product_type'    => '%s',
+				'post_id'         => '%d',
+				'user_id'         => '%d',
+				'currency'        => '%s',
+				'price_regular'   => '%f',
+				'price_sale'      => '%f',
+				'price_sale_from' => '%s',
 			);
 			/**
 			 * get target post id
@@ -196,6 +229,13 @@ class iworks_omnibus_migration_v4 extends iworks_omnibus_migration {
 			$price_sale = floatval(
 				get_post_meta( $post_id, 'price_sale', true )
 			);
+			/**
+			 * missing post_parent
+			 */
+			if ( empty( get_post_type( $price_log_item->post_parent ) ) ) {
+				wp_delete_post( $post_id, true );
+				continue;
+			}
 			/**
 			 * both are empty
 			 */
@@ -247,6 +287,7 @@ class iworks_omnibus_migration_v4 extends iworks_omnibus_migration {
 				implode( ', ', array_keys( $fields ) ),
 				implode( ', ', array_values( $fields ) )
 			);
+			l( $sql );
 			/**
 			 * user ID
 			 */
@@ -262,36 +303,59 @@ class iworks_omnibus_migration_v4 extends iworks_omnibus_migration {
 				$currency = get_woocommerce_currency();
 			}
 			/**
+			 * determine product_origin and product_type
+			 */
+			$product_type   = get_post_type( $price_log_item->post_parent );
+			$product_origin = 'unknown';
+			switch ( $product_type ) {
+				case 'lp_course':
+				case 'lp_lesson':
+				case 'lp_question':
+				case 'lp_quiz':
+					$product_origin = 'learnpress';
+					break;
+				case 'product':
+				case 'product_variation':
+					$product_origin = 'woocommerce';
+					break;
+			}
+			/**
 			 * do not move empty prices
 			 */
 			$query = null;
 			if ( empty( $price_sale ) ) {
 				$query = $wpdb->prepare(
 					$sql,
+					$product_origin,
+					$product_type,
 					$price_log_item->post_parent,
 					$user_id,
-					$price_log_item->post_date,
 					$currency,
-					$price_regular
+					$price_regular,
+					$price_log_item->post_date
 				);
 			} elseif ( empty( $price_regular ) ) {
 				$query = $wpdb->prepare(
 					$sql,
+					$product_origin,
+					$product_type,
 					$price_log_item->post_parent,
 					$user_id,
-					$price_log_item->post_date,
 					$currency,
-					$price_sale
+					$price_sale,
+					$price_log_item->post_date,
 				);
 			} else {
 				$query = $wpdb->prepare(
 					$sql,
+					$product_origin,
+					$product_type,
 					$price_log_item->post_parent,
 					$user_id,
-					$price_log_item->post_date,
 					$currency,
 					$price_regular,
-					$price_sale
+					$price_sale,
+					$price_log_item->post_date
 				);
 			}
 			if ( $query ) {

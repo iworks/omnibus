@@ -468,16 +468,18 @@ class iworks_omnibus {
 			$table_name = $wpdb->iworks_omnibus;
 			$sql        = "CREATE TABLE $table_name (
 				omnibus_id bigint unsigned not null auto_increment,
+				product_origin varchar(20) not null,
+				product_type varchar(20) not null,
 				post_id bigint unsigned not null,
 				user_id bigint unsigned not null,
-				created datetime not null,
 				currency varchar(5) not null,
 				price_regular decimal(26, 8) unsigned default null,
 				price_sale decimal(26, 8) unsigned default null,
+				price_sale_from datetime not null,
 				primary key ( omnibus_id ),
 				key ( post_id ),
 				key ( currency ),
-				key ( created )
+				key ( price_sale_from )
 			) $charset_collate;";
 			dbDelta( $sql );
 			update_option( $option_name_db_version, $install );

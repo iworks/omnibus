@@ -199,33 +199,18 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			return;
 		}
 		/**
-		 * save last change
+		 * maybe update price log
 		 */
 		$product = wc_get_product( $post );
-		$current = array(
-			'price'               => $product->get_regular_price(),
-			'price_sale'          => $product->get_sale_price(),
-			'price_including_tax' => wc_get_price_including_tax( $product ),
-			'timestamp'           => time(),
+		$data    = array(
+			'omnibus_id'   => $post_id,
+			'origin'       => 'woocommerce',
+			'product_type' => $product->get_type(),
+			'price'        => $product->get_regular_price(),
+			'price_sale'   => $product->get_sale_price(),
+			'sale_from'    => $product->get_date_on_sale_from(),
 		);
-		$last    = get_post_meta( $post_id, $this->meta_name_last_change, true );
-		/**
-		 * add at the very first time
-		 */
-		if ( empty( $last ) ) {
-			add_post_meta( $post_id, $this->meta_name_last_change, $current, true );
-			return;
-		}
-		/**
-		 * update if it is neeeded
-		 */
-		if (
-			floatval( $last['price'] ) !== floatval( $current['price'] )
-			|| floatval( $last['price_sale'] ) !== floatval( $current['price_sale'] )
-		) {
-			update_post_meta( $post_id, $this->meta_name_last_change, $current );
-			$this->price_log( $post_id, $current );
-		}
+		$this->maybe_update_last_saved_prices( $data );
 	}
 
 	/**
@@ -320,8 +305,8 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	}
 
 	public function maybe_add_text( $state ) {
-		if ( $state && 'inform' === get_option( $this->get_name('missing') ) ) {
-			return $this->get_message_text('no_data');
+		if ( $state && 'inform' === get_option( $this->get_name( 'missing' ) ) ) {
+			return $this->get_message_text( 'no_data' );
 		}
 		return $state;
 	}
@@ -456,11 +441,11 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			return $price;
 		}
 		$should_it_show_up = $this->should_it_show_up( $product->get_id() );
-		if ( false === $should_it_show_up)  {
+		if ( false === $should_it_show_up ) {
 			return $price;
 		}
 		if ( is_string( $should_it_show_up ) ) {
-			return $price.$should_it_show_up;
+			return $price . $should_it_show_up;
 		}
 		$price_lowest = $this->get_lowest_price( $product );
 		if ( empty( $price_lowest ) ) {
@@ -490,7 +475,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			case 'variation':
 				break;
 			default:
-			if (
+				if (
 				get_post_type() === $product_type
 				|| get_post_type() === 'product'
 				) {

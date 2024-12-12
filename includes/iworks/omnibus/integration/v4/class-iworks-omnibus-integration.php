@@ -373,12 +373,12 @@ abstract class iworks_omnibus_integration {
 
 	protected function get_message_text( $type ) {
 		switch ( $type ) {
-		case 'no_data':
-			$message = esc_html__( 'No Previous Price', 'omnibus' );
-			if ( 'yes' === get_option( $this->get_name( 'message_settings' ) ) ) {
-				$message = get_option( $this->get_name( 'message_no_data' ) );
-			}
-			return $this->message_wrapper( $message );
+			case 'no_data':
+				$message = esc_html__( 'No Previous Price', 'omnibus' );
+				if ( 'yes' === get_option( $this->get_name( 'message_settings' ) ) ) {
+					$message = get_option( $this->get_name( 'message_no_data' ) );
+				}
+				return $this->message_wrapper( $message );
 		}
 		return '';
 	}
@@ -394,11 +394,48 @@ abstract class iworks_omnibus_integration {
 			sprintf(
 				'<%3$s class="iworks-omnibus" data-iwo-version="%2$s">%1$s</%3$s>',
 				$text,
-				esc_attr( $this->version),
+				esc_attr( $this->version ),
 				apply_filters( 'iworks/omnibus/message/wrapper/tag', 'p' )
 			)
 		);
 	}
 
+	/**
+	 * maybe update log price table
+	 *
+	 * @since 4.0.0
+	 */
+	protected function maybe_update_last_saved_prices( $data ) {
+		l( $data );
+	}
+
+	/**
+	 * get last saved prices by id
+	 *
+	 *
+	 * @since 4.0.0
+	 */
+	protected function get_last_saved_prices_by_id( $object_id ) {
+		global $wpdb;
+		$query = $wpdb->prepare(
+			sprintf(
+				'select * from %s where omnibus_id = %%d order by created desc limit 1',
+				$wpdb->iworks_omnibus
+			),
+			$object_id
+		);
+		$data  = $wpdb->get_row( $query );
+		if ( empty( $data ) ) {
+			$data = new WP_Error(
+				'omnibus',
+				sprintf(
+					/* translators: %d object ID */
+					esc_html__( 'There is no saved prices for id: %d.' . 'omnibus' ),
+					$object_id
+				)
+			);
+		}
+		return $data;
+	}
 }
 
