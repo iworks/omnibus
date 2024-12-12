@@ -228,5 +228,177 @@ abstract class iworks_omnibus_integration {
 	public function filter_get_log_array( $log, $id ) {
 		return apply_filters( 'iworks/omnibus/logger/v4/get/log/array', array(), $id );
 	}
+
+	protected function _get_v4_lowest_price_in_history( $post_id ) {
+		return new WP_Error( 'no_price', __( 'There is no price data in history.', 'omnibus' ) );
+	}
+
+	/**
+	 * Add Omnibus message to price.
+	 *
+	 * @since 4.0.0
+	 *
+	 * @param $price
+	 * @param $price_lowest
+	 * @param callback $format_price_callback Price format callback function.
+	 * @param string $message Message template.
+	 */
+	protected function add_message( $price, $price_lowest, $format_price_callback = null, $message = null ) {
+		if ( ! is_array( $price_lowest ) ) {
+			return $price;
+		}
+		if ( ! isset( $price_lowest['price'] ) ) {
+			return $price;
+		}
+		if ( empty( $price_lowest['price'] ) ) {
+			return $price;
+		}
+		/**
+		 * Set message template if it is needed
+		 */
+		if ( empty( $message ) ) {
+			/* translators: %2$s: rich html price */
+			$message = __( 'Previous lowest price was %2$s.', 'omnibus' );
+			if (
+				'custom' === get_option( $this->get_name( 'message_settings' ), 'no' )
+				|| 'yes' === get_option( $this->get_name( 'message_settings' ), 'no' )
+			) {
+				$message = get_option(
+					$this->get_name( 'message' ),
+					/* translators: %2$s: rich html price */
+					__( 'Previous lowest price was %2$s.', 'omnibus' )
+				);
+			}
+		}
+		/**
+		 * mesage template filter
+		 *
+		 * @since 2.3.0
+		 */
+		$message = apply_filters( 'iworks_omnibus_message_template', $message, $price, $price_lowest );
+		if ( empty( $message ) ) {
+			return $price;
+		}
+		/**
+		 * price to show
+		 */
+		$price_to_show = $price_lowest['price'];
+		if ( isset( $price_lowest['price_sale'] ) ) {
+			$price_to_show = $price_lowest['price_sale'];
+		}
+		/**
+		 * WooCommerce: include tax
+		 */
+		if ( 'no' === get_option( 'woocommerce_prices_include_tax' ) ) {
+			if ( 'yes' === get_option( $this->get_name( 'include_tax' ), 'yes' ) ) {
+				if (
+					isset( $price_lowest['price_including_tax'] )
+					&& $price_lowest['price_including_tax'] > $price_to_show
+				) {
+					$price_to_show = $price_lowest['price_including_tax'];
+				} else {
+					global $product;
+					if ( is_object( $product ) ) {
+						$tax = new WC_Tax();
+						if ( ! empty( $tax ) ) {
+							$taxes = $tax->get_rates( $product->get_tax_class() );
+							if ( ! empty( $taxes ) ) {
+								$t             = array_shift( $taxes );
+								$price_to_show = ( 100 + $t['rate'] ) * $price_to_show / 100;
+							}
+						}
+					}
+				}
+			}
+		}
+		if ( is_callable( $format_price_callback ) ) {
+			$price_to_show = $format_price_callback( $price_to_show );
+		}
+		/**
+		 * add attributes
+		 */
+		$attributes = array(
+			'data-iwo-version' => $this->version,
+		);
+		foreach ( $price_lowest as $key => $value ) {
+			$attributes[ sprintf( 'data-iwo-%s', $key ) ] = esc_attr( $value );
+		}
+		$attribute_data_string = '';
+		foreach ( $attributes as $attribute_name => $attribute_value ) {
+			$attribute_data_string .= sprintf(
+				' %s="%s"',
+				esc_html( $attribute_name ),
+				esc_attr( $attribute_value )
+			);
+		}
+		$price .= apply_filters(
+			'iworks_omnibus_message',
+			sprintf(
+				'<p class="iworks-omnibus"%s>%s</p>',
+				$attribute_data_string,
+				sprintf(
+					$message,
+					$this->get_days(),
+					$price_to_show
+				)
+			)
+		);
+		/**
+		 * replace
+		 *
+		 * @since 2.1.7
+		 */
+		$price = preg_replace( '/{days}/', $this->get_days(), $price );
+		$price = preg_replace( '/{price}/', $price_to_show, $price );
+		if ( isset( $price_lowest['timestamp'] ) ) {
+			$price = preg_replace( '/{timestamp}/', $price_lowest['timestamp'], $price );
+			$price = preg_replace( '/{when}/', date_i18n( get_option( 'date_format' ), $price_lowest['timestamp'] ), $price );
+		}
+		/**
+		 * use filter `iworks_omnibus_message_html`
+		 */
+		$message = apply_filters( 'iworks_omnibus_message_html', $price, $price_lowest );
+		/**
+		 * use filter `orphan_replace`
+		 *
+		 * @since 2.2.2
+		 */
+		$message = apply_filters( 'orphan_replace', $message );
+		/**
+		 * return
+		 */
+		return $message;
+	}
+
+
+	protected function get_message_text( $type ) {
+		switch ( $type ) {
+		case 'no_data':
+			$message = esc_html__( 'No Previous Price', 'omnibus' );
+			if ( 'yes' === get_option( $this->get_name( 'message_settings' ) ) ) {
+				$message = get_option( $this->get_name( 'message_no_data' ) );
+			}
+			return $this->message_wrapper( $message );
+		}
+		return '';
+	}
+
+	/**
+	 * wrapper
+	 *
+	 * @since 4.0.0
+	 */
+	private function message_wrapper( $text ) {
+		return apply_filters(
+			'iworks/omnibus/message/wrapper',
+			sprintf(
+				'<%3$s class="iworks-omnibus" data-iwo-version="%2$s">%1$s</%3$s>',
+				$text,
+				esc_attr( $this->version),
+				apply_filters( 'iworks/omnibus/message/wrapper/tag', 'p' )
+			)
+		);
+	}
+
 }
 

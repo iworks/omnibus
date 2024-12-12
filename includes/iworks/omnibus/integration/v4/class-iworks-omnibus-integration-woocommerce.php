@@ -319,10 +319,18 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		$this->woocommerce_wp_checkbox_short( $post_id, $configuration, $loop );
 	}
 
+	public function maybe_add_text( $state ) {
+		if ( $state && 'inform' === get_option( $this->get_name('missing') ) ) {
+			return $this->get_message_text('no_data');
+		}
+		return $state;
+	}
+
 	/**
 	 * helper to decide show it or no
 	 */
 	private function should_it_show_up( $post_id ) {
+		add_filter( 'iworks_omnibus_show', array( $this, 'maybe_add_text' ) );
 		/**
 		 * for admin
 		 */
@@ -447,8 +455,12 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		if ( ! is_object( $product ) ) {
 			return $price;
 		}
-		if ( ! $this->should_it_show_up( $product->get_id() ) ) {
+		$should_it_show_up = $this->should_it_show_up( $product->get_id() );
+		if ( false === $should_it_show_up)  {
 			return $price;
+		}
+		if ( is_string( $should_it_show_up ) ) {
+			return $price.$should_it_show_up;
 		}
 		$price_lowest = $this->get_lowest_price( $product );
 		if ( empty( $price_lowest ) ) {
@@ -478,7 +490,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			case 'variation':
 				break;
 			default:
-				if (
+			if (
 				get_post_type() === $product_type
 				|| get_post_type() === 'product'
 				) {
@@ -818,10 +830,12 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 */
 	private function get_price( $product ) {
 		switch ( $product->get_type() ) {
+			case 'simple':
+				$price = $this->_get_v4_lowest_price_in_history( $product->get_id() );
+				break;
+			default:
+				l( $product->get_type() );
 		}
-
-		l( $product->get_type() );
-
 	}
 
 
