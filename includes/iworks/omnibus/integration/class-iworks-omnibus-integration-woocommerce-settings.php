@@ -113,30 +113,6 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 			),
 		);
 		/**
-		 * WooCommerce Tax
-		 */
-		if (
-			'yes' === get_option( 'woocommerce_calc_taxes', 'no' )
-			&& 'no' === get_option( 'woocommerce_prices_include_tax', 'no' )
-		) {
-			$settings[] = array(
-				'title' => __( 'Tax', 'omnibus' ),
-				'type'  => 'title',
-				'id'    => $this->get_name( 'tax' ),
-			);
-			$settings[] = array(
-				'title'   => __( 'Include tax', 'omnibus' ),
-				'id'      => $this->get_name( 'include_tax' ),
-				'default' => 'yes',
-				'type'    => 'checkbox',
-				'desc'    => __( 'Display price with tax', 'omnibus' ),
-			);
-			$settings[] = array(
-				'type' => 'sectionend',
-				'id'   => $this->get_name( 'tax-sectionend' ),
-			);
-		}
-		/**
 		 * Products
 		 */
 			$settings[] = array(

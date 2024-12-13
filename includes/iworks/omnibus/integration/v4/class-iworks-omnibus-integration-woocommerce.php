@@ -1,7 +1,7 @@
 <?php
 /*
 
-Copyright 2022-PLUGIN_TILL_YEAR Marcin Pietrzak (marcin@iworks.pl)
+Copyright 2024-PLUGIN_TILL_YEAR Marcin Pietrzak (marcin@iworks.pl)
 
 this program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License, version 2, as
@@ -60,23 +60,11 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 */
 		add_action( 'iworks_omnibus/wc/save_price_history/action', array( $this, 'action_iworks_omnibus_wc_save_price_history' ), 10, 2 );
 		/**
-		 * WooCommerce Omnibus Price History Meta Box
-		 *
-		 * @since 2.4.0
-		 */
-		add_action( 'add_meta_boxes_product', array( $this, 'action_add_meta_boxes_product_history' ), 4000 );
-		/**
 		 * admin init
 		 *
 		 * @since 2.1.0
 		 */
 		add_action( 'admin_init', array( $this, 'action_admin_init' ) );
-		/**
-		 * maybe save initial data
-		 *
-		 * @since 2.2.2
-		 */
-		add_action( 'shutdown', array( $this, 'action_shutdown_maybe_save_product_price' ) );
 		/**
 		 * WooCommerce
 		 *
@@ -88,9 +76,9 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		/**
 		 * maybe add price log
 		 */
-		add_action( 'woocommerce_product_quick_edit_save', array( $this, 'maybe_add_price_log' ) );
-		add_action( 'woocommerce_product_bulk_edit_save', array( $this, 'maybe_add_price_log' ) );
-		add_action( 'woocommerce_after_product_object_save', array( $this, 'maybe_add_price_log' ) );
+		add_action( 'woocommerce_product_quick_edit_save', array( $this, 'action_save_product' ) );
+		add_action( 'woocommerce_product_bulk_edit_save', array( $this, 'action_save_product' ) );
+		add_action( 'woocommerce_after_product_object_save', array( $this, 'action_save_product' ) );
 		/**
 		 * Settings
 		 *
@@ -186,6 +174,27 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	}
 
 	/**
+	 * save product action
+	 *
+	 * @since 4.0.0
+	 */
+	public function action_save_product( $product ) {
+		switch ( $product->get_type() ) {
+			case 'simple':
+				$this->maybe_add_price_log( $product );
+				break;
+			case 'variable':
+				foreach ( $product->get_available_variations() as $variation ) {
+					$variant = wc_get_product( $variation['variation_id'] );
+					$this->maybe_add_price_log( $variant );
+				}
+				break;
+			default:
+				l( $product->get_type() );
+		}
+	}
+
+	/**
 	 * Maybe add price log
 	 *
 	 * @since 4.0.0
@@ -259,7 +268,8 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		if ( ! $this->should_it_show_up( $post_id ) ) {
 			return;
 		}
-		$price_lowest = $this->woocommerce_get_lowest_price_in_history( $post_id );
+		$product      = wc_get_product( $post_id );
+		$price_lowest = $this->get_lowest_price_by_post_id( $post_id, $product->get_sale_price() );
 		$this->print_header( 'description' );
 		$this->woocommerce_wp_text_input_price( $price_lowest );
 		$this->woocommerce_wp_text_input_date( $price_lowest );
@@ -276,7 +286,8 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		if ( ! $this->should_it_show_up( $post_id ) ) {
 			return;
 		}
-		$price_lowest = $this->woocommerce_get_lowest_price_in_history( $post_id );
+		$product      = wc_get_product( $post_id );
+		$price_lowest = $this->get_lowest_price_by_post_id( $post_id, $product->get_sale_price() );
 		$this->print_header( 'form-row form-row-full' );
 		$configuration = array(
 			'wrapper_class' => 'form-row form-row-first',
@@ -294,18 +305,10 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		$this->woocommerce_wp_checkbox_short( $post_id, $configuration, $loop );
 	}
 
-	public function maybe_add_text( $state ) {
-		if ( $state && 'inform' === get_option( $this->get_name( 'missing' ) ) ) {
-			return $this->get_message_text( 'no_data' );
-		}
-		return $state;
-	}
-
 	/**
 	 * helper to decide show it or no
 	 */
 	private function should_it_show_up( $post_id ) {
-		add_filter( 'iworks_omnibus_show', array( $this, 'maybe_add_text' ) );
 		/**
 		 * for admin
 		 */
@@ -375,11 +378,14 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 				 * variation
 				 */
 				$product = wc_get_product( $post_id );
-				if ( 'variation' === $product->get_type() ) {
-					if ( 'no' === get_option( $this->get_name( 'variation' ), 'yes' ) ) {
+				switch ( $product->get_type() ) {
+					case 'variable';
 						return apply_filters( 'iworks_omnibus_show', false );
-					}
-					return apply_filters( 'iworks_omnibus_show', true );
+					case 'variation':
+						if ( 'no' === get_option( $this->get_name( 'variation' ), 'yes' ) ) {
+							return apply_filters( 'iworks_omnibus_show', false );
+						}
+						return apply_filters( 'iworks_omnibus_show', true );
 				}
 			}
 			if ( 'yes' === get_option( $this->get_name( 'single' ), 'yes' ) ) {
@@ -437,56 +443,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		if ( is_string( $should_it_show_up ) ) {
 			return $price . $should_it_show_up;
 		}
-		$price_lowest = $this->get_lowest_price( $product );
-		if ( empty( $price_lowest ) ) {
-			return $price;
-		}
-		return $this->add_message( $price, $price_lowest, 'wc_price' );
-	}
-
-	/**
-	 * get lowest price
-	 */
-	private function get_lowest_price( $product ) {
-		/**
-		 * get price
-		 *
-		 * @since 2.0.2
-		 */
-		$price = $this->get_price( $product );
-		if ( empty( $price ) ) {
-			return;
-		}
-		$product_type = $product->get_type();
-		switch ( $product_type ) {
-			case 'variable':
-				$price_lowest = $this->woocommerce_get_price_html_for_variable( $price, $product );
-				return apply_filters( 'iworks_omnibus_integration_woocommerce_price_lowest', $price_lowest, $product );
-			case 'variation':
-				break;
-			default:
-				if (
-				get_post_type() === $product_type
-				|| get_post_type() === 'product'
-				) {
-					if (
-					'no' === get_option( $this->get_name( $product_type ), 'yes' )
-					) {
-						return $price;
-					}
-				} else {
-					if ( 'courses' === get_post_type() ) {
-						if (
-						defined( 'TUTOR_VERSION' )
-						&& 'no' === get_option( $this->get_name( 'tutor' ), 'yes' )
-						) {
-							return $price;
-						}
-					}
-				}
-		}
-		$price_lowest = $this->woocommerce_get_lowest_price_in_history( $product->get_id() );
-		return apply_filters( 'iworks_omnibus_integration_woocommerce_price_lowest', $price_lowest, $product );
+		return $this->add_message_helper( $price, $product );
 	}
 
 	/**
@@ -509,75 +466,6 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	}
 
 	/**
-	 * WooCommerce: get lowest price in history
-	 *
-	 * @since 1.0.0
-	 */
-	private function woocommerce_get_lowest_price_in_history( $post_id ) {
-		$product = wc_get_product( $post_id );
-		/**
-		 * check is object
-		 *
-		 * @since 1.2.1
-		 */
-		if ( ! is_object( $product ) ) {
-			return;
-		}
-		/**
-		 * get price
-		 *
-		 * @since 2.0.2
-		 */
-		$price  = $this->get_price( $product );
-		$lowest = $this->_get_lowest_price_in_history( $price, $post_id );
-		if ( is_admin() ) {
-			if ( empty( $lowest ) ) {
-				$value = get_post_meta( $post_id, $this->get_name() );
-				if ( empty( $value ) ) {
-					return $lowest;
-				}
-			}
-		}
-		switch ( get_option( $this->get_name( 'missing' ), 'current' ) ) {
-			/**
-			 * Regular price when it was no lower in history
-			 *
-			 * @since 2.5.0
-			 */
-			case 'regular':
-				if ( empty( $lowest ) ) {
-					$lowest                        = array(
-						'price'     => $product->get_regular_price(),
-						'qty'       => 1,
-						'timestamp' => time(),
-					);
-					$lowest['price_including_tax'] = wc_get_price_including_tax( $product, $lowest );
-				}
-				break;
-			case 'current':
-				if ( empty( $lowest ) ) {
-					$lowest = array(
-						'price'     => $price,
-						'timestamp' => time(),
-					);
-				}
-				if ( isset( $lowest['price'] ) ) {
-					$lowest['qty']                 = 1;
-					$lowest['price_including_tax'] = wc_get_price_including_tax( $product, $lowest );
-				}
-				break;
-		}
-		if ( is_array( $lowest ) ) {
-			$lowest['product_id'] = $product->get_ID();
-			if ( $product->is_type( 'variation' ) ) {
-				$lowest['variation_id'] = $lowest['product_id'];
-				$lowest['product_id']   = $product->get_parent_id();
-			}
-		}
-		return $lowest;
-	}
-
-	/**
 	 * WooCommerce: get price HTML for variable product
 	 *
 	 * @since 1.0.0
@@ -586,9 +474,9 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		if ( 'no' === get_option( $this->get_name( 'variable' ), 'yes' ) ) {
 			return $price;
 		}
-		$price_lowest = $this->woocommerce_get_lowest_price_in_history( $product->get_ID() );
+		$price_lowest = $this->get_lowest_price_by_post_id( $product->get_id(), $product->get_sale_price() );
 		foreach ( $product->get_available_variations() as $variable ) {
-			$o = $this->woocommerce_get_lowest_price_in_history( $variable['variation_id'] );
+			$o = $this->get_lowest_price_by_post_id( $variable['variation_id'] );
 			if ( empty( $o ) ) {
 				continue;
 			}
@@ -613,7 +501,9 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 */
 	private function woocommerce_wp_text_input_price( $price_lowest, $configuration = array() ) {
 		$value = __( 'no data', 'omnibus' );
-		if ( ! empty( $price_lowest )
+		if (
+			! is_wp_error( $price_lowest )
+			&& is_array( $price_lowest )
 			&& isset( $price_lowest['price_sale'] )
 			&& ! empty( $price_lowest['price_sale'] )
 		) {
@@ -650,7 +540,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 				array(
 					'id'                => $this->meta_name . '_date',
 					'custom_attributes' => array( 'disabled' => 'disabled' ),
-					'value'             => empty( $price_lowest ) ?
+					'value'             => is_wp_error( $price_lowest ) ?
 						esc_html__( 'no data', 'omnibus' ) :
 						date_i18n( get_option( 'date_format' ), isset( $price_lowest['timestamp'] ) ? $price_lowest['timestamp'] : '' ),
 					'data_type'         => 'text',
@@ -714,11 +604,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		if ( empty( $product ) ) {
 			return;
 		}
-		$price_lowest = $this->get_lowest_price( $product );
-		if ( empty( $price_lowest ) ) {
-			return;
-		}
-		$message = $this->add_message( '', $price_lowest, 'wc_price', $message );
+		$message = $this->add_message_helper( '', $product, $message );
 		if ( 'return' === $context ) {
 			return $message;
 		}
@@ -799,22 +685,6 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	}
 
 	/**
-	 * get price helper
-	 *
-	 * @since 2.0.2
-	 */
-	private function get_price( $product ) {
-		switch ( $product->get_type() ) {
-			case 'simple':
-				$price = $this->_get_v4_lowest_price_in_history( $product->get_id() );
-				break;
-			default:
-				l( $product->get_type() );
-		}
-	}
-
-
-	/**
 	 * Add configuration link to plugin_row_meta.
 	 *
 	 * @since 2.1.0
@@ -845,18 +715,13 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 *
 	 * @since 2.1.5
 	 */
-	public function filter_woocommerce_cart_item_price( $price, $cart_item, $cart_item_key ) {
+	public function filter_woocommerce_cart_item_price( $price_html, $cart_item, $cart_item_key ) {
 		if ( 'yes' === get_option( $this->get_name( 'on_sale' ), 'yes' ) ) {
 			if ( ! $cart_item['data']->is_on_sale() ) {
-				return $price;
+				return $price_html;
 			}
 		}
-		$price_lowest = $this->get_lowest_price( $cart_item['data'] );
-		l( $price_lowest );
-		if ( empty( $price_lowest ) ) {
-			return $price;
-		}
-		return $this->add_message( $price, $price_lowest, 'wc_price' );
+		return $this->add_message_helper( $price_html, $product );
 	}
 
 	/**
@@ -878,42 +743,18 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	}
 
 	/**
-	 * Reviews Settings
+	 * Add settings
 	 *
-	 * @since 2.3.0
 	 */
-	private function settings_review() {
-		if ( 'yes' !== get_option( 'woocommerce_enable_reviews', 'yes' ) ) {
-			return array();
-		}
-		$settings = array(
-			array(
-				'title' => __( 'Reviews', 'omnibus' ),
-				'type'  => 'title',
-				'id'    => $this->get_name( 'reviews' ),
-			),
-			array(
-				'type' => 'sectionend',
-				'id'   => $this->get_name( 'reviews_sectionend' ),
-			),
-		);
-		return $settings;
-	}
-
-	/**
-	 * maybe save product price
-	 */
-	public function action_shutdown_maybe_save_product_price() {
-		if ( ! is_singular( 'product' ) ) {
-			return;
-		}
-	}
-
 	public function filter_woocommerce_get_settings_pages( $settings ) {
 		$settings[] = include __DIR__ . '/class-iworks-omnibus-integration-woocommerce-settings.php';
 		return $settings;
 	}
 
+	/**
+	 * add data on admin list
+	 *
+	 */
 	public function filter_iworks_omnibus_message_template_for_admin_list( $template ) {
 		if ( ! is_admin() ) {
 			return $template;
@@ -1062,7 +903,6 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		$this->update_post_meta_short( $id, filter_input( INPUT_POST, $meta_key ) );
 	}
 
-
 	/**
 	 * get WooCommerce product lowest price
 	 *
@@ -1078,117 +918,6 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			return $price;
 		}
 		return $this->get_lowest_price( $product );
-	}
-
-	/**
-	 * add extra data to price log
-	 *
-	 * @since 2.3.2
-	 *
-	 */
-	public function filter_add_price_log_data( $data, $product_id ) {
-		$product = wc_get_product( $product_id );
-		if ( empty( $product ) ) {
-			return $data;
-		}
-		if ( ! is_array( $data ) ) {
-			$data = array();
-		}
-		return wp_parse_args(
-			$this->get_prices_by_product( $product ),
-			$data
-		);
-	}
-
-	/**
-	 * get product prices
-	 *
-	 * @since 3.0.0
-	 */
-	private function get_prices_by_product( $product ) {
-		return array(
-			'price_regular' => $product->get_regular_price(),
-			'price_sale'    => $product->get_sale_price(),
-		);
-	}
-
-	/**
-	 * WooCommerce Omnibus Price History Meta Box
-	 *
-	 * @since 2.4.0
-	 */
-	public function action_add_meta_boxes_product_history( $post ) {
-		if ( true ) {
-			return;
-		}
-		if ( ! $post instanceof WP_Post ) {
-			return;
-		}
-		add_meta_box(
-			'iworks-omnibus-history',
-			__( 'Omnibus Price History', 'omnibus' ),
-			array( $this, 'meta_box_history_html' )
-		);
-	}
-
-	public function meta_box_history_html( $post ) {
-		$products = $this->get_products_ids( $post );
-		$log      = array();
-		foreach ( $products as $post_id ) {
-			$changes = get_post_meta( $post_id, $this->meta_price_log_name );
-			if ( is_array( $changes ) ) {
-				foreach ( $changes as $one ) {
-					$one['post_id'] = $post_id;
-					$log[]          = $one;
-				}
-			}
-		}
-		if ( empty( $log ) ) {
-			esc_html_e( 'There is no price history recorded.', 'omnibus' );
-			return;
-		}
-		echo '<table class="widefat fixed striped">';
-		echo '<thead>';
-		echo '<tr>';
-		printf( '<th>%s</th>', esc_html__( 'Product', 'omnibus' ) );
-		printf( '<th>%s</th>', esc_html__( 'Regular Price', 'omnibus' ) );
-		printf( '<th>%s</th>', esc_html__( 'Sale Price', 'omnibus' ) );
-		printf( '<th>%s</th>', esc_html__( 'Date', 'omnibus' ) );
-		echo '</tr>';
-		echo '</thead>';
-
-		echo '<tbody>';
-		usort( $log, array( $this, 'usort_log_array' ) );
-		foreach ( $log as $one ) {
-			echo '<tr>';
-			printf( '<td>%s</td>', get_the_title( $one['post_id'] ) );
-			printf( '<td>%s</td>', $one['price'] );
-			printf( '<td>%s</td>', empty( $one['price_sale'] ) ? '&mdash;' : $one['price_sale'] );
-			printf( '<td>%s</td>', date_i18n( 'Y-m-d H:i', $one['timestamp'] ) );
-			echo '</tr>';
-
-			d( $one );
-		}
-		echo '</tbody>';
-		echo '</table>';
-	}
-
-	/**
-	 * Get products list
-	 *
-	 * @param \WP_Post $post
-	 *
-	 * @return array a
-	 */
-	public function get_products_ids( $post ) {
-		$product = wc_get_product( $post->ID );
-		if ( ! $product instanceof WC_Product ) {
-			return array();
-		}
-		if ( $product instanceof WC_Product_Variable ) {
-			return $product->get_children();
-		}
-		return array( $post->ID );
 	}
 
 	/**
@@ -1257,4 +986,20 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		$wpdb->query( $query );
 	}
 
+	/**
+	 * helper function to parent->add_message()
+	 *
+	 * @since 4.0.0
+	 */
+	private function add_message_helper( $price_html, $product, $message = null ) {
+		$price_lowest = $this->get_lowest_price_by_post_id( $product->get_id(), $product->get_sale_price() );
+		return $this->add_message(
+			$price_html,
+			$product->get_regular_price(),
+			$product->get_sale_price(),
+			$price_lowest,
+			'wc_price',
+			$message
+		);
+	}
 }

@@ -383,31 +383,6 @@ abstract class iworks_omnibus_integration {
 		if ( isset( $price_lowest['price_sale'] ) ) {
 			$price_to_show = $price_lowest['price_sale'];
 		}
-		/**
-		 * WooCommerce: include tax
-		 */
-		if ( 'no' === get_option( 'woocommerce_prices_include_tax' ) ) {
-			if ( 'yes' === get_option( $this->get_name( 'include_tax' ), 'yes' ) ) {
-				if (
-					isset( $price_lowest['price_including_tax'] )
-					&& $price_lowest['price_including_tax'] > $price_to_show
-				) {
-					$price_to_show = $price_lowest['price_including_tax'];
-				} else {
-					global $product;
-					if ( is_object( $product ) ) {
-						$tax = new WC_Tax();
-						if ( ! empty( $tax ) ) {
-							$taxes = $tax->get_rates( $product->get_tax_class() );
-							if ( ! empty( $taxes ) ) {
-								$t             = array_shift( $taxes );
-								$price_to_show = ( 100 + $t['rate'] ) * $price_to_show / 100;
-							}
-						}
-					}
-				}
-			}
-		}
 		if ( is_callable( $format_price_callback ) ) {
 			$price_to_show = $format_price_callback( $price_to_show );
 		}

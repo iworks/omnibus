@@ -72,7 +72,6 @@ abstract class iworks_omnibus_integration {
 		) {
 			$data['price_sale_from'] = date( $this->mysql_data_format );
 		}
-		l( $data );
 		$wpdb->insert(
 			$wpdb->iworks_omnibus,
 			$data,
@@ -236,8 +235,25 @@ abstract class iworks_omnibus_integration {
 		return apply_filters( 'iworks/omnibus/logger/v4/get/log/array', array(), $id );
 	}
 
-	protected function _get_v4_lowest_price_in_history( $post_id ) {
-		return new WP_Error( 'no_price', __( 'There is no price data in history.', 'omnibus' ) );
+	protected function get_lowest_price_by_post_id( $post_id, $sale_price ) {
+		global $wpdb;
+		$query = $wpdb->prepare(
+			"select * from $wpdb->iworks_omnibus where
+				post_id = %d
+				and price_sale <> %f
+				and price_sale_from <= %s
+				and price_sale_from > %s
+			order by price_sale asc limit 1",
+			$post_id,
+			$sale_price,
+			date( $this->mysql_data_format ),
+			date( $this->mysql_data_format, strtotime( sprintf( '-%d days', $this->get_days() ) ) )
+		);
+		$data  = $wpdb->get_row( $query, ARRAY_A );
+		if ( empty( $data ) ) {
+			return new WP_Error( 'no_price', __( 'There is no price data in history.', 'omnibus' ) );
+		}
+		return $data;
 	}
 
 	/**
@@ -245,27 +261,53 @@ abstract class iworks_omnibus_integration {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param $price
+	 * @param $price_html
+	 * @param $price_sale
 	 * @param $price_lowest
 	 * @param callback $format_price_callback Price format callback function.
-	 * @param string $message Message template.
 	 */
-	protected function add_message( $price, $price_lowest, $format_price_callback = null, $message = null ) {
+	protected function add_message( $price_html, $price_regular, $price_sale, $price_lowest, $format_price_callback = null, $message = null ) {
+		if ( is_wp_error( $price_lowest ) ) {
+			$missing_price_messsage_status = get_option( $this->get_name( 'missing' ) );
+			switch ( $missing_price_messsage_status ) {
+				case 'inform':
+				case 'current':
+				case 'regular':
+					return $this->add_message_runner(
+						$price_html,
+						$price_regular,
+						$price_sale,
+						$price_lowest,
+						$format_price_callback,
+						$this->get_message_text( $missing_price_messsage_status, $price_regular, $price_sale, $format_price_callback )
+					);
+				default:
+					l( get_option( $this->get_name( 'missing' ) ) );
+			}
+			return $price_html;
+		}
 		if ( ! is_array( $price_lowest ) ) {
-			return $price;
+			return $price_html;
 		}
-		if ( ! isset( $price_lowest['price'] ) ) {
-			return $price;
+		if ( ! isset( $price_lowest['price_sale'] ) ) {
+			return $price_html;
 		}
-		if ( empty( $price_lowest['price'] ) ) {
-			return $price;
+		if ( empty( $price_lowest['price_sale'] ) ) {
+			return $price_html;
 		}
+		/**
+		 * run
+		 */
+		return $this->add_message_runner( $price_html, $price_regular, $price_sale, $price_lowest, $format_price_callback, $message );
+	}
+
+	private function add_message_runner( $price_html, $price_regular, $price_sale, $price_lowest, $format_price_callback, $message ) {
 		/**
 		 * Set message template if it is needed
 		 */
 		if ( empty( $message ) ) {
-			/* translators: %2$s: rich html price */
-			$message = __( 'Previous lowest price was %2$s.', 'omnibus' );
+			/* translators: do not translate placeholders in braces */
+			$message = __( '{price} Lowest price from {days} days before the discount.', 'omnibus' );
 			if (
 				'custom' === get_option( $this->get_name( 'message_settings' ), 'no' )
 				|| 'yes' === get_option( $this->get_name( 'message_settings' ), 'no' )
@@ -282,42 +324,20 @@ abstract class iworks_omnibus_integration {
 		 *
 		 * @since 2.3.0
 		 */
-		$message = apply_filters( 'iworks_omnibus_message_template', $message, $price, $price_lowest );
+		$message = apply_filters( 'iworks_omnibus_message_template', $message, $price_html, $price_sale, $price_lowest );
 		if ( empty( $message ) ) {
-			return $price;
+			return $price_html;
+		}
+		/**
+		 * handle no price but message
+		 */
+		if ( is_wp_error( $price_lowest ) ) {
+			return $price_html . $message;
 		}
 		/**
 		 * price to show
 		 */
-		$price_to_show = $price_lowest['price'];
-		if ( isset( $price_lowest['price_sale'] ) ) {
-			$price_to_show = $price_lowest['price_sale'];
-		}
-		/**
-		 * WooCommerce: include tax
-		 */
-		if ( 'no' === get_option( 'woocommerce_prices_include_tax' ) ) {
-			if ( 'yes' === get_option( $this->get_name( 'include_tax' ), 'yes' ) ) {
-				if (
-					isset( $price_lowest['price_including_tax'] )
-					&& $price_lowest['price_including_tax'] > $price_to_show
-				) {
-					$price_to_show = $price_lowest['price_including_tax'];
-				} else {
-					global $product;
-					if ( is_object( $product ) ) {
-						$tax = new WC_Tax();
-						if ( ! empty( $tax ) ) {
-							$taxes = $tax->get_rates( $product->get_tax_class() );
-							if ( ! empty( $taxes ) ) {
-								$t             = array_shift( $taxes );
-								$price_to_show = ( 100 + $t['rate'] ) * $price_to_show / 100;
-							}
-						}
-					}
-				}
-			}
-		}
+		$price_to_show = $price_lowest['price_sale'];
 		if ( is_callable( $format_price_callback ) ) {
 			$price_to_show = $format_price_callback( $price_to_show );
 		}
@@ -338,7 +358,7 @@ abstract class iworks_omnibus_integration {
 				esc_attr( $attribute_value )
 			);
 		}
-		$price .= apply_filters(
+		$price_html .= apply_filters(
 			'iworks_omnibus_message',
 			sprintf(
 				'<p class="iworks-omnibus"%s>%s</p>',
@@ -355,16 +375,16 @@ abstract class iworks_omnibus_integration {
 		 *
 		 * @since 2.1.7
 		 */
-		$price = preg_replace( '/{days}/', $this->get_days(), $price );
-		$price = preg_replace( '/{price}/', $price_to_show, $price );
+		$price_html = $this->replace_options_based_placeholders( $price_html );
+		$price_html = preg_replace( '/{price}/', $price_to_show, $price_html );
 		if ( isset( $price_lowest['timestamp'] ) ) {
-			$price = preg_replace( '/{timestamp}/', $price_lowest['timestamp'], $price );
-			$price = preg_replace( '/{when}/', date_i18n( get_option( 'date_format' ), $price_lowest['timestamp'] ), $price );
+			$price_html = preg_replace( '/{timestamp}/', $price_lowest['timestamp'], $price_html );
+			$price_html = preg_replace( '/{when}/', date_i18n( get_option( 'date_format' ), $price_lowest['timestamp'] ), $price_html );
 		}
 		/**
 		 * use filter `iworks_omnibus_message_html`
 		 */
-		$message = apply_filters( 'iworks_omnibus_message_html', $price, $price_lowest );
+		$message = apply_filters( 'iworks_omnibus_message_html', $price_html, $price_lowest );
 		/**
 		 * use filter `orphan_replace`
 		 *
@@ -377,17 +397,34 @@ abstract class iworks_omnibus_integration {
 		return $message;
 	}
 
-
-	protected function get_message_text( $type ) {
+	protected function get_message_text( $type, $price_regular = null, $price_sale = null, $format_price_callback = null ) {
+		$message = '';
 		switch ( $type ) {
 			case 'no_data':
-				$message = esc_html__( 'No Previous Price', 'omnibus' );
+			case 'inform':
+				$message = esc_html__( 'There is no recorded price from {days} days before the discount.', 'omnibus' );
 				if ( 'yes' === get_option( $this->get_name( 'message_settings' ) ) ) {
 					$message = get_option( $this->get_name( 'message_no_data' ) );
 				}
-				return $this->message_wrapper( $message );
+				break;
+			case 'current':
+			case 'regular':
+				$message = __( '{price} Lowest price from {days} days before the discount.', 'omnibus' );
+				if ( 'yes' === get_option( $this->get_name( 'message_settings' ) ) ) {
+					$message = get_option( $this->get_name( 'message' ) );
+				}
+				$price_to_show = 'regular' === $type ? $price_regular : $price_sale;
+				if ( is_callable( $format_price_callback ) ) {
+					$price_to_show = $format_price_callback( $price_to_show );
+				}
+				$message = preg_replace( '/{price}/', $price_to_show, $message );
+				break;
 		}
-		return '';
+		if ( ! empty( $message ) ) {
+			$message = $this->replace_options_based_placeholders( $message );
+			$message = $this->message_wrapper( $message );
+		}
+		return $message;
 	}
 
 	/**
@@ -439,7 +476,10 @@ abstract class iworks_omnibus_integration {
 	protected function get_last_saved_prices_by_id( $post_id ) {
 		global $wpdb;
 		$query = $wpdb->prepare(
-			"select * from $wpdb->iworks_omnibus where post_id = %d and price_sale_from <= %s order by price_sale_from desc limit 1",
+			"select * from $wpdb->iworks_omnibus where
+				post_id = %d
+				and price_sale_from <= %s
+			order by price_sale_from desc limit 1",
 			$post_id,
 			date( $this->mysql_data_format )
 		);
@@ -458,6 +498,17 @@ abstract class iworks_omnibus_integration {
 	}
 
 	public function _get_lowest_price_in_history( $post_id ) {
+	}
+
+	/**
+	 * replace options based placeholder in a message
+	 *
+	 * @since 4.0.0
+	 */
+	private function replace_options_based_placeholders( $message ) {
+		$message = preg_replace( '/{days}/', $this->get_days(), $message );
+
+		return $message;
 	}
 }
 
