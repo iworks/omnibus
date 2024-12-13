@@ -79,6 +79,11 @@ abstract class iworks_omnibus_integration {
 		);
 	}
 
+	/**
+	 * helper to delete futore log when sale has be chenged
+	 *
+	 * @since 4.0.0
+	 */
 	private function delete_future_logs( $post_id ) {
 		global $wpdb;
 		$wpdb->query(
@@ -215,22 +220,6 @@ abstract class iworks_omnibus_integration {
 		return false;
 	}
 
-	/**
-	 * message: price is not available
-	 *
-	 * @since 2.0.2
-	 */
-	protected function get_message_price_is_not_available() {
-		if ( 'yes' == get_option( $this->get_name( 'message_settings' ), 'no' ) ) {
-			$v = get_option( $this->get_name( 'message_no_data' ), false );
-			if ( ! empty( $v ) ) {
-				return $v;
-			}
-		}
-		return __( 'The previous price is not available.', 'omnibus' );
-	}
-
-
 	public function filter_get_log_array( $log, $id ) {
 		return apply_filters( 'iworks/omnibus/logger/v4/get/log/array', array(), $id );
 	}
@@ -281,8 +270,6 @@ abstract class iworks_omnibus_integration {
 						$format_price_callback,
 						$this->get_message_text( $missing_price_messsage_status, $price_regular, $price_sale, $format_price_callback )
 					);
-				default:
-					l( get_option( $this->get_name( 'missing' ) ) );
 			}
 			return $price_html;
 		}
@@ -308,15 +295,9 @@ abstract class iworks_omnibus_integration {
 		if ( empty( $message ) ) {
 			/* translators: do not translate placeholders in braces */
 			$message = __( '{price} Lowest price from {days} days before the discount.', 'omnibus' );
-			if (
-				'custom' === get_option( $this->get_name( 'message_settings' ), 'no' )
-				|| 'yes' === get_option( $this->get_name( 'message_settings' ), 'no' )
-			) {
-				$message = get_option(
-					$this->get_name( 'message' ),
-					/* translators: %2$s: rich html price */
-					__( 'Previous lowest price was %2$s.', 'omnibus' )
-				);
+			$message_setting = get_option( $this->get_name( 'message_settings' ), 'no' );
+			if ( 'custom' === $message_setting || $this->is_on( $message_setting )) {
+				$message = get_option( $this->get_name( 'message' ), $message);
 			}
 		}
 		/**
@@ -324,7 +305,7 @@ abstract class iworks_omnibus_integration {
 		 *
 		 * @since 2.3.0
 		 */
-		$message = apply_filters( 'iworks_omnibus_message_template', $message, $price_html, $price_sale, $price_lowest );
+		$message = apply_filters( 'iworks_omnibus_message_template', $message, $price_html, $price_regular, $price_sale, $price_lowest, $format_price_callback );
 		if ( empty( $message ) ) {
 			return $price_html;
 		}
@@ -403,14 +384,14 @@ abstract class iworks_omnibus_integration {
 			case 'no_data':
 			case 'inform':
 				$message = esc_html__( 'There is no recorded price from {days} days before the discount.', 'omnibus' );
-				if ( 'yes' === get_option( $this->get_name( 'message_settings' ) ) ) {
+				if ( $this->is_on( get_option( $this->get_name( 'message_settings' ) ) ) ) {
 					$message = get_option( $this->get_name( 'message_no_data' ) );
 				}
 				break;
 			case 'current':
 			case 'regular':
 				$message = __( '{price} Lowest price from {days} days before the discount.', 'omnibus' );
-				if ( 'yes' === get_option( $this->get_name( 'message_settings' ) ) ) {
+				if ( $this->is_on( get_option( $this->get_name( 'message_settings' ) ) ) ) {
 					$message = get_option( $this->get_name( 'message' ) );
 				}
 				$price_to_show = 'regular' === $type ? $price_regular : $price_sale;
@@ -432,7 +413,7 @@ abstract class iworks_omnibus_integration {
 	 *
 	 * @since 4.0.0
 	 */
-	private function message_wrapper( $text ) {
+	protected function message_wrapper( $text ) {
 		return apply_filters(
 			'iworks/omnibus/message/wrapper',
 			sprintf(

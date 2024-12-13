@@ -64,7 +64,7 @@ class iworks_omnibus_integration_commons extends iworks_omnibus_integration {
 		 */
 		$query = $wpdb->prepare(
 			sprintf(
-				'DELETE FROM %s WHERE created < ( CURRENT_DATE - INTERVAL %%d DAY )',
+				'DELETE FROM %s WHERE price_sale_from < ( CURRENT_DATE - INTERVAL %%d DAY )',
 				$wpdb->iworks_omnibus
 			),
 			max( 31, intval( get_option( $this->get_name( 'days_delete' ) ) ) )
