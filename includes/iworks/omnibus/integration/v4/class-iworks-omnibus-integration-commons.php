@@ -37,6 +37,20 @@ class iworks_omnibus_integration_commons extends iworks_omnibus_integration {
 	}
 
 	/**
+	 * helper to decide show it or no
+	 */
+	protected function should_it_show_up( $post_id ) {
+	}
+
+	/**
+	 * helper to add logs
+	 *
+	 * @since 4.0.0
+	 */
+	protected function maybe_add_price_log( $element ) {
+	}
+
+	/**
 	 * Delete older records
 	 *
 	 * @since 4.0.0

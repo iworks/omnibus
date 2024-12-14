@@ -107,7 +107,8 @@ class iworks_omnibus {
 	}
 
 	public function action_plugins_loaded() {
-		$dir = dirname( __FILE__ ) . '/omnibus';
+		$dir          = dirname( __FILE__ ) . '/omnibus';
+		$v4_directory = $this->is_migrated_v4() ? '/v4' : '';
 		/**
 		 * WooCommerce
 		 *
@@ -117,7 +118,6 @@ class iworks_omnibus {
 			defined( 'WC_PLUGIN_FILE' )
 			&& defined( 'WC_VERSION' )
 		) {
-			$v4_directory = $this->is_migrated_v4() ? '/v4' : '';
 			/**
 			 * Check minimal WooCommerce version to run.
 			 *
@@ -152,7 +152,7 @@ class iworks_omnibus {
 		 * @since 1.0.1
 		 */
 		if ( defined( 'LP_PLUGIN_FILE' ) ) {
-			include_once $dir . '/integration/class-iworks-omnibus-integration-learnpress.php';
+			include_once $dir . '/integration' . $v4_directory . '/class-iworks-omnibus-integration-learnpress.php';
 			$this->objects['learnpress'] = new iworks_omnibus_integration_learnpress();
 		}
 		/**

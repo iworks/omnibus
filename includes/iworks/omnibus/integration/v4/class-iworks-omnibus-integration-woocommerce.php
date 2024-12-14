@@ -188,8 +188,6 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 					$this->maybe_add_price_log( $variant );
 				}
 				break;
-			default:
-				l( $product->get_type() );
 		}
 	}
 
@@ -198,9 +196,8 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 *
 	 * @since 4.0.0
 	 *
-	 *
 	 */
-	public function maybe_add_price_log( $product ) {
+	protected function maybe_add_price_log( $product ) {
 		if ( 'publish' !== get_post_status( $product ) ) {
 			return;
 		}
@@ -303,7 +300,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	/**
 	 * helper to decide show it or no
 	 */
-	private function should_it_show_up( $post_id ) {
+	protected function should_it_show_up( $post_id ) {
 		/**
 		 * for admin
 		 */
@@ -320,12 +317,12 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			} elseif ( function_exists( 'get_current_screen' ) ) {
 				$screen = get_current_screen();
 				if ( 'product' === $screen->id ) {
-					if ( $this->is_on( get_option( $this->get_name( 'admin_edit' ), 'yes' ) )) {
+					if ( $this->is_on( get_option( $this->get_name( 'admin_edit' ), 'yes' ) ) ) {
 						return apply_filters( 'iworks_omnibus_show', true );
 					}
 				}
 				if ( 'edit-product' === $screen->id ) {
-					if ($this->is_on(  get_option( $this->get_name( 'admin_list' ), 'no' ) )) {
+					if ( $this->is_on( get_option( $this->get_name( 'admin_list' ), 'no' ) ) ) {
 						return apply_filters( 'iworks_omnibus_show', true );
 					}
 				}
@@ -336,8 +333,8 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 * front-end short term good
 		 */
 		if ( $this->is_on( get_option( $this->get_name( 'admin_short' ), 'no' ) ) ) {
-			if ( $this->is_on( get_post_meta( $post_id, $this->get_name( 'is_short' ), 'yes') )) {
-				if ( !$this->is_on( get_option( $this->get_name( 'short_message' ), 'no' ) ) ) {
+			if ( $this->is_on( get_post_meta( $post_id, $this->get_name( 'is_short' ), 'yes' ) ) ) {
+				if ( ! $this->is_on( get_option( $this->get_name( 'short_message' ), 'no' ) ) ) {
 					return apply_filters( 'iworks_omnibus_show', false );
 				}
 			}
@@ -345,7 +342,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		/**
 		 * front-end on sale
 		 */
-		if ( $this->is_on( get_option( $this->get_name( 'on_sale' ), 'yes' ) )) {
+		if ( $this->is_on( get_option( $this->get_name( 'on_sale' ), 'yes' ) ) ) {
 			$product = wc_get_product( $post_id );
 			if (
 				! is_object( $product )
@@ -375,13 +372,19 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 				$product = wc_get_product( $post_id );
 				switch ( $product->get_type() ) {
 					case 'grouped';
-					case 'variable';
+						return apply_filters( 'iworks_omnibus_show', false );
+					case 'variable':
+						if ( 2 > count( $product->get_available_variations() ) ) {
+							if ( $this->is_on( get_option( $this->get_name( 'variation' ), 'yes' ) ) ) {
+								return apply_filters( 'iworks_omnibus_show', true );
+							}
+						}
 						return apply_filters( 'iworks_omnibus_show', false );
 					case 'variation':
-						if ( !$this->is_on( get_option( $this->get_name( 'variation' ), 'yes' ) ) ) {
-							return apply_filters( 'iworks_omnibus_show', false );
+						if ( $this->is_on( get_option( $this->get_name( 'variation' ), 'yes' ) ) ) {
+							return apply_filters( 'iworks_omnibus_show', true );
 						}
-						return apply_filters( 'iworks_omnibus_show', true );
+						return apply_filters( 'iworks_omnibus_show', false );
 				}
 			}
 			if ( 'yes' === get_option( $this->get_name( 'single' ), 'yes' ) ) {
@@ -712,12 +715,12 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 * @since 2.1.5
 	 */
 	public function filter_woocommerce_cart_item_price( $price_html, $cart_item, $cart_item_key ) {
-		if ( $this->is_on( get_option( $this->get_name( 'on_sale' ), 'yes' ) )) {
+		if ( $this->is_on( get_option( $this->get_name( 'on_sale' ), 'yes' ) ) ) {
 			if ( ! $cart_item['data']->is_on_sale() ) {
 				return $price_html;
 			}
 		}
-		return $this->add_message_helper( $price_html, wc_get_product($cart_item['product_id'] ) );
+		return $this->add_message_helper( $price_html, wc_get_product( $cart_item['product_id'] ) );
 	}
 
 	/**
@@ -751,7 +754,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 * add data on admin list
 	 *
 	 */
-	public function filter_iworks_omnibus_message_template_for_admin_list( $message, $price_html, $price_regular, $price_sale, $price_lowest, $format_price_callback) {
+	public function filter_iworks_omnibus_message_template_for_admin_list( $message, $price_html, $price_regular, $price_sale, $price_lowest, $format_price_callback ) {
 		if ( ! is_admin() ) {
 			return $message;
 		}
@@ -801,7 +804,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 */
 	private function update_post_meta_short( $post_id, $meta_value ) {
 		$meta_key = $this->get_name( 'is_short' );
-		if ( $this->is_on( $meta_value )) {
+		if ( $this->is_on( $meta_value ) ) {
 			if ( ! update_post_meta( $post_id, $meta_key, 'yes' ) ) {
 				add_post_meta( $post_id, $meta_key, 'yes', true );
 			}

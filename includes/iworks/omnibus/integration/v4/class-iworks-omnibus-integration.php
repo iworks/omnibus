@@ -41,16 +41,34 @@ abstract class iworks_omnibus_integration {
 
 	protected string $mysql_data_format = 'Y-m-d H:i:s';
 
+	/**
+	 * helper to decide show it or no
+	 *
+	 * @since 4.0.0
+	 */
+	abstract protected function should_it_show_up( $post_id );
+
+	/**
+	 * helper to add logs
+	 *
+	 * @since 4.0.0
+	 */
+	abstract protected function maybe_add_price_log( $element );
+
 	public function get_name( $name = '' ) {
 		if ( empty( $name ) ) {
 			return $this->meta_name;
 		}
-		return sanitize_title(
+		$name = sanitize_title(
 			sprintf(
 				'%s_%s',
 				$this->meta_name,
 				$name
 			)
+		);
+		return apply_filters(
+			'iworks/omnibus/option/name/' . $name,
+			$name
 		);
 	}
 
@@ -294,10 +312,10 @@ abstract class iworks_omnibus_integration {
 		 */
 		if ( empty( $message ) ) {
 			/* translators: do not translate placeholders in braces */
-			$message = __( '{price} Lowest price from {days} days before the discount.', 'omnibus' );
+			$message         = __( '{price} Lowest price from {days} days before the discount.', 'omnibus' );
 			$message_setting = get_option( $this->get_name( 'message_settings' ), 'no' );
-			if ( 'custom' === $message_setting || $this->is_on( $message_setting )) {
-				$message = get_option( $this->get_name( 'message' ), $message);
+			if ( 'custom' === $message_setting || $this->is_on( $message_setting ) ) {
+				$message = get_option( $this->get_name( 'message' ), $message );
 			}
 		}
 		/**
@@ -322,33 +340,11 @@ abstract class iworks_omnibus_integration {
 		if ( is_callable( $format_price_callback ) ) {
 			$price_to_show = $format_price_callback( $price_to_show );
 		}
-		/**
-		 * add attributes
-		 */
-		$attributes = array(
-			'data-iwo-version' => $this->version,
-		);
-		foreach ( $price_lowest as $key => $value ) {
-			$attributes[ sprintf( 'data-iwo-%s', $key ) ] = esc_attr( $value );
-		}
-		$attribute_data_string = '';
-		foreach ( $attributes as $attribute_name => $attribute_value ) {
-			$attribute_data_string .= sprintf(
-				' %s="%s"',
-				esc_html( $attribute_name ),
-				esc_attr( $attribute_value )
-			);
-		}
-		$price_html .= apply_filters(
-			'iworks_omnibus_message',
+		$price_html .= $this->message_wrapper(
 			sprintf(
-				'<p class="iworks-omnibus"%s>%s</p>',
-				$attribute_data_string,
-				sprintf(
-					$message,
-					$this->get_days(),
-					$price_to_show
-				)
+				$message,
+				$this->get_days(),
+				$price_to_show
 			)
 		);
 		/**
@@ -417,10 +413,10 @@ abstract class iworks_omnibus_integration {
 		return apply_filters(
 			'iworks/omnibus/message/wrapper',
 			sprintf(
-				'<%3$s class="iworks-omnibus" data-iwo-version="%2$s">%1$s</%3$s>',
+				'<br class="iworks-omnibus-br"><%3$s class="iworks-omnibus" data-iwo-version="%2$s">%1$s</%3$s>',
 				$text,
 				esc_attr( $this->version ),
-				apply_filters( 'iworks/omnibus/message/wrapper/tag', 'p' )
+				apply_filters( 'iworks/omnibus/message/wrapper/tag', 'span' )
 			)
 		);
 	}

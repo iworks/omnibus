@@ -170,6 +170,7 @@ class iworks_omnibus_migration_v4 extends iworks_omnibus_migration {
 				);
 			}
 		} else {
+			$this->rename_option_names();
 			$this->migration_update_status( $this->option_name_migration_4_status, 'migrated' );
 			wp_send_json_success(
 				array(
@@ -179,6 +180,12 @@ class iworks_omnibus_migration_v4 extends iworks_omnibus_migration {
 			);
 		}
 		wp_send_json_error( array( 'message' => esc_html__( 'Unknown Error Occurred', 'omnibus' ) ) );
+	}
+
+	private function rename_option_names() {
+		global $wpdb;
+		$query = "update $wpdb->options set option_name = substring( option_name, 13 ) where option_name like 'learn_press__iwo%'";
+		$wpdb->query( $query );
 	}
 
 	private function batch() {
