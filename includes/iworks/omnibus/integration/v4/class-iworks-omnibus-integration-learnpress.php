@@ -98,7 +98,7 @@ class iworks_omnibus_integration_learnpress extends iworks_omnibus_integration {
 	}
 
 	private function get_settings() {
-		return array(
+		$settings = array(
 			$this->settings_title(),
 			array(
 				'title'   => __( 'Only on sale', 'omnibus' ),
@@ -145,16 +145,21 @@ class iworks_omnibus_integration_learnpress extends iworks_omnibus_integration {
 				'type'          => 'checkbox',
 				'checkboxgroup' => 'end',
 			),
-			$this->settings_days(),
+		);
+		/**
+		 * days
+		 */
+		$settings = array_merge( $settings, $this->settings_days() );
 			/**
 			 * messages
 			 */
-			$this->settings_message_settings(),
-			$this->settings_message(),
-			array(
-				'type' => 'sectionend',
-			),
-		);
+		$settings[] = $this->settings_message_settings();
+		$settings[] = $this->settings_message();
+			/**
+			 * close
+			 */
+		$settings[] = array( 'type' => 'sectionend' );
+		return $settings;
 	}
 
 	/**

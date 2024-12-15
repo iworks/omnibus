@@ -148,13 +148,36 @@ abstract class iworks_omnibus_integration {
 
 	protected function settings_days() {
 		return array(
-			'title'             => __( 'Number of days', 'omnibus' ),
-			'desc'              => __( 'This controls the number of days to show. According to the Omnibus Directive, minimum days is 30 after curent sale was started.', 'omnibus' ),
-			'id'                => $this->get_name( 'days' ),
-			'default'           => '30',
-			'type'              => 'number',
-			'custom_attributes' => array(
-				'min' => 30,
+			array(
+				'title'             => __( 'Number of days', 'omnibus' ),
+				'desc'              => __( 'This controls the number of days to show. According to the Omnibus Directive, minimum days is 30 after curent sale was started.', 'omnibus' ),
+				'id'                => $this->get_name( 'days', '' ),
+				'default'           => '30',
+				'type'              => 'number',
+				'css'               => 'width: 80px;',
+				'custom_attributes' => array(
+					'min' => 30,
+				),
+			),
+			array(
+				'title'   => __( 'Delete Log Items', 'omnibus' ),
+				'type'    => 'checkbox',
+				'default' => 'no',
+				'id'      => $this->get_name( 'allow_to_delete', '' ),
+				'desc'    => __( 'Allow to delete older items', 'omnibus' ),
+				'class'   => 'iworks_omnibus_delete_older',
+			),
+			array(
+				'title'             => __( 'Delete After', 'omnibus' ),
+				'desc'              => __( 'This controls the number of days to delete changes.', 'omnibus' ),
+				'id'                => $this->get_name( 'days_delete', '' ),
+				'default'           => '45',
+				'type'              => 'number',
+				'css'               => 'width: 80px;',
+				'custom_attributes' => array(
+					'min' => 30,
+				),
+				'class'             => 'iworks_omnibus_delete_older_field',
 			),
 		);
 	}
