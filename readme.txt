@@ -199,9 +199,10 @@ Project maintained on github at [iworks/omnibus](PLUGIN_GITHUB_WEBSITE).
 * Removed the option to show the omnibus price for the variant product.
 * The ability to auto clear older prices has been added. [#23](https://github.com/iworks/omnibus/issues/23)
 * The [iWorks Rate](https://github.com/iworks/iworks-rate) module has been updated to 2.2.1.
+* The LearnPress and Uncaught Error after update has been fixed. [#34](https://github.com/iworks/omnibus/issues/34)
 * The LearnPress Omnibus configuration has been improved.
 * The `load_plugin_textdomain()` function call has been fixed.
-* The LearnPress and Uncaught Error after update has been fixed. [#34](https://github.com/iworks/omnibus/issues/34)
+* The proper message has been added when product was free. [#3](https://github.com/iworks/omnibus/issues/3)
 
 = 3.0.3 (2024-08-09) =
 * The omnibus price for variant in admin panel has been fixed.

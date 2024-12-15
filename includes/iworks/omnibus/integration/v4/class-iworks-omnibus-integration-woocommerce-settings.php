@@ -389,6 +389,14 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 					'desc'    => __( 'A message informing that there is no need to inform about the price due to the short expiry date.', 'omnibus' ),
 				),
 				array(
+					'title'   => __( 'Free Product Message', 'omnibus' ),
+					'type'    => 'text',
+					'id'      => $this->get_name( 'message_free' ),
+					'default' => __( 'The product was free in the last {days} days.', 'omnibus' ),
+					'class'   => 'iworks_omnibus_messages_settings_field',
+					'desc'    => __( 'Message displayed when the product was for free.', 'omnibus' ),
+				),
+				array(
 					'type' => 'sectionend',
 					'id'   => $this->get_name( 'where-custom-end' ),
 				),

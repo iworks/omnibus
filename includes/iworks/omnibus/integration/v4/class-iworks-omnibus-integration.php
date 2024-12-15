@@ -324,6 +324,21 @@ abstract class iworks_omnibus_integration {
 			return $price_html;
 		}
 		/**
+		 * free product
+		 *
+		 * @since 4.0.0
+		 */
+		if ( floatval( 0 ) === floatval( $price_lowest['price_sale'] ) ) {
+			return $this->add_message_runner(
+				$price_html,
+				$price_regular,
+				$price_sale,
+				$price_lowest,
+				$format_price_callback,
+				$this->get_message_text( 'free_product', $price_regular, $price_sale, $format_price_callback )
+			);
+		}
+		/**
 		 * run
 		 */
 		return $this->add_message_runner( $price_html, $price_regular, $price_sale, $price_lowest, $format_price_callback, $message );
@@ -416,6 +431,13 @@ abstract class iworks_omnibus_integration {
 				$price_to_show = 'regular' === $type ? $price_regular : $price_sale;
 				if ( is_callable( $format_price_callback ) ) {
 					$price_to_show = $format_price_callback( $price_to_show );
+				}
+				$message = preg_replace( '/{price}/', $price_to_show, $message );
+				break;
+			case 'free_product':
+				$message = __( 'The product was free in the last {days} days.', 'omnibus' );
+				if ( $this->is_on( get_option( $this->get_name( 'message_settings' ) ) ) ) {
+					$message = get_option( $this->get_name( 'message_free' ) );
 				}
 				$message = preg_replace( '/{price}/', $price_to_show, $message );
 				break;
