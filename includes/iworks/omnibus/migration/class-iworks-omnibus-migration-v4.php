@@ -124,6 +124,10 @@ class iworks_omnibus_migration_v4 extends iworks_omnibus_migration {
 	 *
 	 */
 	public function action_admin_notices_show_migration_message() {
+		if ( 0 === $this->count_number_of_data_to_migrate() ) {
+			$this->migration_update_status( $this->option_name_migration_4_status, 'migrated' );
+			return;
+		}
 		if ( 'dashboard' === get_current_screen()->base ) {
 			$file = $this->get_file( 'message', 'migration-v4' );
 			load_template( $file, true, $this->get_args() );
@@ -147,7 +151,7 @@ class iworks_omnibus_migration_v4 extends iworks_omnibus_migration {
 		foreach ( (array) wp_count_posts( 'iw_omnibus_price_log' ) as $key => $value ) {
 			$count += intval( $value );
 		}
-		return $count;
+		return intval( $count );
 	}
 
 	public function action_wp_ajax_iworks_omnibus_migrate() {

@@ -8,12 +8,12 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly
 <div class="notice notice-error">
 	<h2><?php esc_html_e( 'Omnibus: data migration required!', 'omnibus' ); ?></h2>
 <?php
-$content = '';
+$content  = '';
 $content .= __( 'The plugin uses an old version (3) of data collection and data migration is required for the plugin to function properly.', 'omnibus' );
 $content .= PHP_EOL;
 $content .= PHP_EOL;
 $content .= sprintf(
-	_n( 'There is %d item to convert.', 'There are %d items to convert.', $args['count'], 'omnibus' ),
+	_n( 'There is %d item to convert.', 'There are %d items to convert.', intval( $args['count'] ), 'omnibus' ),
 	$args['count']
 );
 $content .= PHP_EOL;
