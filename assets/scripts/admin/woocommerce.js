@@ -1,4 +1,4 @@
-/*! Omnibus — show the lowest price - v4.0.3
+/*! Omnibus — show the lowest price - v4.0.0.beta.1
  * https://github.com/iworks/omnibus/
  * Copyright (c) 2024; * Licensed GPL-3.0 */
 (function($) {
