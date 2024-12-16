@@ -36,6 +36,10 @@ class iworks_omnibus_integration_learnpress extends iworks_omnibus_integration {
 		 */
 		add_action( 'admin_init', array( $this, 'action_admin_init' ) );
 		/**
+		 * delete older logs
+		 */
+		add_filter( 'iworks/omnibus/action/delete_older_records/configuration', array( $this, 'add_configuration_to_delete_older_records' ) );
+		/**
 		 * LP_Suubmenu
 		 *
 		 * @since 4.0.0
@@ -348,5 +352,12 @@ class iworks_omnibus_integration_learnpress extends iworks_omnibus_integration {
 		return apply_filters( 'iworks_omnibus_show', $show );
 	}
 
+	/**
+	 * Define delete job
+	 *
+	 * @since 4.0.0
+	 */
+	public function add_configuration_to_delete_older_records( $configuration ) {
+	}
 }
 

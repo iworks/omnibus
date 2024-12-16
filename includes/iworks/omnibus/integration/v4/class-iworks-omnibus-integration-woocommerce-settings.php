@@ -508,13 +508,13 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 				),
 				array(
 					'title'             => __( 'Delete After', 'omnibus' ),
-					'desc'              => __( 'This controls the number of days to delete changes.', 'omnibus' ),
-					'id'                => $this->get_name( 'days_delete' ),
-					'default'           => '45',
+					'desc'              => __( 'This controls the number of years to delete changes.', 'omnibus' ),
+					'id'                => $this->get_name( 'delete_years', '' ),
+					'default'           => '2',
 					'type'              => 'number',
 					'css'               => 'width: 80px;',
 					'custom_attributes' => array(
-						'min' => 30,
+						'min' => 1,
 					),
 					'class'             => 'iworks_omnibus_delete_older_field',
 				),
