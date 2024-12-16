@@ -27,6 +27,13 @@ include_once 'class-iworks-omnibus-integration.php';
 
 class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration {
 
+	/**
+	 * Omnibus Product Origin
+	 *
+	 * @since 4.0.0
+	 */
+	private $product_origin = 'woocommerce';
+
 	public function __construct() {
 		/**
 		 * add Settings Section
@@ -144,6 +151,12 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 * @since 4.0.0
 		 */
 		add_action( 'iworks/omnibus/register_deactivation_hook', array( $this, 'register_deactivation_hook' ) );
+		/**
+		 * delete older logs
+		 *
+		 * @since 4.0.0
+		 */
+		add_filter( 'iworks/omnibus/action/delete_older_records/configuration', array( $this, 'add_configuration_to_delete_older_records' ) );
 	}
 
 	public function action_admin_head() {
@@ -209,7 +222,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		}
 		$data = array(
 			'post_id'         => $product->get_id(),
-			'product_origin'  => 'woocommerce',
+			'product_origin'  => $this->product_origin,
 			'product_type'    => $product->get_type(),
 			'price_regular'   => $product->get_regular_price(),
 			'price_sale'      => $product->get_sale_price(),
@@ -946,5 +959,20 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			'wc_price',
 			$message
 		);
+	}
+
+	/**
+	 * Define delete job
+	 *
+	 * @since 4.0.0
+	 */
+	public function add_configuration_to_delete_older_records( $configuration ) {
+		if ( 'yes' === get_option( $this->get_name( 'allow_to_delete' ) ) ) {
+			$configuration[ $this->product_origin ] = array(
+				'product_origin' => $this->product_origin,
+				'delete_years'   => get_option( $this->get_name( 'delete_years' ) ),
+			);
+		}
+		return $configuration;
 	}
 }

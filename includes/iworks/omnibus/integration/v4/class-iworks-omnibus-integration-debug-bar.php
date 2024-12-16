@@ -31,20 +31,6 @@ class iworks_omnibus_integration_debug_bar extends iworks_omnibus_integration {
 		add_filter( 'debug_bar_panels', array( $this, 'filter_debug_bar_panels' ) );
 	}
 
-	/**
-	 * helper to decide show it or no
-	 */
-	protected function should_it_show_up( $post_id ) {
-	}
-
-	/**
-	 * helper to add logs
-	 *
-	 * @since 4.0.0
-	 */
-	protected function maybe_add_price_log( $element ) {
-	}
-
 	public function filter_debug_bar_panels( $panels ) {
 		if ( is_singular( 'product' ) ) {
 			include_once __DIR__ . '/class-iworks-omnibus-integration-debug-bar-panel.php';

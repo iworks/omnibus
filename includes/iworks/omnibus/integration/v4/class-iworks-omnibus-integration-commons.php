@@ -37,20 +37,6 @@ class iworks_omnibus_integration_commons extends iworks_omnibus_integration {
 	}
 
 	/**
-	 * helper to decide show it or no
-	 */
-	protected function should_it_show_up( $post_id ) {
-	}
-
-	/**
-	 * helper to add logs
-	 *
-	 * @since 4.0.0
-	 */
-	protected function maybe_add_price_log( $element ) {
-	}
-
-	/**
 	 * Delete older records
 	 *
 	 * @since 4.0.0
@@ -68,22 +54,28 @@ class iworks_omnibus_integration_commons extends iworks_omnibus_integration {
 			return;
 		}
 		/**
-		 * really delete?
+		 * configuration
 		 */
-		if ( 'yes' !== get_option( $this->get_name( 'allow_to_delete' ) ) ) {
+		$configuration = apply_filters(
+			'iworks/omnibus/action/delete_older_records/configuration',
+			array()
+		);
+		if ( empty( $configuration ) ) {
 			return;
 		}
 		/**
 		 * delete
 		 */
-		$query = $wpdb->prepare(
-			sprintf(
-				'DELETE FROM %s WHERE price_sale_from < ( CURRENT_DATE - INTERVAL %%d DAY )',
-				$wpdb->iworks_omnibus
-			),
-			max( 31, intval( get_option( $this->get_name( 'days_delete' ) ) ) )
-		);
-		$wpdb->query( $query );
+		foreach ( $configuration as $one ) {
+			do_action( 'iworks/omnibus/action/before/delete_older_records/' . $one['product_origin'] );
+			$query = $wpdb->prepare(
+				"delete from $wpdb->iworks_omnibus where product_origin = %s and price_sale_from < ( current_date - interval %d year )",
+				$one['product_origin'],
+				max( 1, intval( $one['delete_years'] ) )
+			);
+			$wpdb->query( $query );
+			do_action( 'iworks/omnibus/action/after/delete_older_records/' . $one['product_origin'] );
+		}
 		/**
 		 * do action after
 		 */

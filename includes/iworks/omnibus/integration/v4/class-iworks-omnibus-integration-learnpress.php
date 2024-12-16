@@ -27,6 +27,13 @@ include_once 'class-iworks-omnibus-integration.php';
 
 class iworks_omnibus_integration_learnpress extends iworks_omnibus_integration {
 
+	/**
+	 * Omnibus Product Origin
+	 *
+	 * @since 4.0.0
+	 */
+	private $product_origin = 'learnpress';
+
 	public function __construct() {
 		add_filter( 'learn_press_course_price_html', array( $this, 'filter_learn_press_course_price_html' ), 10, 3 );
 		/**
@@ -37,6 +44,8 @@ class iworks_omnibus_integration_learnpress extends iworks_omnibus_integration {
 		add_action( 'admin_init', array( $this, 'action_admin_init' ) );
 		/**
 		 * delete older logs
+		 *
+		 * @since 4.0.0
 		 */
 		add_filter( 'iworks/omnibus/action/delete_older_records/configuration', array( $this, 'add_configuration_to_delete_older_records' ) );
 		/**
@@ -208,7 +217,7 @@ class iworks_omnibus_integration_learnpress extends iworks_omnibus_integration {
 		}
 		$data = array(
 			'post_id'         => $id,
-			'product_origin'  => 'learnpress',
+			'product_origin'  => $this->product_origin,
 			'product_type'    => get_post_type( $id ),
 			'price_regular'   => $regular_price,
 			'price_sale'      => get_post_meta( $id, '_lp_sale_price', true ),
@@ -358,6 +367,13 @@ class iworks_omnibus_integration_learnpress extends iworks_omnibus_integration {
 	 * @since 4.0.0
 	 */
 	public function add_configuration_to_delete_older_records( $configuration ) {
+		if ( 'yes' === get_option( $this->get_name( 'allow_to_delete' ) ) ) {
+			$configuration[ $this->product_origin ] = array(
+				'product_origin' => $this->product_origin,
+				'delete_years'   => get_option( $this->get_name( 'delete_years' ) ),
+			);
+		}
+		return $configuration;
 	}
 }
 

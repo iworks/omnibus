@@ -41,20 +41,6 @@ abstract class iworks_omnibus_integration {
 
 	protected string $mysql_data_format = 'Y-m-d H:i:s';
 
-	/**
-	 * helper to decide show it or no
-	 *
-	 * @since 4.0.0
-	 */
-	abstract protected function should_it_show_up( $post_id );
-
-	/**
-	 * helper to add logs
-	 *
-	 * @since 4.0.0
-	 */
-	abstract protected function maybe_add_price_log( $element );
-
 	public function get_name( $name = '' ) {
 		if ( empty( $name ) ) {
 			return $this->meta_name;
@@ -170,13 +156,13 @@ abstract class iworks_omnibus_integration {
 			),
 			array(
 				'title'             => __( 'Delete After', 'omnibus' ),
-				'desc'              => __( 'This controls the number of days to delete changes.', 'omnibus' ),
-				'id'                => $this->get_name( 'days_delete', '' ),
-				'default'           => '45',
+				'desc'              => __( 'This controls the number of years to delete changes.', 'omnibus' ),
+				'id'                => $this->get_name( 'delete_years', '' ),
+				'default'           => '2',
 				'type'              => 'number',
 				'css'               => 'width: 80px;',
 				'custom_attributes' => array(
-					'min' => 30,
+					'min' => 1,
 				),
 				'class'             => 'iworks_omnibus_delete_older_field',
 			),

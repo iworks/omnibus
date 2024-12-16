@@ -17,7 +17,6 @@ class iworks_omnibus_integration_learnpress_settings extends LP_Abstract_Setting
 	public function __construct() {
 		$this->id   = 'omnibus';
 		$this->text = esc_html__( 'Omnibus', 'omnibus' );
-
 		parent::__construct();
 	}
 
