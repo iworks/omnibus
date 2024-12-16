@@ -118,10 +118,11 @@ abstract class iworks_omnibus_integration {
 	 *
 	 * @since 1.1.0
 	 */
-	protected function get_days() {
+	protected function get_days( $shift = 0 ) {
+		$shift = intval( $shift );
 		return apply_filters(
 			'iworks_omnibus_days',
-			max( 30, intval( get_option( $this->get_name( 'days' ), 30 ) ) )
+			max( 30, $shift + intval( get_option( $this->get_name( 'days' ), 30 ) ) )
 		);
 	}
 
@@ -267,7 +268,8 @@ abstract class iworks_omnibus_integration {
 
 	protected function get_lowest_price_by_post_id( $post_id, $sale_price ) {
 		global $wpdb;
-		$query = $wpdb->prepare(
+		$number_of_days_from_last_discount = $this->get_last_date_of_saved_prices_by_id( $post_id );
+		$query                             = $wpdb->prepare(
 			"select * from $wpdb->iworks_omnibus where
 				post_id = %d
 				and price_sale <> %f
@@ -277,9 +279,9 @@ abstract class iworks_omnibus_integration {
 			$post_id,
 			$sale_price,
 			date( $this->mysql_data_format ),
-			date( $this->mysql_data_format, strtotime( sprintf( '-%d days', $this->get_days() ) ) )
+			date( $this->mysql_data_format, strtotime( sprintf( '-%d days', $this->get_days( $number_of_days_from_last_discount ) ) ) )
 		);
-		$data  = $wpdb->get_row( $query, ARRAY_A );
+		$data                              = $wpdb->get_row( $query, ARRAY_A );
 		if ( empty( $data ) ) {
 			return new WP_Error( 'no_price', __( 'There is no price data in history.', 'omnibus' ) );
 		}
@@ -439,7 +441,6 @@ abstract class iworks_omnibus_integration {
 				if ( $this->is_on( get_option( $this->get_name( 'message_settings' ) ) ) ) {
 					$message = get_option( $this->get_name( 'message_free' ) );
 				}
-				$message = preg_replace( '/{price}/', $price_to_show, $message );
 				break;
 		}
 		if ( ! empty( $message ) ) {
@@ -492,7 +493,6 @@ abstract class iworks_omnibus_integration {
 	/**
 	 * get last saved prices by id
 	 *
-	 *
 	 * @since 4.0.0
 	 */
 	protected function get_last_saved_prices_by_id( $post_id ) {
@@ -507,19 +507,42 @@ abstract class iworks_omnibus_integration {
 		);
 		$data  = $wpdb->get_row( $query, ARRAY_A );
 		if ( empty( $data ) ) {
-			$data = new WP_Error(
-				'omnibus',
-				sprintf(
-					/* translators: %d object ID */
-					esc_html__( 'There is no saved prices for id: %d.', 'omnibus' ),
-					$post_id
-				)
-			);
+			return $this->__return_error_no_saved_prices( $post_id );
 		}
 		return $data;
 	}
 
-	public function _get_lowest_price_in_history( $post_id ) {
+	/**
+	 * get last saved prices by id
+	 *
+	 * @since 4.0.0
+	 */
+	protected function get_last_date_of_saved_prices_by_id( $post_id ) {
+		global $wpdb;
+		$query = $wpdb->prepare(
+			"select datediff( now(), max( price_sale_from ) ) from $wpdb->iworks_omnibus where
+				post_id = %d
+				and price_sale_from <= %s",
+			$post_id,
+			date( $this->mysql_data_format )
+		);
+		return intval( $wpdb->get_var( $query ) );
+	}
+
+	/**
+	 * WP Error helper for "no saved prices"
+	 *
+	 * @since 4.0.0
+	 */
+	private function __return_error_no_saved_prices( $post_id ) {
+		return new WP_Error(
+			'omnibus_no_saved_prices',
+			sprintf(
+				/* translators: %d object ID */
+				esc_html__( 'There is no saved prices for id: %d.', 'omnibus' ),
+				$post_id
+			)
+		);
 	}
 
 	/**
@@ -529,7 +552,6 @@ abstract class iworks_omnibus_integration {
 	 */
 	private function replace_options_based_placeholders( $message ) {
 		$message = preg_replace( '/{days}/', $this->get_days(), $message );
-
 		return $message;
 	}
 }

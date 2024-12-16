@@ -195,14 +195,15 @@ Project maintained on github at [iworks/omnibus](PLUGIN_GITHUB_WEBSITE).
 = 4.0.0 (2024-xx-xx) =
 * A dedicated price log table has been added to increase performance and stability.
 * Display Omnibus with or without tax has been removed.
-* Missing Omnibus message for variable product with only one variant has been fixed. [#27](https://github.com/iworks/omnibus/issues/27)
+* Missing Omnibus message for variable product with only one variant has been fixed. [#27](https://github.com/iworks/omnibus/issues/27). Props for [pmaroszek](https://wordpress.org/support/users/pmaroszek/).
 * Removed the option to show the omnibus price for the variant product.
-* The ability to auto clear older prices has been added. [#23](https://github.com/iworks/omnibus/issues/23)
+* The ability to auto clear older prices has been added. [#23](https://github.com/iworks/omnibus/issues/23).
 * The [iWorks Rate](https://github.com/iworks/iworks-rate) module has been updated to 2.2.1.
-* The LearnPress and Uncaught Error after update has been fixed. [#34](https://github.com/iworks/omnibus/issues/34)
+* The LearnPress and Uncaught Error after update has been fixed. [#34](https://github.com/iworks/omnibus/issues/34). Props for [Michał Kowalik](https://wordpress.org/support/users/klapaucius4/).
 * The LearnPress Omnibus configuration has been improved.
 * The `load_plugin_textdomain()` function call has been fixed.
-* The proper message has been added when product was free. [#3](https://github.com/iworks/omnibus/issues/3)
+* The proper message has been added when product was free. [#3](https://github.com/iworks/omnibus/issues/3). Props for [md-hs-io](https://github.com/md-hs-io).
+* The date scope for Omnibus Directive has been fixed. [#30](https://github.com/iworks/omnibus/issues/30). Props for [tomaszaleksandrzakom](https://github.com/tomaszaleksandrzak).
 
 = 3.0.3 (2024-08-09) =
 * The omnibus price for variant in admin panel has been fixed.
