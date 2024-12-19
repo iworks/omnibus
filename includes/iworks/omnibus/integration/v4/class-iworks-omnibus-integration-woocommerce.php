@@ -243,6 +243,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		add_action( 'admin_enqueue_scripts', array( $this, 'action_admin_enqueue_scripts_register' ) );
 		add_action( 'load-woocommerce_page_wc-settings', array( $this, 'enqueue_scripts' ) );
 		add_action( 'admin_head', array( $this, 'action_admin_head' ) );
+		add_filter( 'iworks/omnibus/woocommerce/settings', array( $this, 'filter_settings_fields' ) );
 	}
 
 	public function enqueue_scripts() {
@@ -974,5 +975,70 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 			);
 		}
 		return $configuration;
+	}
+
+	public function filter_settings_fields( $settings ) {
+		return apply_filters(
+			'iworks_omnibus_admin_settings',
+			array(
+				array(
+					'title' => esc_html__( 'Log Price Changes', 'omnibus' ),
+					'type'  => 'title',
+					'id'    => $this->get_name( 'log-price-changes' ),
+				),
+				array(
+					'title'             => __( 'Number Of Days', 'omnibus' ),
+					'desc'              => __( 'This controls the number of days to show. According to the Omnibus Directive, minimum days is 30 after curent sale was started.', 'omnibus' ),
+					'id'                => $this->get_name( 'days' ),
+					'default'           => '30',
+					'type'              => 'number',
+					'css'               => 'width: 80px;',
+					'custom_attributes' => array(
+						'min' => 30,
+					),
+				),
+				array(
+					'title'   => __( 'Delete Log Items', 'omnibus' ),
+					'type'    => 'checkbox',
+					'default' => false,
+					'id'      => $this->get_name( 'allow_to_delete' ),
+					'desc'    => __( 'Allow to delete older items', 'omnibus' ),
+					'class'   => 'iworks_omnibus_delete_older',
+				),
+				array(
+					'title'             => __( 'Delete After', 'omnibus' ),
+					'desc'              => __( 'This controls the number of years to delete changes.', 'omnibus' ),
+					'id'                => $this->get_name( 'delete_years', '' ),
+					'default'           => '2',
+					'type'              => 'number',
+					'css'               => 'width: 80px;',
+					'custom_attributes' => array(
+						'min' => 1,
+					),
+					'class'             => 'iworks_omnibus_delete_older_field',
+				),
+				array(
+					'type' => 'sectionend',
+					'id'   => $this->get_name( 'log-price-changes-end' ),
+				),
+				array(
+					'title' => esc_html__( 'Delete Data', 'omnibus' ),
+					'type'  => 'title',
+					'id'    => $this->get_name( 'uninstall-delete-data' ),
+				),
+				array(
+					'title'    => __( 'Uninstall', 'omnibus' ),
+					'id'       => $this->get_name( 'delete' ),
+					'default'  => 'no',
+					'type'     => 'checkbox',
+					'desc'     => __( 'Delete Omnibus data during uninstall.', 'omnibus' ),
+					'desc_tip' => __( 'When enabled, all omnibus pricing data will be deleted when uninstalling the plugin Omnibus.', 'omnibus' ),
+				),
+				array(
+					'type' => 'sectionend',
+					'id'   => $this->get_name( 'uninstall-delete-data-end' ),
+				),
+			),
+		);
 	}
 }

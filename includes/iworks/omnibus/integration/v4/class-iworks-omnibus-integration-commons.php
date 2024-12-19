@@ -42,6 +42,7 @@ class iworks_omnibus_integration_commons extends iworks_omnibus_integration {
 	 * @since 4.0.0
 	 */
 	public function action_shutdown_maybe_delete_older_records() {
+		remove_action( 'shutdown', array( $this, 'action_shutdown_maybe_delete_older_records' ) );
 		global $wpdb;
 		/**
 		 * do action before
@@ -81,4 +82,5 @@ class iworks_omnibus_integration_commons extends iworks_omnibus_integration {
 		 */
 		do_action( 'iworks/omnibus/action/after/delete_older_records' );
 	}
+
 }
