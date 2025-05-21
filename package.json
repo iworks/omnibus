@@ -5,6 +5,13 @@
     "description": "The plugin adds two additional fields in the product edit view: the lowest price and the effective date for compatibility with the EU Omnibus Directive.",
     "version": "4.0.0.beta.1",
     "homepage": "https://github.com/iworks/omnibus/",
+    "keywords": [
+        "e-commerce",
+        "omnibus",
+        "price",
+        "shop",
+        "woocommerce"
+    ],
     "author": [
         {
             "name": "Marcin Pietrzak",
@@ -12,12 +19,16 @@
             "uri": "http://iworks.pl/"
         }
     ],
+    "translator": {
+        "name": "Marcin Pietrzak",
+        "email": "marcin@iworks.pl"
+    },
     "requires": {
         "WordPress": "6.0",
         "PHP": "8.0"
     },
     "tested": {
-        "WordPress": "6.6"
+        "WordPress": "6.8"
     },
     "devDependencies": {
         "grunt": "^1",
@@ -34,32 +45,11 @@
         "grunt-contrib-sass": "^1",
         "grunt-contrib-uglify": "^1",
         "grunt-contrib-watch": "^1",
+        "grunt-concat-css": "^0",
         "grunt-phpunit": "^0",
         "grunt-potomo": "^3",
         "grunt-replace": "^1",
-        "grunt-wp-i18n": "^1",
-        "webpack": "^4.16.3",
-        "webpack-cli": "^3.1.0",
-        "es6-promise": "^4.2.4",
-        "extract-text-webpack-plugin": "^4.0.0-beta.0",
-        "system-bell-webpack-plugin": "^1.0.0",
-        "path": "^0.12.7",
-        "mocha": "^2.3.3",
-        "jquery": "^3.3.1",
-        "lodash": "^4.17.10",
-        "node-sass": "^4.9.0",
-        "babel-core": "^6.26.3",
-        "css-loader": "^0.28.11",
-        "file-loader": "^1.1.11",
-        "sass-loader": "^6.0.7",
-        "ajv-keywords": "^3.2.0",
-        "autoprefixer": "^7.2.6",
-        "babel-loader": "^7.1.5",
-        "style-loader": "^0.20.3",
-        "whatwg-fetch": "^2.0.4",
-        "postcss-loader": "^2.1.6",
-        "babel-preset-env": "^1.7.0",
-        "resolve-url-loader": "^2.3.0"
+        "grunt-wp-i18n": "^1"
     },
     "keywords": [],
     "repository": {
