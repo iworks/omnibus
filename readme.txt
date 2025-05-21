@@ -198,7 +198,7 @@ Project maintained on github at [iworks/omnibus](PLUGIN_GITHUB_WEBSITE).
 * Missing Omnibus message for variable product with only one variant has been fixed. [#27](https://github.com/iworks/omnibus/issues/27). Props for [pmaroszek](https://wordpress.org/support/users/pmaroszek/).
 * Removed the option to show the omnibus price for the variant product.
 * The ability to auto clear older prices has been added. [#23](https://github.com/iworks/omnibus/issues/23).
-* The [iWorks Rate](https://github.com/iworks/iworks-rate) module has been updated to 2.2.1.
+* The [iWorks Rate](https://github.com/iworks/iworks-rate) module has been updated to 2.2.3.
 * The LearnPress and Uncaught Error after update has been fixed. [#34](https://github.com/iworks/omnibus/issues/34). Props for [Michał Kowalik](https://wordpress.org/support/users/klapaucius4/).
 * The LearnPress Omnibus configuration has been improved.
 * The `load_plugin_textdomain()` function call has been fixed.
