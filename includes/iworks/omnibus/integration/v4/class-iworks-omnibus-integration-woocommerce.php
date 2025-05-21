@@ -23,7 +23,7 @@ if ( class_exists( 'iworks_omnibus_integration_woocommerce' ) ) {
 	return;
 }
 
-include_once 'class-iworks-omnibus-integration.php';
+require_once 'class-iworks-omnibus-integration.php';
 
 class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration {
 
@@ -119,6 +119,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 				break;
 			default:
 				add_filter( 'woocommerce_get_price_html', array( $this, 'filter_woocommerce_get_price_html' ), 10, 2 );
+				break;
 		}
 		/**
 		 * WooCommerce show in cart
@@ -258,7 +259,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	public function action_admin_enqueue_scripts_register() {
 		wp_register_script(
 			$this->get_name( __CLASS__ ),
-			plugins_url( 'assets/scripts/admin/woocommerce.min.js', dirname( dirname( dirname( __DIR__ ) ) ) ),
+			plugins_url( 'assets/scripts/admin/woocommerce.min.js', dirname( __DIR__, 3 ) ),
 			array( 'jquery' ),
 			'PLUGIN_VERSION'
 		);
