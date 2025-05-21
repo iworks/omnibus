@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: PLUGIN_TITLE
+Plugin Name: Omnibus
 Text Domain: omnibus
 Plugin URI: PLUGIN_URI
 Description: PLUGIN_DESCRIPTION
