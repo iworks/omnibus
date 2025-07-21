@@ -1,4 +1,4 @@
-# Translation of Plugins - Omnibus — show the lowest price - Development (trunk) in Polish
+# Translation of Plugins - Omnibus — show the lowest price - Development (trunk) in Finnish
 # This file is distributed under the same license as the Plugins - Omnibus — show the lowest price - Development (trunk) package.
 msgid ""
 msgstr ""
@@ -6,66 +6,58 @@ msgstr ""
 "(trunk)\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/omnibus-dev\n"
 "POT-Creation-Date: 2025-07-21 08:32:07+00:00\n"
-"PO-Revision-Date: 2025-07-21 08:10:49+0000\n"
-"Language: pl\n"
+"PO-Revision-Date: 2023-03-30 19:50:37+0000\n"
+"Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 "
-"&& (n % 100 < 12 || n % 100 > 14)) ? 1 : 2);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: GlotPress/4.0.1\n"
 
 #: assets/templates/migration-v3/admin-page.php:8
 msgid "Omnibus: Data Migration Tool"
-msgstr "Omnibus: narzędzie do migracji danych"
+msgstr ""
 
 #. translators: %s number of fields to migrate
 #: assets/templates/migration-v3/admin-page.php:19
 msgid "There is %s field to migrate!"
 msgid_plural "There is %s fields to migrate!"
-msgstr[0] "Znaleziono %s pole do migracji!"
-msgstr[1] "Znaleziono %s pola do migracji!"
-msgstr[2] "Znaleziono %s pól do migracji!"
+msgstr[0] ""
+msgstr[1] ""
 
 #: assets/templates/migration-v3/admin-page.php:34
 msgid "Start!"
-msgstr "Start!"
+msgstr ""
 
 #: assets/templates/migration-v3/message.php:9
 msgid "Omnibus: data migration required!"
-msgstr "Omnibus: wymagana migracja danych!"
+msgstr ""
 
 #: assets/templates/migration-v3/message.php:11
 msgid ""
 "The plugin uses an old version of data collection and data migration is "
 "required for the plugin to function properly."
 msgstr ""
-"Wtyczka korzysta ze starej wersji gromadzenia danych, a migracja danych jest "
-"wymagana do prawidłowego działania wtyczki."
 
 #: assets/templates/migration-v3/message.php:16
 msgid ""
 "The migration has already started but is not finished! It can cause problems "
 "with Omnibus prices."
 msgstr ""
-"Migracja już się rozpoczęła, ale jeszcze się nie zakończyła! Może to "
-"powodować problemy z cenami Omnibus."
 
 #: assets/templates/migration-v3/message.php:21
 msgid ""
 "We highly recommend creating a copy of the database before starting the "
 "migration."
 msgstr ""
-"Zdecydowanie zalecamy utworzenie kopii bazy danych przed rozpoczęciem "
-"migracji."
 
 #: assets/templates/migration-v3/message.php:25
 msgid "Go to migration page"
-msgstr "Przejdź do strony migracji"
+msgstr ""
 
 #: assets/templates/woocommerce-version.php:8
 msgid "Omnibus: installed version of WooCommerce is too low!"
-msgstr "Omnibus: zainstalowana wersja WooCommerce jest za niska!"
+msgstr "Omnibus: Asennettu WooCommerce-versionumero on liian alhainen!"
 
 #. translators: %1$s current version of WooCommerce, %2$s: required version of
 #. WooCommerce
@@ -75,9 +67,9 @@ msgid ""
 "cannot work with it. Please update WooCommerce to at least version %2$s for "
 "the Omnibus plugin to work properly."
 msgstr ""
-"Używana wersja WooCommerce (%1$s) jest za niska i nasza wtyczka nie potrafi "
-"z nią współpracować. Zaktualizuj WooCommerce do wersji co najmniej %2$s, aby "
-"wtyczka Omnibus działała poprawnie."
+"Käyttämäsi WooCommerce-versio (%1$s) on liian vanha, eikä lisäosamme voi "
+"toimia sen kanssa. Päivitä WooCommerce-versio vähintään %2$s:een, jotta "
+"Omnibus-lisäosa toimii kunnolla."
 
 #. translators: %1$s: A tag begin, %2$s: the A tag close
 #: includes/iworks/class-iworks-omnibus.php:166
@@ -85,51 +77,52 @@ msgid ""
 "If you like <strong>Omnibus</strong> please leave us a "
 "%1$s&#9733;&#9733;&#9733;&#9733;&#9733;%2$s rating. A huge thanks in advance!"
 msgstr ""
-"Jeżeli lubisz wtyczkę <strong>Omnibus</strong>, proszę daj jej ocenę "
-"%1$s&#9733;&#9733;&#9733;&#9733;&#9733;%2$s. Z góry bardzo dziękuję!"
+"Jos pidät <strong>Omnibus</strong> lisäosasta. Tee lisäosasta "
+"%1$s&#9733;&#9733;&#9733;&#9733;&#9733;%2$s arvostelu. Kiitoksia paljon "
+"etukäteen!"
 
 #: includes/iworks/class-iworks-omnibus.php:209
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:543
 #: includes/iworks/rate/rate.php:133
 msgid "Settings"
-msgstr "Ustawienia"
+msgstr "Asetukset"
 
 #: includes/iworks/class-iworks-omnibus.php:288
 #: includes/iworks/class-iworks-omnibus.php:289
 msgid "Omnibus Migration"
-msgstr "Migracja Omnibus"
+msgstr ""
 
 #: includes/iworks/class-iworks-omnibus.php:391
 msgid "Failed Security Check"
-msgstr "Nieudana kontrola bezpieczeństwa"
+msgstr ""
 
 #: includes/iworks/class-iworks-omnibus.php:408
 msgid "The migration was successful."
-msgstr "Migracja przebiegła pomyślnie."
+msgstr ""
 
 #: includes/iworks/class-iworks-omnibus.php:412
 msgid "Unknown Error Occurred"
-msgstr "Wystąpił nieznany błąd"
+msgstr ""
 
 #. translators: %2$s: rich html price
 #: includes/iworks/omnibus/class-iworks-omnibus-integration.php:344
 #: includes/iworks/omnibus/class-iworks-omnibus-integration.php:352
 msgid "Previous lowest price was %2$s."
-msgstr "Poprzednia najniższa cena: %2$s."
+msgstr "Aikaisempi alin hinta: %2$s."
 
 #: includes/iworks/omnibus/class-iworks-omnibus-integration.php:490
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:528
 msgid "Omnibus Directive"
-msgstr "Dyrektywa Omnibus"
+msgstr "Omnibus-direktiivi"
 
 #: includes/iworks/omnibus/class-iworks-omnibus-integration.php:496
 msgid "Omnibus Directive Settings"
-msgstr "Dyrektywa Omnibus: ustawienia"
+msgstr "Omnibus -direktiivin asetukset"
 
 #: includes/iworks/omnibus/class-iworks-omnibus-integration.php:504
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-class-easydigitaldownloads.php:159
 msgid "Number of days"
-msgstr "Liczba dni"
+msgstr "Päivien lukumäärä"
 
 #: includes/iworks/omnibus/class-iworks-omnibus-integration.php:505
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:493
@@ -137,74 +130,74 @@ msgid ""
 "This controls the number of days to show. According to the Omnibus "
 "Directive, minimum days is 30 after curent sale was started."
 msgstr ""
-"Kontroluje liczbę dni do wyświetlenia. Zgodnie z Dyrektywą Omnibus minimalna "
-"liczba dni to 30 przed rozpoczęciem promocji."
+"Tämä määrittää kuinka monta päivää hinta näytetään. Omnibus-direktiivin "
+"mukaan minimi on 30 päivää."
 
 #: includes/iworks/omnibus/class-iworks-omnibus-integration.php:519
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:52
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:373
 msgid "Messages"
-msgstr "Wiadomości"
+msgstr "Tekstit"
 
 #: includes/iworks/omnibus/class-iworks-omnibus-integration.php:532
 msgid "Price Message"
-msgstr "Komunikat dotyczący ceny"
+msgstr "Hintailmoitus"
 
 #: includes/iworks/omnibus/class-iworks-omnibus-integration.php:538
 msgid "Default messages (recommended)."
-msgstr "Domyślny komunikat (zalecane)."
+msgstr "Oletustekstit (suositeltu)"
 
 #: includes/iworks/omnibus/class-iworks-omnibus-integration.php:539
 msgid "Custom messages."
-msgstr "Własne wiadomości."
+msgstr "Mukautetut tekstit"
 
 #: includes/iworks/omnibus/class-iworks-omnibus-integration.php:541
 msgid ""
 "Custom messages will be used only when you choose \"Custom messages.\" "
 "option."
 msgstr ""
-"Własne wiadomości będą używane tylko wtedy, gdy wybrano opcję „Własne "
-"wiadomości”."
+"Mukautettuja tekstejä käytetään jos valitset \"Mukautetut tekstit\" "
+"vaihtoehdon."
 
 #. translators: Do not translate {price}, it is the replacement placeholder !
 #: includes/iworks/omnibus/class-iworks-omnibus-integration.php:548
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:329
 msgid "Use the {price} placeholder to display price."
-msgstr "Użyj symbolu zastępczego {price}, aby wyświetlić cenę."
+msgstr "Käytä {price} näyttääksesi hinnan."
 
 #. translators: Do not translate {timestamp}, it is the replacement placeholder
 #. !
 #: includes/iworks/omnibus/class-iworks-omnibus-integration.php:550
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:331
 msgid "Use the {timestamp} placeholder to display timestamp."
-msgstr "Użyj symbolu zastępczego {timestamp}, aby wyświetlić znacznik czasu."
+msgstr "Käytä {timestamps} näyttääksesti aikaleiman."
 
 #. translators: Do not translate {days}, it is the replacement placeholder !
 #: includes/iworks/omnibus/class-iworks-omnibus-integration.php:552
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:333
 msgid "Use the {days} placeholder to display days."
-msgstr "Użyj symbolu zastępczego {days}, aby wyświetlić dni."
+msgstr "Käytä {days} näyttääksesi päivät."
 
 #. translators: Do not translate {when}, it is the replacement placeholder !
 #: includes/iworks/omnibus/class-iworks-omnibus-integration.php:554
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:335
 msgid "Use the {when} placeholder to display date."
-msgstr "Użyj symbolu zastępczego {when}, aby wyświetlić datę."
+msgstr "Käytä {when} näyttääksesi päivän."
 
 #: includes/iworks/omnibus/class-iworks-omnibus-integration.php:558
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:394
 msgid "Previous lowest price: {price}."
-msgstr "Poprzednia najniższa cena: {price}."
+msgstr "Aikaisempi alin hinta: {price}."
 
 #: includes/iworks/omnibus/class-iworks-omnibus-integration.php:665
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:402
 msgid "The previous price is not available."
-msgstr "Poprzednia cena nie jest dostępna."
+msgstr "Aikaisempaa hinta ei ole saatavilla."
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-class-easydigitaldownloads.php:99
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:650
 msgid "Price"
-msgstr "Cena"
+msgstr "Hinta"
 
 #. translators: %d: number of days
 #. translators: %d: nuber of days
@@ -213,7 +206,7 @@ msgstr "Cena"
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:218
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:654
 msgid "The lowest price in %d days."
-msgstr "Najniższa cena w ciągu ostatnich %d dni."
+msgstr "Alin hinta viimeisen %d aikana."
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-class-easydigitaldownloads.php:114
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:153
@@ -221,7 +214,7 @@ msgstr "Najniższa cena w ciągu ostatnich %d dni."
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:678
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:1258
 msgid "Date"
-msgstr "Data"
+msgstr "Päivämäärä"
 
 #. translators: %d: number of days
 #. translators: %d: nuber of days
@@ -230,7 +223,7 @@ msgstr "Data"
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:233
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:682
 msgid "The date when lowest price in %d days occurred."
-msgstr "Data wystąpienia najniższej ceny w ciągu ostatnich %d dni."
+msgstr "Päivämäärä milloin alin hinta %d oli aktiivisena."
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-class-easydigitaldownloads.php:135
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:28
@@ -246,148 +239,147 @@ msgstr "Omnibus"
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-class-easydigitaldownloads.php:143
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:136
 msgid "Show on"
-msgstr "Wyświetlaj na"
+msgstr "Näytä"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-class-easydigitaldownloads.php:144
 msgid "Single Download"
-msgstr "Pojedynczy plik"
+msgstr "Yksittäinen lataus"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-class-easydigitaldownloads.php:149
 msgid "Admin Download List"
-msgstr "Lista plików w kokpicie administratora"
+msgstr "Hallinta Lataa Lista"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-class-easydigitaldownloads.php:154
 msgid "Admin Edit Download"
-msgstr "Edycja pliku"
+msgstr "Hallinta Muokkaa Lataa"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-class-easydigitaldownloads.php:160
 msgid ""
 "This controls the number of days to show. According to the Omnibus "
 "Directive, minimum days is 30."
 msgstr ""
-"Kontroluje liczbę dni do wyświetlenia. Zgodnie z Dyrektywą Omnibus minimalna "
-"liczba dni to 30."
+"Tämä määrittää kuinka monta päivää hinta näytetään. Omnibus-direktiivin "
+"mukaan minimi on 30 päivää."
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:48
 msgid "Product info"
-msgstr "Informacje o produkcie"
+msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:51
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:176
 msgid "ID"
-msgstr "Identyfikator"
+msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:53
 msgid "Type"
-msgstr "Rodzaj"
+msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:55
 msgid "Title"
-msgstr "Tytuł"
+msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:71
 msgid "Product changes log"
-msgstr "Dziennik zmian produktu"
+msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:93
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:129
 msgid "The selected product type is not supported."
-msgstr "Wybrany typ produktu nie jest obsługiwany."
+msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:103
 msgid "Product saved prices"
-msgstr "Zapisane ceny produktów"
+msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:138
 msgid "The selected content is not a product."
-msgstr "Wybrana zawartość nie jest produktem."
+msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:145
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:170
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:1249
 msgid "There is no price history recorded."
-msgstr "Nie zarejestrowano zmian w historii ceny."
+msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:151
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:177
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:1256
 msgid "Regular Price"
-msgstr "Cena standardowa"
+msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:152
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:178
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:1257
 msgid "Sale Price"
-msgstr "Cena promocyjna"
+msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:179
 msgid "Days"
-msgstr "Dni"
+msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:126
 msgid "Only on sale"
-msgstr "Tylko promocje"
+msgstr "Vain alennustuotteille"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:130
 msgid "Display only for the course on sale."
-msgstr "Wyświetlaj tylko dla kursów w promocji."
+msgstr "Näytä vain kursseille mitkä ovat alennuksessa."
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:137
 msgid "Course single"
-msgstr "Pojedyncza strona kursu"
+msgstr "Yksittäisessä kurssissa"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:142
 msgid "Show or hide on a single course page."
-msgstr "Pokaż lub ukryj to pole na stronie kursu."
+msgstr "Näytä tai piilota kurssisivulla."
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:148
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:310
 msgid "Display anywhere else"
-msgstr "Wyświetlaj gdziekolwiek indziej"
+msgstr "Näytä kaikkialla muualla"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:149
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:311
 msgid "Display anywhere else that doesn't fit any of the above."
-msgstr ""
-"Wyświetlaj w dowolnym miejscu, które nie pasuje do żadnego z powyższych."
+msgstr "Näytä kaikkialla muualla mikä ei sovi yllä oleviin."
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:156
 msgid "Show on admin on"
-msgstr "Pokaż w administratorze na"
+msgstr "Näytä hallinnassa"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:157
 msgid "Courses list"
-msgstr "Lista kursów"
+msgstr "Kurssit listauksessa"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:164
 msgid "Course edit"
-msgstr "Edycja kursu"
+msgstr "Kurssi muokkauksessa"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:215
 msgid "Omnibus Price"
-msgstr "Cena Omnibusa"
+msgstr "Omnibus hinta"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:221
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:236
 msgid "no data available"
-msgstr "brak danych"
+msgstr "Tietoa ei saatavilla"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:230
 msgid "Omnibus Date"
-msgstr "Data Omnibusa"
+msgstr "Omnibus päivämäärä"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:50
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:66
 msgid "Display Price"
-msgstr "Wyświetl cenę"
+msgstr "Näytä hinta"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:51
 msgid "Where on site"
-msgstr "Gdzie wyświetlać w witrynie"
+msgstr "Missä sivulla"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:53
 msgid "Admin Dashboard"
-msgstr "Kokpit administratora"
+msgstr "Hallintapaneeli"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:69
 msgid ""
@@ -395,26 +387,26 @@ msgid ""
 "is on sale. But if you use publicly available discounts, e.g., \"discount "
 "code\" you should consider showing omnibus prices all the time."
 msgstr ""
-"Wytyczne Unii Europejskiej wymagają wyświetlania ceny minimalnej, jeśli "
-"produkt jest w promocji. Jeśli jednak korzystasz z publicznie dostępnych "
-"rabatów, np. „kodu rabatowego”, warto rozważyć wyświetlanie cen  omnibus "
-"przez cały czas."
+"Euroopan unionin ohjeistuksen mukaan alennustuotteiden yhteydessä on "
+"esitettävä vähimmäishinta. Jos kuitenkin käytät julkisesti saatavilla olevia "
+"alennuksia, kuten \"alennuskoodia\", kannattaa harkita Omnibus-hintojen "
+"näyttämistä koko ajan."
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:72
 msgid "Display minimal price"
-msgstr "Wyświetl cenę minimalną"
+msgstr "Näytä minimi hinta"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:77
 msgid "Only when the product is on sale"
-msgstr "Tylko wtedy, gdy produkt jest w promocji"
+msgstr "Vain kun tuote on alennuksessa."
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:78
 msgid "Always (use if you have publicly available discounts)"
-msgstr "Zawsze (użyj, jeśli masz publicznie dostępne rabaty)"
+msgstr "Aina (käytä, jos sinulla on julkisesti saatavilla olevia alennuksia)."
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:82
 msgid "Where on Single Product"
-msgstr "Gdzie na stronie produktu"
+msgstr "Missä yksittäisen tuotteen sivulla"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:83
 msgid ""
@@ -422,93 +414,94 @@ msgid ""
 "directive, we recommend displaying it right after the price. Some places may "
 "not work depending on the theme you are using and how your site is built."
 msgstr ""
-"Pozwala wybrać miejsce wyświetlania wiadomości. Zgodnie z dyrektywą zalecamy "
-"wyświetlanie jej zaraz po cenie. Niektóre miejsca mogą nie działać w "
-"zależności od używanego motywu i sposobu budowy witryny."
+"Mahdollistaa viestin sijainnin valitsemisen. Suosittelemme direktiivin "
+"mukaisesti näyttämään sen heti hinnan jälkeen. Jotkut paikat eivät "
+"välttämättä toimi riippuen käyttämästäsi teemasta ja siitä, kuinka sivustosi "
+"on rakennettu."
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:88
 msgid "After the price (recommended)"
-msgstr "Po cenie (zalecane)"
+msgstr "Hinnan jälkeen (suositeltu)"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:89
 msgid "Do not show. I will handle it myself."
-msgstr "Nie pokazuj. Zajmę się tym samodzielnie."
+msgstr "Älä näytä automaattisesti. Lisään itse tarvittavat koodit paikalleen."
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:91
 msgid "Before the product meta data"
-msgstr "Przed danymi meta produktu"
+msgstr "Ennen tuotteen metatietoja"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:92
 msgid "After the product meta data"
-msgstr "Po danych meta produktu"
+msgstr "Tuotteen metatietojen jälkeen"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:94
 msgid "Before the single product summary"
-msgstr "Przed podsumowaniem produktu"
+msgstr "Ennen tuotekuvausta"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:95
 msgid "After the single product summary"
-msgstr "Po podsumowaniu produktu"
+msgstr "Tuotekuvauksen jälkeen"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:97
 msgid "Before the add to cart form"
-msgstr "Przed formularzem dodawania do koszyka"
+msgstr "Ennen lisää ostoskoriin aluetta"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:99
 msgid "Before the add to cart button"
-msgstr "Przed przyciskiem dodawania do koszyka"
+msgstr "Ennen \"Lisää ostoskoriin\" -painiketta"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:100
 msgid "After the add to cart button"
-msgstr "Po przycisku dodawania do koszyka"
+msgstr "\"Lisää ostoskoriin\" -painikkeen jälkeen"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:102
 msgid "Before the add to cart quantity"
-msgstr "Przed polem liczby dodawania do koszyka"
+msgstr "Ennen kappalemäärää"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:103
 msgid "After the add to cart quantity"
-msgstr "Po polu liczby dodawania do koszyka"
+msgstr "Kappalemäärän jälkeen"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:106
 msgid "At the begining of the content"
-msgstr "Na początku treści"
+msgstr "Sisällön alussa"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:107
 msgid "At the end of the content"
-msgstr "Na końcu treści"
+msgstr "Sisällön lopussa"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:123
 msgid "Tax"
-msgstr "Podatki"
+msgstr "Vero"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:128
 msgid "Include tax"
-msgstr "Uwzględnij podatek"
+msgstr "Veroasetukset"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:132
 msgid "Display price with tax"
-msgstr "Wyświetl cenę z podatkiem"
+msgstr "Näytä hinnat sis. verot."
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:143
 msgid "Type of Product"
-msgstr "Rodzaj produktu"
+msgstr "Tuotetyyppi"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:149
 msgid "Simple product"
-msgstr "Prosty produkt"
+msgstr "Yksinkertaiset tuotteet"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:153
 msgid "Variable product: global"
-msgstr "Produkt z wariantami: ogólnie"
+msgstr "Muunnelmatuotteet: globaali"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:157
 msgid "Variable product: variation"
-msgstr "Produkt z wariantami: wariant"
+msgstr "Muunnelmatuotteet: variaatiot"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:174
 msgid "Tutor course"
-msgstr "Kurs Tutora"
+msgstr "Tutor course"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:186
 msgid "YITH Bundle"
@@ -516,11 +509,11 @@ msgstr "YITH Bundle"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:201
 msgid "Show for type"
-msgstr "Pokaż dla rodzaju"
+msgstr "Näytä tyypeille"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:235
 msgid "Where to display on site"
-msgstr "Gdzie wyświetlać w witrynie"
+msgstr "Missä haluat näyttää tiedot sivustollasi"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:238
 msgid ""
@@ -528,270 +521,271 @@ msgid ""
 "options may not work properly depending on the theme you're using or how "
 "your site is built."
 msgstr ""
-"Wybierz miejsca, w których chcesz wyświetlać informacje o cenach. Niektóre "
-"opcje mogą nie działać poprawnie w zależności od używanego motywu lub "
-"sposobu budowy witryny."
+"Valitse paikat, joissa haluat näyttää tietoja hinnoista. Jotkin vaihtoehdot "
+"ei ehkä toimi kunnolla riippuen siitä, minkä teeman olet valinnut tai kuinka "
+"sivustosi on rakennettu."
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:241
 msgid "Single Product"
-msgstr "Prosty produkt"
+msgstr "Yksittäinen tuote"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:245
 msgid "Show a single product page."
-msgstr "Pokaż na stronie produktu."
+msgstr "Näytä yksittäisen tuotteen sivulla."
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:248
 msgid "Shop"
-msgstr "Sklep"
+msgstr "Kauppa"
 
 #. translators: %s WC Settings/Products admin url
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:254
 msgid ""
 "Show on the <a href=\"%s#woocommerce_shop_page_id\" target=\"_blank\">Shop "
 "Page</a>."
-msgstr "Pokaż na (<a href=\"%s#woocommerce_shop_page_id\">stronie sklepu</a>)."
+msgstr ""
+"Näytä <a href=\"%s#woocommerce_shop_page_id\" "
+"target=\"_blank\">Kauppasivulla</a>."
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:263
 msgid ""
 "This setting is only for WooCommerce Shop Page. It will not work if you use "
 "something else, such as a page builder products page."
 msgstr ""
-"Ustawienie dotyczy tylko strony sklepu WooCommerce. Nie zadziała, jeśli "
-"użyjesz czegoś innego, na przykład strony produktów utworzonej za pomocą "
-"page buildera."
+"Tämä asetus koskee vain WooCommercen kauppa sivua. Se ei toimi, jos käytät "
+"jotain muuta, kuten sivunrakentajalla tehtyjä sivuja."
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:266
 msgid "Cart"
-msgstr "Koszyk"
+msgstr "Ostoskori"
 
 #. translators: %s WC Settings/Advance admin url
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:272
 msgid ""
 "Show on the <a href=\"%s#woocommerce_cart_page_id\" target=\"_blank\">Cart "
 "Page</a>."
-msgstr "Pokaż w (<a href=\"%s#woocommerce_cart_page_id\">koszyku</a>)."
+msgstr ""
+"Näytä <a href=\"%s#woocommerce_cart_page_id\" "
+"target=\"_blank\">Ostoskorissa</a>."
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:281
 msgid ""
 "This setting is only for WooCommerce Cart Page. It will not work if you use "
 "something else, such as a page builder cart page."
 msgstr ""
-"Ustawienie dotyczy tylko strony koszyka WooCommerce. Nie zadziała, jeśli "
-"użyjesz czegoś innego, na przykład strony koszyka utworzonego za pomocą page "
-"buildera."
+"Tämä asetus koskee vain WooCommercen ostoskori-sivua. Se ei toimi, jos "
+"käytät jotain muuta, kuten sivunrakentajan lisäämää ostoskori-sivua."
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:284
 msgid "Any loop"
-msgstr "Dowolna pętla"
+msgstr "Kaikissa tuotelistauksissa"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:288
 msgid "Show on any product list."
-msgstr "Pokaż na dowolnej liście produktów."
+msgstr "Näytä kaikissa tuotelistauksissa."
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:291
 msgid "Taxonomy Page"
-msgstr "Strona taksonomii"
+msgstr "Osastoissa"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:295
 msgid "Show on any taxonomy (tags, categories, custom taxonomies)."
-msgstr "Pokaż na dowolnej taksonomii (tagi, kategorie, własne)."
+msgstr "Näytä osastoissa (avainsanat, osastot, mukautetut kategoriat/osastot)."
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:298
 msgid "Related Products List"
-msgstr "Lista powiązanych produktów"
+msgstr "Liittyvät tuotteet -sarakkeissa ja nostoissa"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:302
 msgid "Show on the related products box."
-msgstr "Pokaż w powiązanych produktach."
+msgstr "Näytä \"Liittyvät tuotteet\" alueella."
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:303
 msgid ""
 "This setting is only for WooCommerce related products box. It will not work "
 "if you use something else, such as a page builder related products."
 msgstr ""
-"Ustawienie dotyczy tylko pola produktów powiązanych z WooCommerce. Nie "
-"zadziała, jeśli użyjesz czegoś innego, na przykład produktów związanych "
-"utworzonych za pomocą page buildera."
+"Tämä asetus koskee vain WooCommerceen \"Liittyvät tuotteet\" laatikoita. Se "
+"ei toimi, jos käytät jotain muuta, kuten sivunrakentajan liittyviä tuotteita."
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:306
 msgid "Everywhere Else"
-msgstr "Gdziekolwiek indziej"
+msgstr "Kaikkialla muualla"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:339
 msgid "Messages Settings"
-msgstr "Ustawienia wiadomości"
+msgstr "Viestiasetukset"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:344
 msgid "No Previous Price"
-msgstr "Brak poprzedniej ceny"
+msgstr "Aikaisempaa hintaa ei saatavilla"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:349
 msgid "Display current sale price"
-msgstr "Wyświetl bieżącą cenę promocyjną"
+msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:350
 msgid "Display current regular price"
-msgstr "Wyświetl bieżącą cenę regularną"
+msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:351
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:363
 msgid "Inform about it"
-msgstr "Poinformuj o tym"
+msgstr "Ilmoita siitä"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:352
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:364
 msgid "Do not display anything"
-msgstr "Niczego nie wyświetlaj"
+msgstr "Älä näytä mitään."
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:354
 msgid "What do you want to show when no data is available?"
-msgstr "Co mam pokazywać jak nie mam danych?"
+msgstr "Mitä haluat näkyväksi tuotteissa jos dataa ei ole saatavilla?"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:357
 msgid "Short Term Product"
-msgstr "Produkt o krótkim okresie ważności"
+msgstr "Lyhytaikainen tuote"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:362
 msgid "I don't have this type of products"
-msgstr "Nie mam tego rodzaju produktów"
+msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:366
 msgid "What should I do for a product with a short term life?"
-msgstr "Co powinienem zrobić w przypadku produktu o krótkim okresie ważoności?"
+msgstr "Mitä minun tulisi tehdä lyhytaikaisille tuotteille?"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:378
 msgid "Custom"
-msgstr "Własne"
+msgstr "Mukautettu"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:382
 msgid "Allow to use custom messages"
-msgstr "Pozwól na własne wiadomości"
+msgstr "Salli mukautettujen viestien käyttö"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:391
 msgid "Omnibus Message"
-msgstr "Wiadomość Omnibus"
+msgstr "Omnibus viesti"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:396
 msgid ""
 "A message displaying the last lowest price before the promotion was "
 "introduced."
 msgstr ""
-"Komunikat wyświetlający ostatnią najniższą cenę przed wprowadzeniem promocji."
+"Viesti, joka näyttää edellisen alimman hinnan ennen tarjouksen käyttöönottoa."
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:399
 msgid "No Data Message"
-msgstr "Brak danych potrzebnych w wiadomości"
+msgstr "Ei dataa viesti"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:404
 msgid ""
 "A message informing about the lack of price data for the selected product."
-msgstr "Komunikat informujący o braku ceny dla wybranego produktu."
+msgstr "Viesti, joka ilmoittaa valitun tuotteen hintatiedon puuttumisesta."
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:407
 msgid "Short Term Product Message"
-msgstr "Wiadomość dotycząca produktu o krótkim terminie ważności"
+msgstr "Lyhytaikaisen tuotteen viesti"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:410
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:1030
 msgid "This is short term product."
-msgstr "Produkt o krótkim terminie ważności."
+msgstr "Tämä on lyhytaikainen tuote."
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:412
 msgid ""
 "A message informing that there is no need to inform about the price due to "
 "the short expiry date."
 msgstr ""
-"Komunikat informujący o braku konieczności informowania o cenie ze względu "
-"na krótki termin ważności."
+"Viesti, joka ilmoittaa, että hinnasta ei tarvitse ilmoittaa lyhyen "
+"vanhentumispäivän vuoksi."
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:431
 msgid "Product List"
-msgstr "Lista produktów"
+msgstr "Tuotelistauksissa"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:436
 msgid "Admin Dashboard List"
-msgstr "Lista w pulpicie administratora"
+msgstr "Hallintapaneelin listauksessa"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:440
 msgid "Show on products list screen"
-msgstr "Pokaż na liście produktów"
+msgstr "Näytä tuoteluettelossa"
 
 #. translators: %1$s: example of price,  %2$s: the code tag begin, %3$s: the
 #. end of the code tag
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:450
 msgid "Show short message: %2$sOD: $1$s%3$s"
-msgstr "Pokaż krótką wiadomość: %2$sOD: $1$s%3$s"
+msgstr "Näytä lyhyt viesti:: %2$sOD: $1$s%3$s"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:463
 msgid "Product Edit"
-msgstr "Edycja produktu"
+msgstr "Tuotemuokkaus"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:468
 msgid "Admin Edit Screen"
-msgstr "Ekran edycji"
+msgstr "Hallintanäkymässä"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:472
 msgid "Show on product edit screen"
-msgstr "Pokaż na ekranie edycji produkt"
+msgstr "Näytä tuotteen muokkausnäkymässä"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:475
 msgid "Show checkbox to allow turn off Omnibus message"
-msgstr "Pokaż pole wyboru, aby umożliwić wyłączenie komunikatu Omnibus"
+msgstr "Näytä valintaruutu, joka mahdollistaa Omnibus-viestin poiskytkemisen."
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:476
 msgid ""
 "You can not display the message for Goods which are liable to deteriorate or "
 "expire rapidly."
 msgstr ""
-"Można nie wyświetlić komunikatu dla towarów, które ulegają szybkiemu "
-"zepsuciu lub tracą ważność."
+"Et voi näyttää viestiä tuotteille, jotka ovat alttiita pilaantumiselle tai "
+"nopealle vanhenemiselle."
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:480
 msgid "Short Term Goods"
-msgstr "Produkt o krótkim okresie ważności"
+msgstr "Lyhytaikaiset tuotteet"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:487
 msgid "Other"
-msgstr "Inne"
+msgstr "Muu"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:492
 msgid "Number Of Days"
-msgstr "Liczba dni"
+msgstr "Päivien lukumäärä"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:539
 msgid "Debug"
-msgstr "Debugowanie"
+msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:545
 msgid "Please copy this field to support question"
-msgstr "Skopiuj zawartość do prośby o wsparcie na forum"
+msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:548
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:1255
 msgid "Product"
-msgstr "Produkt"
+msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:551
 msgid "Display debug information in product content"
-msgstr "Wyświetlaj informacje o debugowaniu w treści produktu"
+msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:636
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:675
 msgid "no data"
-msgstr "brak danych"
+msgstr "ei aikaisempaa dataa"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:702
 msgid "Settings has been moved"
-msgstr "Ustawienia zostały przeniesione"
+msgstr "Asetusten paikka on muuttunut"
 
 #. translators: %1$s: a tag begin, %2$s: a tag end
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:707
 msgid "Please visit new %1$ssettings page%2$s."
-msgstr "Proszę przejść na nową %1$sstronę ustawień%2$s."
+msgstr "Vieraile uudella %1$smäärityssivulla%2$s."
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:941
 msgid "Reviews"
-msgstr "Opinie"
+msgstr "Arvostelut"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:1000
 msgid "OD: {price}"
@@ -799,29 +793,29 @@ msgstr "OD: {price}"
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:1068
 msgid "Short Term"
-msgstr "Krótkoterminowy"
+msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:1069
 msgid "This is a short-term product."
-msgstr "Produkt krótkoterminowy."
+msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:1231
 msgid "Omnibus Price History"
-msgstr "Historia cen Omnibus"
+msgstr ""
 
 #: includes/iworks/omnibus/post-types/class-iworks-omnibus-post-type-price-log.php:218
 msgid "The price log is empty for selected product."
-msgstr "Dziennik cen jest pusty dla wybranego produktu."
+msgstr ""
 
 #: includes/iworks/rate/rate.php:147
 #: includes/iworks/rate/templates/thanks.php:39
 msgid "Provide us a coffee"
-msgstr "Postaw nam kawę"
+msgstr "Tarjoa meille kahvi"
 
 #. translators: %s: plugin id
 #: includes/iworks/rate/rate.php:590
 msgid "There is no plugin with id: %s."
-msgstr "Brak wtyczki o identyfikatorze %s."
+msgstr ""
 
 #: includes/iworks/rate/rate.php:764
 msgid "OpenGraph"
@@ -829,16 +823,16 @@ msgstr "OpenGraph"
 
 #: includes/iworks/rate/rate.php:780
 msgid "OG — Better Share on Social Media"
-msgstr "OG — Lepsze udostępnianie w mediach społecznościowych"
+msgstr "OG — Better Share on Social Media"
 
 #: includes/iworks/rate/rate.php:781
 msgid "https://wordpress.org/plugins/og/"
-msgstr "https://pl.wordpress.org/plugins/og/"
+msgstr "https://wordpress.org/plugins/og/"
 
 #: includes/iworks/rate/templates/happy-anniversary/anniversary.php:21
 #: includes/iworks/rate/templates/happy-anniversary/first-year.php:21
 msgid "🎉 Happy Anniversary! 🎉"
-msgstr "🎉 Wszystkiego najlepszego z okazji rocznicy! 🎉"
+msgstr ""
 
 #: includes/iworks/rate/templates/happy-anniversary/anniversary.php:23
 msgid ""
@@ -846,9 +840,6 @@ msgid ""
 "you so much for being part of our journey! We truly appreciate your support "
 "and hope the plugin has made your work easier and more enjoyable."
 msgstr ""
-"Wow, minął już cały rok odkąd używasz naszej wtyczki — bardzo dziękujemy za "
-"bycie częścią naszej wspólnej przygody! Naprawdę doceniam Twoje wsparcie i "
-"mam nadzieję, że wtyczka ułatwiła Ci pracę i uczyniła ją przyjemniejszą."
 
 #: includes/iworks/rate/templates/happy-anniversary/anniversary.php:24
 #: includes/iworks/rate/templates/happy-anniversary/first-year.php:24
@@ -858,26 +849,21 @@ msgid ""
 "coffee. Every little bit helps us keep improving and adding new features for "
 "awesome users like you!"
 msgstr ""
-"Jeśli nasza wtyczka okazała się pomocna i chcesz wesprzeć jej dalszy rozwój, "
-"byłbym niezmiernie wdzięczny, gdybyś rozważyła lub rozważył postawienie mi "
-"kawy. Każda odrobina pomaga nam w ciągłym doskonaleniu i dodawaniu nowych "
-"funkcji dla wspaniałych użytkowników, takich jak Ty!"
 
 #: includes/iworks/rate/templates/happy-anniversary/anniversary.php:25
 #: includes/iworks/rate/templates/happy-anniversary/first-year.php:25
 msgid "☕ Buy Me a Coffee"
-msgstr "☕ Kup mi kawę"
+msgstr ""
 
 #: includes/iworks/rate/templates/happy-anniversary/anniversary.php:26
 #: includes/iworks/rate/templates/happy-anniversary/first-year.php:26
 msgid "Thank you for your support and for making this community amazing!"
 msgstr ""
-"Dziękuję za Twoje wsparcie i za to, że tworzysz niesamowitą społeczność!"
 
 #: includes/iworks/rate/templates/happy-anniversary/anniversary.php:30
 #: includes/iworks/rate/templates/happy-anniversary/first-year.php:30
 msgid "With gratitude"
-msgstr "Z wdzięcznością"
+msgstr ""
 
 #. Author of the plugin/theme
 msgid "Marcin Pietrzak"
@@ -886,7 +872,7 @@ msgstr "Marcin Pietrzak"
 #: includes/iworks/rate/templates/happy-anniversary/anniversary.php:36
 #: includes/iworks/rate/templates/happy-anniversary/first-year.php:36
 msgid "Plugin Author"
-msgstr "Autor wtyczki"
+msgstr ""
 
 #: includes/iworks/rate/templates/happy-anniversary/first-year.php:23
 msgid ""
@@ -894,28 +880,25 @@ msgid ""
 "you so much for being part of our journey! We hope it’s made your work "
 "easier and more enjoyable."
 msgstr ""
-"Wow, minął już cały rok odkąd używasz naszej wtyczki — bardzo dziękujemy za "
-"bycie częścią naszej wspólnej przygody! Mam nadzieję, że wtyczka ułatwiła "
-"Twoją pracę i uczyniła ją przyjemniejszą."
 
 #: includes/iworks/rate/templates/plugins/og.php:4
 msgid "Would you like to boost your website sharing abilities?"
-msgstr "Czy chcesz zwiększyć możliwości dzielenia się witryną?"
+msgstr "Haluaisitko boostata sivujesi jakomahdollisuuksia?"
 
 #. translators: %s is a plugin name with url
 #: includes/iworks/rate/templates/plugins/og.php:9
 msgid "Don't wait, install plugin %s!"
-msgstr "Nie czekaj, zainstaluj wtyczkę %s!"
+msgstr "Älä odota. Asenna lisäosa %s!"
 
 #. translators: %s is a plugin wp home name, %s plugin name
 #: includes/iworks/rate/templates/plugins/og.php:20
 msgid "Install"
-msgstr "Instaluj"
+msgstr "Asenna"
 
 #. translators: %s is a plugin name wrapped by strong html tag
 #: includes/iworks/rate/templates/thanks.php:23
 msgid "Thank you for using our plugin %s!"
-msgstr "Dziękujemy za używanie naszej wtyczki %s!"
+msgstr "Kiitos, että käytät lisäosaamme %s"
 
 #. translators: %1$s: open anchor tag, %2$s: close anchor tag
 #: includes/iworks/rate/templates/thanks.php:31
@@ -926,46 +909,47 @@ msgid ""
 "our FAQ%2$s or contact us if you did not find help there. We will try to "
 "help you!"
 msgstr ""
-"Powiedz nam co myślisz o naszej wtyczce. To jest bardzo ważne dla nas i "
-"pozwoli nam ją rozwijać. Dziękujemy serdecznie za wszystkie oceny, recenzje "
-"i dodatkowe wsparcie. Jeżeli masz problem techniczny, prosimy zanim dodasz "
-"recenzję %1$ssprawdź nasze FAQ%2$s lub skontaktuj się z nami, jeżeli nie "
-"znajdziesz tam pomocy. Postaramy się tobie pomóc!"
+"Kerro meille mitä pidät lisäosasta. Se on erittäin tarpeellista "
+"kehittäessämme lisäosaa eteenpäin! Kiitokset kaikista arvosteluista, "
+"arvioista ja lahjoituksista. Jos kohtaat teknisiä ongelmia lisäosan kanssa, "
+"ennen arvostelun tekemistä %1$scheck tarkistathan FAQ%2$s onko ongelmasi jo "
+"ratkaisu. Jos UKK:sta ole apua niin ole ihmeessä yhteydessä meihin niin "
+"autamme sinut eteenpäin!"
 
 #: includes/iworks/rate/templates/thanks.php:35
 #: includes/iworks/rate/templates/widgets/support.php:21
 msgid "Get help"
-msgstr "Skorzystaj z pomocy"
+msgstr "Pyydä ohjeita"
 
 #: includes/iworks/rate/templates/thanks.php:37
 #: includes/iworks/rate/templates/widgets/support.php:31
 msgid "Add review"
-msgstr "Dodaj recenzję"
+msgstr "Lisää arvostelu"
 
 #: includes/iworks/rate/templates/thanks.php:41
 msgid "I added review, do not show again"
-msgstr "Recenzja została dodana, nie pokazuj ponownie"
+msgstr "Arvostelin lisäosan jo. Älä näytä ilmoitusta enään uudelleen."
 
 #: includes/iworks/rate/templates/widgets/donate.php:2
 msgid ""
 "However, working on plugins and technical support requires many hours of "
 "work. If you want to appreciate it, you can provide me a coffee."
 msgstr ""
-"Praca nad wtyczkami oraz świadczenie pomocy technicznej wymaga ode mnie "
-"wielu godzin ciężkiej pracy. Jeżeli chcesz to docenić, możesz postawić mi "
-"kawę."
+"Mutta meidän lisäosien kehittäminen ja tekninen tukipalvelu vaatii aika "
+"paljon työtunteja. Joten jos haluat jollain tavalla korvata aikaamme jollain "
+"voit ostaa meille kahvin."
 
 #: includes/iworks/rate/templates/widgets/donate.php:3
 msgid ""
 "If every plugin user did it, I could devote myself fully to working on this "
 "plugin. Thanks everyone!"
 msgstr ""
-"Gdyby każdy użytkownik wtyczki to zrobił, to mógłbym poświęcić cały swój "
-"czas pracy nad wtyczką. Dziękuję każdemu!"
+"Jos jokainen lisäosan käyttäjä tekisi sen. Voisin täysin keskittää aikani "
+"lisäosan kehittämiseen. Kiitos kaikille!"
 
 #: includes/iworks/rate/templates/widgets/donate.php:4
 msgid "Provide me a coffee"
-msgstr "Postaw mi kawę"
+msgstr "Hanki minulle kahvi"
 
 #: includes/iworks/rate/templates/widgets/support.php:4
 msgid ""
@@ -973,9 +957,9 @@ msgid ""
 "you. Or maybe you have an idea for a new feature? Please let us know about "
 "it by filling the support form. We will try to add it!"
 msgstr ""
-"Masz problem techniczny? Prosimy o kontakt z nami. Z przyjemnością tobie "
-"pomożemy. A może masz pomysł na nową funkcjonalność? Poinformuj nas o tym, "
-"dodając wątek na forum technicznym. Weźmiemy to pod uwagę!"
+"Onko sinulla teknisiä ongelmia? Ota yhteyttä niin autamme sinut eteenpäin "
+"mieluusti. Tai ehkäpä sinulla olisi toiminto jonka haluaisit kehitettävän? "
+"Kerro siitä meille foorumilla niin pyrimme ehkä lisäämään sen lisäosaan!"
 
 #. translators: %1$s: open anchor tag, %2$s: close anchor tag, %3$s: open
 #. anchor tag, %4$s: close anchor tag
@@ -985,9 +969,9 @@ msgid ""
 "If you do not find help there, %3$scheck support forum%4$s for similar "
 "problems."
 msgstr ""
-"Zobacz %1$snasze FAQ%2$s zanim dodasz wątek w dziale pomocy technicznej. "
-"Jeżeli nie znajdziesz tam pomocy, sprawdź również %3$sforum techniczne%4$s "
-"pod kątem podobnych problemów."
+"Tarkistahan %1$scheck FAQ%2$s alueen ennenkuin ilmoitat ongelmasta. Jos et "
+"löydä ongelmaan ratkaisua sieltä. Ilmoita asiasta %3$scheck "
+"tukifoorumeilla%4$s jos muillakin on samankaltaisia ongelmia."
 
 #: includes/iworks/rate/templates/widgets/support.php:26
 msgid ""
@@ -995,9 +979,9 @@ msgid ""
 "think about our plugin. It is important that we can develop this tool. Thank "
 "you for all the ratings, reviews and donates."
 msgstr ""
-"Jak podoba się nasza wtyczka? Masz możliwość ją ocenić? Daj nam znać, co o "
-"niej myślisz. To dla nas bardzo ważne, aby móc ją rozwijać. Dziękujemy za "
-"wszystkie oceny, recenzje oraz dodatkowe wsparcie."
+"Pidätkö lisäosastamme? Voisitko arvostella kyseisen lisäosan? Arvostele ja "
+"kerro mitä pidät lisäosasta. Näin autat lisäosan kehittämisessä eteenpäin. "
+"Kiitos kaikista arvosteluista, kommenteista ja lahjoituksista."
 
 #. Plugin Name of the plugin/theme
 msgid "PLUGIN_TITLE"
@@ -1019,25 +1003,10 @@ msgstr "http://iworks.pl/"
 #: includes/iworks/rate/rate.php:613
 msgctxt "plugins home"
 msgid "https://wordpress.org/plugins/%s"
-msgstr "https://pl.wordpress.org/plugins/%s"
+msgstr "https://wordpress.org/plugins/%s"
 
 #. translators: %s: plugin slug
 #: includes/iworks/rate/rate.php:620
 msgctxt "plugins support home"
 msgid "https://wordpress.org/support/plugin/%s"
 msgstr "https://wordpress.org/support/plugin/%s"
-
-#~ msgid "https://github.com/iworks/omnibus/"
-#~ msgstr "https://github.com/iworks/omnibus/"
-
-#~ msgid "Omnibus — show the lowest price"
-#~ msgstr "Omnibus — pokaż najniższą cenę"
-
-#~ msgid ""
-#~ "The plugin adds two additional fields in the product edit view: the "
-#~ "lowest price and the effective date for compatibility with the EU Omnibus "
-#~ "Directive."
-#~ msgstr ""
-#~ "Wtyczka dodaje dwa dodatkowe pola w widoku edycji produktu – dla "
-#~ "najniższej ceny i daty wejścia w życie w celu zapewnienia zgodności z "
-#~ "unijną dyrektywą Omnibus."
