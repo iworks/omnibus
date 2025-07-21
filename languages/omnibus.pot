@@ -1,14 +1,14 @@
-# Copyright (C) 2024 Marcin Pietrzak
+# Copyright (C) 2025 Marcin Pietrzak
 # This file is distributed under the GPLv3 or later.
 msgid ""
 msgstr ""
 "Project-Id-Version: PLUGIN_TITLE PLUGIN_VERSION\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/omnibus-dev\n"
-"POT-Creation-Date: 2024-08-09 05:10:19+00:00\n"
+"POT-Creation-Date: 2025-07-21 07:13:50+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2024-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2025-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: en\n"
@@ -201,7 +201,7 @@ msgid "Price"
 msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-class-easydigitaldownloads.php:106
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:213
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:218
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:654
 #. translators: %d: number of days
 #. translators: %d: nuber of days
@@ -218,7 +218,7 @@ msgid "Date"
 msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-class-easydigitaldownloads.php:121
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:228
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:233
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:682
 #. translators: %d: number of days
 #. translators: %d: nuber of days
@@ -229,7 +229,7 @@ msgstr ""
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-class-easydigitaldownloads.php:135
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:28
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-debug-bar-panel.php:136
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:86
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:91
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:27
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:889
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce.php:1145
@@ -238,7 +238,7 @@ msgid "Omnibus"
 msgstr ""
 
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-class-easydigitaldownloads.php:143
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:131
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:136
 msgid "Show on"
 msgstr ""
 
@@ -316,54 +316,54 @@ msgstr ""
 msgid "Days"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:121
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:126
 msgid "Only on sale"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:125
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:130
 msgid "Display only for the course on sale."
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:132
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:137
 msgid "Course single"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:137
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:142
 msgid "Show or hide on a single course page."
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:143
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:148
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:310
 msgid "Display anywhere else"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:144
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:149
 #: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-woocommerce-settings.php:311
 msgid "Display anywhere else that doesn't fit any of the above."
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:151
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:156
 msgid "Show on admin on"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:152
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:157
 msgid "Courses list"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:159
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:164
 msgid "Course edit"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:210
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:215
 msgid "Omnibus Price"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:216
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:231
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:221
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:236
 msgid "no data available"
 msgstr ""
 
-#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:225
+#: includes/iworks/omnibus/integration/class-iworks-omnibus-integration-learnpress.php:230
 msgid "Omnibus Date"
 msgstr ""
 
@@ -785,28 +785,86 @@ msgstr ""
 msgid "Provide us a coffee"
 msgstr ""
 
-#: includes/iworks/rate/rate.php:547
+#: includes/iworks/rate/rate.php:590
+#. translators: %s: plugin id
+msgid "There is no plugin with id: %s."
+msgstr ""
+
+#: includes/iworks/rate/rate.php:764
 msgid "OpenGraph"
 msgstr ""
 
-#: includes/iworks/rate/rate.php:563
+#: includes/iworks/rate/rate.php:780
 msgid "OG — Better Share on Social Media"
 msgstr ""
 
-#: includes/iworks/rate/rate.php:564
+#: includes/iworks/rate/rate.php:781
 msgid "https://wordpress.org/plugins/og/"
 msgstr ""
 
-#: includes/iworks/rate/templates/plugins/og.php:6
+#: includes/iworks/rate/templates/happy-anniversary/anniversary.php:21
+#: includes/iworks/rate/templates/happy-anniversary/first-year.php:21
+msgid "🎉 Happy Anniversary! 🎉"
+msgstr ""
+
+#: includes/iworks/rate/templates/happy-anniversary/anniversary.php:23
+msgid ""
+"Wow, it’s already been a whole year since you’ve been using our "
+"plugin—thank you so much for being part of our journey! We truly appreciate "
+"your support and hope the plugin has made your work easier and more "
+"enjoyable."
+msgstr ""
+
+#: includes/iworks/rate/templates/happy-anniversary/anniversary.php:24
+#: includes/iworks/rate/templates/happy-anniversary/first-year.php:24
+msgid ""
+"If you’ve found our plugin helpful and would like to support its continued "
+"development, we’d be incredibly grateful if you’d consider buying us a "
+"coffee. Every little bit helps us keep improving and adding new features "
+"for awesome users like you!"
+msgstr ""
+
+#: includes/iworks/rate/templates/happy-anniversary/anniversary.php:25
+#: includes/iworks/rate/templates/happy-anniversary/first-year.php:25
+msgid "☕ Buy Me a Coffee"
+msgstr ""
+
+#: includes/iworks/rate/templates/happy-anniversary/anniversary.php:26
+#: includes/iworks/rate/templates/happy-anniversary/first-year.php:26
+msgid "Thank you for your support and for making this community amazing!"
+msgstr ""
+
+#: includes/iworks/rate/templates/happy-anniversary/anniversary.php:30
+#: includes/iworks/rate/templates/happy-anniversary/first-year.php:30
+msgid "With gratitude"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Marcin Pietrzak"
+msgstr ""
+
+#: includes/iworks/rate/templates/happy-anniversary/anniversary.php:36
+#: includes/iworks/rate/templates/happy-anniversary/first-year.php:36
+msgid "Plugin Author"
+msgstr ""
+
+#: includes/iworks/rate/templates/happy-anniversary/first-year.php:23
+msgid ""
+"Wow, it’s already been a whole year since you started using our "
+"plugin—thank you so much for being part of our journey! We hope it’s made "
+"your work easier and more enjoyable."
+msgstr ""
+
+#: includes/iworks/rate/templates/plugins/og.php:4
 msgid "Would you like to boost your website sharing abilities?"
 msgstr ""
 
-#: includes/iworks/rate/templates/plugins/og.php:13
+#: includes/iworks/rate/templates/plugins/og.php:9
 #. translators: %s is a plugin name with url
 msgid "Don't wait, install plugin %s!"
 msgstr ""
 
-#: includes/iworks/rate/templates/plugins/og.php:24
+#: includes/iworks/rate/templates/plugins/og.php:20
 #. translators: %s is a plugin wp home name, %s plugin name
 msgid "Install"
 msgstr ""
@@ -827,12 +885,12 @@ msgid ""
 msgstr ""
 
 #: includes/iworks/rate/templates/thanks.php:35
-#: includes/iworks/rate/templates/widgets/support.php:24
+#: includes/iworks/rate/templates/widgets/support.php:21
 msgid "Get help"
 msgstr ""
 
 #: includes/iworks/rate/templates/thanks.php:37
-#: includes/iworks/rate/templates/widgets/support.php:34
+#: includes/iworks/rate/templates/widgets/support.php:31
 msgid "Add review"
 msgstr ""
 
@@ -856,14 +914,14 @@ msgstr ""
 msgid "Provide me a coffee"
 msgstr ""
 
-#: includes/iworks/rate/templates/widgets/support.php:5
+#: includes/iworks/rate/templates/widgets/support.php:4
 msgid ""
 "Do you have a technical problem? Please contact us. We will be happy to "
 "help you. Or maybe you have an idea for a new feature? Please let us know "
 "about it by filling the support form. We will try to add it!"
 msgstr ""
 
-#: includes/iworks/rate/templates/widgets/support.php:14
+#: includes/iworks/rate/templates/widgets/support.php:11
 #. translators: %1$s: open anchor tag, %2$s: close anchor tag, %3$s: open
 #. anchor tag, %4$s: close anchor tag
 msgid ""
@@ -872,7 +930,7 @@ msgid ""
 "problems."
 msgstr ""
 
-#: includes/iworks/rate/templates/widgets/support.php:29
+#: includes/iworks/rate/templates/widgets/support.php:26
 msgid ""
 "Do you like our plugin? Could you rate him? Please let us know what you "
 "think about our plugin. It is important that we can develop this tool. "
@@ -891,21 +949,17 @@ msgstr ""
 msgid "PLUGIN_DESCRIPTION"
 msgstr ""
 
-#. Author of the plugin/theme
-msgid "Marcin Pietrzak"
-msgstr ""
-
 #. Author URI of the plugin/theme
 msgid "http://iworks.pl/"
 msgstr ""
 
-#: includes/iworks/rate/rate.php:459
+#: includes/iworks/rate/rate.php:613
 #. translators: %s: plugin slug
 msgctxt "plugins home"
 msgid "https://wordpress.org/plugins/%s"
 msgstr ""
 
-#: includes/iworks/rate/rate.php:466
+#: includes/iworks/rate/rate.php:620
 #. translators: %s: plugin slug
 msgctxt "plugins support home"
 msgid "https://wordpress.org/support/plugin/%s"

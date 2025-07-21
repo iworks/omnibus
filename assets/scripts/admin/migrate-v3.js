@@ -1,6 +1,6 @@
-/*! Omnibus — show the lowest price - v3.0.3
+/*! Omnibus — show the lowest price - v3.0.4
  * https://github.com/iworks/omnibus/
- * Copyright (c) 2024; * Licensed GPL-3.0 */
+ * Copyright (c) 2025; * Licensed GPL-3.0 */
 (function($) {
     window.iworks_omnibus_migration_v3 = function() {
         $.ajax({
