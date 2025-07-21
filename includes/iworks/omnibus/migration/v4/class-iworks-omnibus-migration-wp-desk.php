@@ -1,8 +1,8 @@
 <?php
 /*
- * Data Migration Class
+ * Data Migration Class for WP Desk Omnibus
  *
- * Migrate data to version 4 - with own database table.
+ * Migrate data to version 4 from WP Desk Omnibus plugin.
  *
  * @since 4.0.0
  */
@@ -29,29 +29,21 @@ if ( class_exists( 'iworks_omnibus_data_migration_v4' ) ) {
 	return;
 }
 
-require dirname( __DIR__, 1 ) . '/class-iworks-omnibus-migration.php';
+require dirname( __DIR__, 2 ) . '/class-iworks-omnibus-migration.php';
 
-class iworks_omnibus_migration_v4 extends iworks_omnibus_migration {
-
-	/**
-	 * Are logs migrated to version 4?
-	 *
-	 * @since 4.0.0
-	 */
-	protected $are_logs_migrated = false;
+class iworks_omnibus_migration_wp_desk extends iworks_omnibus_migration {
 
 	/**
-	 * option name form migration to v4 status
+	 * Are logs migrated to version 3?
 	 *
 	 * @since 3.0.0
 	 */
-	private $option_name_migration_status = 'iworks_omnibus_data_migration_v4';
+	private string $option_name_migration_wp_desc_omnibus = 'iwo_wp_desk_omnibus_status';
 
 	public function __construct() {
 		parent::__construct();
-		add_action( 'iworks/omnibus/action/migration/v4/plugins_loaded', array( $this, 'action_plugins_loaded' ) );
-		add_action( 'wp_ajax_iworks_omnibus_migrate_v4', array( $this, 'action_wp_ajax_iworks_omnibus_migrate' ) );
-		add_filter( 'iworks/omnibus/v4/get/migration/status', array( $this, 'get_migration_status' ) );
+		add_action( 'wp_ajax_iworks_omnibus_migrate_wp_desk_omnibus', array( $this, 'action_wp_ajax_iworks_omnibus_migrate' ) );
+		add_action( 'plugins_loaded', array( $this, 'action_admin_init' ), PHP_INT_MAX );
 	}
 
 	/**
@@ -70,11 +62,12 @@ class iworks_omnibus_migration_v4 extends iworks_omnibus_migration {
 		return $status;
 	}
 
-
 	/**
 	 * define admin actions
 	 */
-	public function action_plugins_loaded() {
+	public function action_admin_init() {
+		global $wpdb;
+		$wpdb->wp_desk_omnibus = $wpdb->prefix . 'omnibus_price_logger';
 		add_action( 'admin_notices', array( $this, 'action_admin_notices_show_migration_message' ) );
 		add_action( 'admin_menu', array( $this, 'action_admin_menu_add_migration_page' ) );
 	}
@@ -86,17 +79,17 @@ class iworks_omnibus_migration_v4 extends iworks_omnibus_migration {
 	 */
 	public function action_admin_menu_add_migration_page() {
 		$hook = add_management_page(
-			__( 'Omnibus Migration (v4)', 'omnibus' ),
-			__( 'Omnibus Migration (v4)', 'omnibus' ),
+			__( 'Omnibus Migration', 'omnibus' ),
+			__( 'Omnibus Migration', 'omnibus' ),
 			'manage_options',
-			'omnibus-migration-v4',
+			'omnibus-migration-v4-wp-desk',
 			array( $this, 'callback_omnibus_migration' )
 		);
 		add_action( 'load-' . $hook, array( $this, 'action_load_omnibus_migration_admin_page' ) );
 	}
 
 	public function callback_omnibus_migration() {
-		$file = $this->get_file( 'admin-page', 'migration-v4' );
+		$file = $this->get_file( 'admin-page', 'migration/v4/wp-desk-omnibus' );
 		load_template( $file, true, $this->get_args() );
 	}
 
@@ -124,14 +117,20 @@ class iworks_omnibus_migration_v4 extends iworks_omnibus_migration {
 	 *
 	 */
 	public function action_admin_notices_show_migration_message() {
-		if ( 0 === $this->count_number_of_data_to_migrate() ) {
-			$this->migration_update_status( $this->option_name_migration_4_status, 'migrated' );
-			return;
-		}
 		if ( 'dashboard' === get_current_screen()->base ) {
-			$file = $this->get_file( 'message', 'migration-v4' );
-			load_template( $file, true, $this->get_args() );
+			switch ( get_option( $this->option_name_migration_wp_desc_omnibus ) ) {
+				case 'active':
+					$file = $this->get_file( 'is-turn-on', 'migration/v4/wp-desk-omnibus' );
+					load_template( $file, true, $this->get_args() );
+					break;
+			}
+			// $file = $this->get_file( 'message', 'migration-v4' );
+			// load_template( $file, true, $this->get_args() );
 		}
+		// if ( 0 === $this->count_number_of_data_to_migrate() ) {
+			// $this->migration_update_status( $this->option_name_migration_4_status, 'migrated' );
+			// return;
+		// }
 	}
 
 	private function get_args() {
@@ -141,17 +140,23 @@ class iworks_omnibus_migration_v4 extends iworks_omnibus_migration {
 		);
 	}
 
+	public function action_admin_notices_show_is_on() {
+		if ( 'dashboard' === get_current_screen()->base ) {
+		}
+	}
+
 	/**
 	 * count data to Migrate
 	 *
 	 * @since 4.0.0
 	 */
 	private function count_number_of_data_to_migrate() {
-		$count = 0;
-		foreach ( (array) wp_count_posts( 'iw_omnibus_price_log' ) as $key => $value ) {
-			$count += intval( $value );
-		}
-		return intval( $count );
+		global $wpdb;
+		return $wpdb->get_var(
+			$wpdb->prepare(
+				"select count(*) from $wpdb->wp_desk_omnibus"
+			)
+		);
 	}
 
 	public function action_wp_ajax_iworks_omnibus_migrate() {

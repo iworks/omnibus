@@ -23,7 +23,7 @@ if ( class_exists( 'iworks_omnibus_integration_learnpress' ) ) {
 	return;
 }
 
-include_once dirname( dirname( __FILE__ ) ) . '/class-iworks-omnibus-integration.php';
+require_once dirname( __DIR__, 1 ) . '/class-iworks-omnibus-integration.php';
 
 class iworks_omnibus_integration_learnpress extends iworks_omnibus_integration {
 
@@ -352,4 +352,3 @@ class iworks_omnibus_integration_learnpress extends iworks_omnibus_integration {
 		add_post_meta( $course->get_ID(), $this->meta_name, $data );
 	}
 }
-

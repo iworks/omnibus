@@ -171,4 +171,3 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 		echo '</section>';
 	}
 }
-

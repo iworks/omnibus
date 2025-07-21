@@ -23,7 +23,7 @@ if ( class_exists( 'iworks_omnibus_integration_learnpress' ) ) {
 	return;
 }
 
-include_once 'class-iworks-omnibus-integration.php';
+require_once 'class-iworks-omnibus-integration.php';
 
 class iworks_omnibus_integration_learnpress extends iworks_omnibus_integration {
 
@@ -69,7 +69,7 @@ class iworks_omnibus_integration_learnpress extends iworks_omnibus_integration {
 	}
 
 	public function add_omnibus_to_settings( $settings ) {
-		$settings['omnibus'] = include_once dirname( __FILE__ ) . '/class-iworks-omnibus-integration-learnpress-settings.php';
+		$settings['omnibus'] = include_once __DIR__ . '/class-iworks-omnibus-integration-learnpress-settings.php';
 		return $settings;
 	}
 
@@ -376,4 +376,3 @@ class iworks_omnibus_integration_learnpress extends iworks_omnibus_integration {
 		return $configuration;
 	}
 }
-

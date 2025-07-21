@@ -23,7 +23,7 @@ if ( class_exists( 'iworks_omnibus_integration_woocommerce' ) ) {
 	return;
 }
 
-include_once dirname( dirname( __FILE__ ) ) . '/class-iworks-omnibus-integration.php';
+require_once dirname( __DIR__, 1 ) . '/class-iworks-omnibus-integration.php';
 
 class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration {
 
@@ -270,7 +270,7 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	public function action_admin_enqueue_scripts_register() {
 		wp_register_script(
 			$this->get_name( __CLASS__ ),
-			plugins_url( 'assets/scripts/admin/woocommerce.min.js', dirname( dirname( dirname( __DIR__ ) ) ) ),
+			plugins_url( 'assets/scripts/admin/woocommerce.min.js', dirname( __DIR__, 3 ) ),
 			array( 'jquery' ),
 			'PLUGIN_VERSION'
 		);
@@ -1364,5 +1364,4 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		$query = $wpdb->prepare( $sql, '_iwo_%' );
 		$wpdb->query( $query );
 	}
-
 }

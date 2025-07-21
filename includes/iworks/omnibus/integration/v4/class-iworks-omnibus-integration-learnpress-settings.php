@@ -31,7 +31,6 @@ class iworks_omnibus_integration_learnpress_settings extends LP_Abstract_Setting
 	public function get_settings( $section = '', $tab = '' ) {
 		return apply_filters( 'iworks/omnibus/learn-press/settings', array() );
 	}
-
 }
 
 return new iworks_omnibus_integration_learnpress_settings();

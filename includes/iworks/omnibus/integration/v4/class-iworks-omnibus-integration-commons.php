@@ -23,7 +23,7 @@ if ( class_exists( 'iworks_omnibus_integration_commons' ) ) {
 	return;
 }
 
-include_once 'class-iworks-omnibus-integration.php';
+require_once 'class-iworks-omnibus-integration.php';
 
 class iworks_omnibus_integration_commons extends iworks_omnibus_integration {
 
@@ -82,5 +82,4 @@ class iworks_omnibus_integration_commons extends iworks_omnibus_integration {
 		 */
 		do_action( 'iworks/omnibus/action/after/delete_older_records' );
 	}
-
 }

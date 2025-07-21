@@ -276,7 +276,7 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 		);
 		$i = 1;
 		foreach ( $log as $one ) {
-			$i++;
+			++$i;
 			if (
 				! isset( $one['timestamp'] )
 				|| empty( $one['timestamp'] )
@@ -308,7 +308,7 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 		);
 		$i = 0;
 		foreach ( $log as $one ) {
-			$i++;
+			++$i;
 			if (
 				! isset( $one['timestamp'] )
 				|| empty( $one['timestamp'] )
@@ -338,4 +338,3 @@ class iworks_omnibus_integration_debug_bar_panel extends Debug_Bar_Panel {
 		echo '</section>';
 	}
 }
-

@@ -561,7 +561,7 @@ abstract class iworks_omnibus_integration {
 		if ( floatval( $a['price'] ) === floatval( $b['price'] ) ) {
 			return 0;
 		}
-		return  floatval( $a['price'] ) > floatval( $b['price'] ) ? 1 : -1;
+		return floatval( $a['price'] ) > floatval( $b['price'] ) ? 1 : -1;
 	}
 
 	/**
@@ -666,4 +666,3 @@ abstract class iworks_omnibus_integration {
 		return get_post_meta( $post_id, $this->meta_name );
 	}
 }
-

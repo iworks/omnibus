@@ -23,7 +23,7 @@ if ( class_exists( 'iworks_omnibus_integration_easydigitaldownloads' ) ) {
 	return;
 }
 
-include_once dirname( dirname( __FILE__ ) ) . '/class-iworks-omnibus-integration.php';
+require_once dirname( __DIR__, 1 ) . '/class-iworks-omnibus-integration.php';
 
 class iworks_omnibus_integration_easydigitaldownloads extends iworks_omnibus_integration {
 

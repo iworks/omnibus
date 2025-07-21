@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly
 
-include_once 'class-iworks-omnibus-post-type.php';
+require_once 'class-iworks-omnibus-post-type.php';
 
 class iWorks_Omnibus_Post_Type_Price_Log extends iWorks_Omnibus_Post_Type {
 
@@ -274,5 +274,4 @@ class iWorks_Omnibus_Post_Type_Price_Log extends iWorks_Omnibus_Post_Type {
 			}
 		}
 	}
-
 }

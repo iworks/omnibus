@@ -58,6 +58,4 @@ abstract class iWorks_Omnibus_Post_Type {
 		}
 		update_post_meta( $post_id, $meta_key, $meta_value );
 	}
-
 }
-

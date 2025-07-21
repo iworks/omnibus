@@ -21,4 +21,3 @@ class iworks_omnibus_logger_v4 {
 		return $wpdb->get_results( $query, ARRAY_A );
 	}
 }
-

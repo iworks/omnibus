@@ -1,6 +1,5 @@
 <?php
 
-
 abstract class iworks_omnibus_migration {
 	/**
 	 * option name form migration to v3 status
@@ -26,7 +25,7 @@ abstract class iworks_omnibus_migration {
 		 *
 		 * @since 2.3.4
 		 */
-		$this->root        = dirname( dirname( dirname( dirname( __FILE__ ) ) ) );
+		$this->root        = dirname( __DIR__, 3 );
 		$this->plugin_file = $this->root . '/omnibus.php';
 	}
 
@@ -36,12 +35,21 @@ abstract class iworks_omnibus_migration {
 	 * @since 2.3.4
 	 */
 	protected function get_file( $file, $group = '' ) {
-		return sprintf(
+		$filename      = sprintf(
 			'%s/assets/templates/%s%s.php',
 			$this->root,
-			'' === $group ? '' : sanitize_title( $group ) . '/',
-			sanitize_title( $file )
+			'' === $group ? '' : $group . '/',
+			$file
 		);
+		$template_file = '';
+		foreach ( explode( '/', $filename ) as $part ) {
+			if ( empty( $part ) ) {
+				continue;
+			}
+			$template_file .= '/';
+			$template_file .= sanitize_file_name( $part );
+		}
+		return $template_file;
 	}
 
 	protected function migration_update_status( $name, $status ) {

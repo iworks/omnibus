@@ -40,7 +40,14 @@ class iworks_omnibus {
 	 *
 	 * @since 3.0.0
 	 */
-	 private $option_name_migration_3_status = 'iworks_omnibus_data_migration_v3';
+	private string $option_name_migration_3_status = 'iworks_omnibus_data_migration_v3';
+
+	/**
+	 * Are logs migrated to version 3?
+	 *
+	 * @since 3.0.0
+	 */
+	private string $option_name_migration_wp_desc_omnibus = 'iwo_wp_desk_omnibus_status';
 
 	public function __construct() {
 		/**
@@ -53,7 +60,7 @@ class iworks_omnibus {
 		 *
 		 * @since 2.3.4
 		 */
-		$this->root = dirname( dirname( dirname( __FILE__ ) ) );
+		$this->root = dirname( __DIR__, 2 );
 		/**
 		 * plugins screen
 		 */
@@ -83,12 +90,12 @@ class iworks_omnibus {
 		 * @since 4.0.0
 		 */
 		if ( $this->is_migrated_v4() ) {
-			include_once dirname( __FILE__ ) . '/omnibus/class-iworks-omnibus-logger-v4.php';
+			include_once __DIR__ . '/omnibus/class-iworks-omnibus-logger-v4.php';
 			new iworks_omnibus_logger_v4();
-			include_once dirname( __FILE__ ) . '/omnibus/integration/v4/class-iworks-omnibus-integration-commons.php';
+			include_once __DIR__ . '/omnibus/integration/v4/class-iworks-omnibus-integration-commons.php';
 			new iworks_omnibus_integration_commons();
 		} else {
-			include_once dirname( __FILE__ ) . '/omnibus/migration/class-iworks-omnibus-migration-v4.php';
+			include_once __DIR__ . '/omnibus/migration/class-iworks-omnibus-migration-v4.php';
 			new iworks_omnibus_migration_v4();
 		}
 		add_filter( 'iworks/omnibus/v4/get/migration/status', array( $this, 'migration_v4_filter_get_migration_status_to_version_4' ) );
@@ -104,10 +111,17 @@ class iworks_omnibus {
 		 * @since 4.0.0
 		 */
 		add_action( 'init', array( $this, 'action_init_load_plugin_textdomain' ), PHP_INT_MAX );
+		/**
+		 * Check WP Desk
+		 */
+		if ( 'done' !== get_option( $this->option_name_migration_wp_desc_omnibus ) ) {
+			add_action( 'plugins_loaded', array( $this, 'action_plugins_loaded_maybe_import_wp_desk_omnibus' ) );
+			add_action( 'shutdown', array( $this, 'action_shutdown_check_wp_desk_omnibus' ) );
+		}
 	}
 
 	public function action_plugins_loaded() {
-		$dir          = dirname( __FILE__ ) . '/omnibus';
+		$dir          = __DIR__ . '/omnibus';
 		$v4_directory = $this->is_migrated_v4() ? '/v4' : '';
 		/**
 		 * WooCommerce
@@ -220,7 +234,7 @@ class iworks_omnibus {
 			$plugin = (array) $plugin;
 		}
 		if ( 'omnibus' === $plugin['slug'] ) {
-			return plugin_dir_url( dirname( dirname( __FILE__ ) ) ) . 'assets/images/logo.svg';
+			return plugin_dir_url( dirname( __DIR__, 1 ) ) . 'assets/images/logo.svg';
 		}
 		return $logo;
 	}
@@ -535,4 +549,38 @@ class iworks_omnibus {
 		load_plugin_textdomain( 'omnibus', false, plugin_basename( $this->root ) . '/languages' );
 	}
 
+	/**
+	 * Check for WP Desk Omnibus plugin
+	 *
+	 * @since 4.0.0
+	 */
+	public function action_shutdown_check_wp_desk_omnibus() {
+		switch ( get_option( $this->option_name_migration_wp_desc_omnibus ) ) {
+			case 'active':
+			case 'done':
+				return;
+		}
+		if ( class_exists( 'ComposerAutoloaderInitWPDeskOmnibus' ) ) {
+			update_option( $this->option_name_migration_wp_desc_omnibus, 'active' );
+			return;
+		}
+		$plugins = get_option( 'active_plugins' );
+	}
+
+	/**
+	 * Check for WP Desk Omnibus plugin
+	 *
+	 * @since 4.0.0
+	 */
+	public function action_plugins_loaded_maybe_import_wp_desk_omnibus() {
+		if ( ! is_admin() ) {
+			return;
+		}
+		switch ( get_option( $this->option_name_migration_wp_desc_omnibus ) ) {
+			case 'active':
+				include_once __DIR__ . '/omnibus/migration/v4/class-iworks-omnibus-migration-wp-desk.php';
+				new iworks_omnibus_migration_wp_desk();
+				return;
+		}
+	}
 }

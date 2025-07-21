@@ -541,4 +541,3 @@ abstract class iworks_omnibus_integration {
 		return $message;
 	}
 }
-

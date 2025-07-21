@@ -513,6 +513,23 @@ class iworks_omnibus_integration_woocommerce_settings extends WC_Settings_Page {
 		);
 		return apply_filters( 'iworks_omnibus_debug_settings', $settings );
 	}
+
+	private function get_name( $name = '' ) {
+		if ( empty( $name ) ) {
+			return $this->meta_name;
+		}
+		$name = sanitize_title(
+			sprintf(
+				'%s_%s',
+				$this->meta_name,
+				$name
+			)
+		);
+		return apply_filters(
+			'iworks/omnibus/option/name/' . $name,
+			$name
+		);
+	}
 }
 
 return new iworks_omnibus_integration_woocommerce_settings();
