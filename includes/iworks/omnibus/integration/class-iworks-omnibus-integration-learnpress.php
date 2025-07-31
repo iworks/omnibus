@@ -59,7 +59,14 @@ class iworks_omnibus_integration_learnpress extends iworks_omnibus_integration {
 
 	public function filter_iworks_omnibus_show( $show ) {
 		if ( 'yes' === get_option( $this->get_name( 'on_sale' ), 'yes' ) ) {
+			$post_id = get_the_ID();
+			if ( empty( $post_id ) ) {
+				return $show;
+			}
 			$course = learn_press_get_course( $post_id );
+			if ( ! is_a( $course, 'LP_Course' ) ) {
+				return $show;
+			}
 			if ( ! $course->has_sale_price() ) {
 				return apply_filters( 'iworks_omnibus_show::learnpress', $show );
 			}
