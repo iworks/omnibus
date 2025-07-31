@@ -45,7 +45,7 @@ if ( ! class_exists( 'iworks_omnibus' ) ) {
  */
 load_plugin_textdomain( 'omnibus', false, plugin_basename( dirname( __FILE__ ) ) . '/languages' );
 
-new iworks_omnibus();
+$GLOBALS['iworks_omnibus'] = new iworks_omnibus();
 
 /**
  * install & uninstall

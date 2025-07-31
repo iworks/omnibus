@@ -75,6 +75,10 @@ class iworks_omnibus {
 		add_action( 'wp_ajax_iworks_omnibus_migrate_v3', array( $this, 'migration_v3_action_wp_ajax_iworks_omnibus_migrate_v3' ) );
 	}
 
+	public function get_object() {
+	    return $this->objects;
+	}
+
 	public function action_plugins_loaded() {
 		$dir = dirname( __FILE__ ) . '/omnibus';
 		/**
