@@ -221,14 +221,18 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		} else {
 			$sale_from = 'now';
 		}
+		/**
+		 * Use the 'edit' context: multi-currency plugins convert prices in the
+		 * 'view' context, but the price log must keep the base currency.
+		 */
 		$data = array(
 			'post_id'         => $product->get_id(),
 			'product_origin'  => $this->product_origin,
 			'product_type'    => $product->get_type(),
-			'price_regular'   => $product->get_regular_price(),
-			'price_sale'      => $product->get_sale_price(),
+			'price_regular'   => $product->get_regular_price( 'edit' ),
+			'price_sale'      => $product->get_sale_price( 'edit' ),
 			'price_sale_from' => $sale_from,
-			'currency'        => get_woocommerce_currency(),
+			'currency'        => get_option( 'woocommerce_currency' ),
 			'user_id'         => get_current_user_id(),
 		);
 		$this->maybe_add_last_saved_prices( $data );
