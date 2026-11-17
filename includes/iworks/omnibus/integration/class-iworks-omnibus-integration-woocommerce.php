@@ -210,10 +210,17 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 * save last change
 		 */
 		$product = wc_get_product( $post );
+		/**
+		 * Use the 'edit' context: multi-currency plugins convert prices in the
+		 * 'view' context, but the price log must keep the base currency.
+		 */
 		$current = array(
-			'price'               => $product->get_regular_price(),
-			'price_sale'          => $product->get_sale_price(),
-			'price_including_tax' => wc_get_price_including_tax( $product ),
+			'price'               => $product->get_regular_price( 'edit' ),
+			'price_sale'          => $product->get_sale_price( 'edit' ),
+			'price_including_tax' => wc_get_price_including_tax(
+				$product,
+				array( 'price' => (float) $product->get_price( 'edit' ) )
+			),
 			'timestamp'           => time(),
 		);
 		$last    = get_post_meta( $post_id, $this->meta_name_last_change, true );
@@ -1205,12 +1212,19 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 * @since 3.0.0
 	 */
 	private function get_prices_by_product( $product ) {
+		/**
+		 * Use the 'edit' context: multi-currency plugins convert prices in the
+		 * 'view' context, but the price log must keep the base currency.
+		 */
 		return array(
-			'price'               => $product->get_price(),
-			'price_regular'       => $product->get_regular_price(),
-			'price_sale'          => $product->get_sale_price(),
-			'price_including_tax' => wc_get_price_including_tax( $product ),
-			'currency'            => get_woocommerce_currency(),
+			'price'               => $product->get_price( 'edit' ),
+			'price_regular'       => $product->get_regular_price( 'edit' ),
+			'price_sale'          => $product->get_sale_price( 'edit' ),
+			'price_including_tax' => wc_get_price_including_tax(
+				$product,
+				array( 'price' => (float) $product->get_price( 'edit' ) )
+			),
+			'currency'            => get_option( 'woocommerce_currency' ),
 		);
 	}
 
