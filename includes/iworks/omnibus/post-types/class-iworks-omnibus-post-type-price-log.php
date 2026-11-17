@@ -87,7 +87,22 @@ class iWorks_Omnibus_Post_Type_Price_Log extends iWorks_Omnibus_Post_Type {
 	}
 
 	public function register() {
-		register_post_type( $this->post_type_name );
+		/**
+		 * Internal storage only: no frontend URLs, no rewrite rules, no query var.
+		 */
+		register_post_type(
+			$this->post_type_name,
+			array(
+				'public'              => false,
+				'publicly_queryable'  => false,
+				'exclude_from_search' => true,
+				'show_ui'             => false,
+				'show_in_rest'        => false,
+				'rewrite'             => false,
+				'query_var'           => false,
+				'can_export'          => false,
+			)
+		);
 	}
 
 	public function filter_get_log_array( $log, $post_id ) {
