@@ -27,6 +27,20 @@ include_once dirname( dirname( __FILE__ ) ) . '/class-iworks-omnibus-integration
 
 class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration {
 
+	/**
+	 * Flag indicating whether WooCommerce is currently updating order stock.
+	 *
+	 * @var bool
+	 */
+	private $is_updating_order_stock = false;
+
+	/**
+	 * Product IDs whose save should not trigger Omnibus price logging.
+	 *
+	 * @var array<int, bool>
+	 */
+	private $skip_save_price_history = array();
+
 	public function __construct() {
 		/**
 		 * add Settings Section
@@ -90,8 +104,13 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 		 *
 		 * @since 1.0.0
 		 */
+		add_action( 'woocommerce_before_product_object_save', array( $this, 'action_woocommerce_before_product_object_save' ), 10, 1 );
 		add_action( 'woocommerce_after_product_object_save', array( $this, 'action_woocommerce_save_maybe_save_short' ), 10, 1 );
 		add_action( 'woocommerce_after_product_object_save', array( $this, 'action_woocommerce_save_price_history' ), 10, 1 );
+		add_filter( 'woocommerce_can_reduce_order_stock', array( $this, 'filter_woocommerce_can_update_order_stock' ), PHP_INT_MAX, 1 );
+		add_filter( 'woocommerce_can_restore_order_stock', array( $this, 'filter_woocommerce_can_update_order_stock' ), PHP_INT_MAX, 1 );
+		add_action( 'woocommerce_reduce_order_stock', array( $this, 'action_woocommerce_finish_order_stock_update' ), 10, 0 );
+		add_action( 'woocommerce_restore_order_stock', array( $this, 'action_woocommerce_finish_order_stock_update' ), 10, 0 );
 		add_action( 'woocommerce_product_options_pricing', array( $this, 'action_woocommerce_product_options_pricing' ) );
 		add_action( 'woocommerce_variation_options_pricing', array( $this, 'action_woocommerce_variation_options_pricing' ), 10, 3 );
 		add_action( 'save_post_product', array( $this, 'action_save_post_product' ), 10, 3 );
@@ -271,11 +290,99 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	}
 
 	/**
+	 * Track when WooCommerce starts reducing or restoring order stock.
+	 *
+	 * @param bool $can_update Whether order stock can be updated.
+	 * @return bool
+	 */
+	public function filter_woocommerce_can_update_order_stock( $can_update ) {
+		if ( $can_update ) {
+			$this->is_updating_order_stock = true;
+		}
+		return $can_update;
+	}
+
+	/**
+	 * Reset the order stock update flag after stock changes finish.
+	 */
+	public function action_woocommerce_finish_order_stock_update() {
+		$this->is_updating_order_stock = false;
+	}
+
+	/**
+	 * Inspect pending product changes before WooCommerce saves the object.
+	 *
+	 * Stock and sales-count updates during checkout or payment webhooks trigger
+	 * `woocommerce_after_product_object_save` without any price change.
+	 *
+	 * @param WC_Product $product Product object being saved.
+	 */
+	public function action_woocommerce_before_product_object_save( $product ) {
+		if ( ! is_object( $product ) || ! method_exists( $product, 'get_id' ) || ! method_exists( $product, 'get_changes' ) ) {
+			return;
+		}
+		$product_id = $product->get_id();
+		unset( $this->skip_save_price_history[ $product_id ] );
+		$changes = $product->get_changes();
+		if ( empty( $changes ) || ! is_array( $changes ) ) {
+			return;
+		}
+		$changed_keys      = array_keys( $changes );
+		$price_keys        = array( 'price', 'regular_price', 'sale_price', 'date_on_sale_from', 'date_on_sale_to' );
+		$stock_sales_keys  = array( 'stock_quantity', 'stock_status', 'total_sales', 'low_stock_amount' );
+		$has_price_change  = ! empty( array_intersect( $changed_keys, $price_keys ) );
+		$has_stock_or_sale = ! empty( array_intersect( $changed_keys, $stock_sales_keys ) );
+		if ( ! $has_price_change && $has_stock_or_sale ) {
+			$this->skip_save_price_history[ $product_id ] = true;
+		}
+	}
+
+	/**
+	 * Determine whether saving this product should skip Omnibus price/meta updates.
+	 *
+	 * @param WC_Product $product Product object.
+	 * @return bool
+	 */
+	private function should_skip_product_save( $product ) {
+		if ( ! is_object( $product ) || ! method_exists( $product, 'get_id' ) ) {
+			return true;
+		}
+		$product_id = $product->get_id();
+		if ( ! empty( $this->skip_save_price_history[ $product_id ] ) ) {
+			return true;
+		}
+		if ( $this->is_updating_order_stock ) {
+			return true;
+		}
+		$order_actions = array(
+			'woocommerce_payment_complete',
+			'woocommerce_checkout_order_processed',
+			'woocommerce_store_api_checkout_order_processed',
+			'woocommerce_recorded_sales',
+			'woocommerce_reduce_order_stock',
+			'woocommerce_restore_order_stock',
+		);
+		foreach ( $order_actions as $order_action ) {
+			if ( doing_action( $order_action ) ) {
+				return true;
+			}
+		}
+		return (bool) apply_filters( 'iworks_omnibus/wc/skip_save_price_history', false, $product );
+	}
+
+	/**
 	 * WooCommerce: save price history
 	 *
 	 * @since 1.0.0
 	 */
 	public function action_woocommerce_save_price_history( $product ) {
+		$should_skip = $this->should_skip_product_save( $product );
+		if ( is_object( $product ) && method_exists( $product, 'get_id' ) ) {
+			unset( $this->skip_save_price_history[ $product->get_id() ] );
+		}
+		if ( $should_skip ) {
+			return;
+		}
 		$this->save_price_history(
 			$product->get_id(),
 			$this->get_prices_by_product( $product )
@@ -1099,6 +1206,9 @@ class iworks_omnibus_integration_woocommerce extends iworks_omnibus_integration 
 	 * @since 2.3.0
 	 */
 	public function action_woocommerce_save_maybe_save_short( $product ) {
+		if ( $this->should_skip_product_save( $product ) ) {
+			return;
+		}
 		$id       = $product->get_id();
 		$meta_key = $this->get_name( 'is_short' );
 		/**
